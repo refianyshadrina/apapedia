@@ -4,7 +4,7 @@
 * **Refiany Shadrina** - *2106650185* - *A*
 * **Alia Widyanita P.** - *2106751625* - *A*
 * **Syifa Cahya Kamila** - *2106653230* - *A*
-* **Syifa Cahya Kamila** - *2106752110* - *A*
+* **Adam Wilson Autan** - *2106752110* - *A*
 
 ---
 **Kontrak Tahap 1 Tugas Akhir**
