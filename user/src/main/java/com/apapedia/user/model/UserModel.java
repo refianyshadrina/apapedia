@@ -24,12 +24,10 @@ import java.util.UUID;
 @SuperBuilder
 @MappedSuperclass
 public class UserModel implements Serializable {
-    // @Id
-    // private UUID id = UUID.randomUUID();
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id = UUID.randomUUID();
+
+
 
     @NotNull
     @Column(name = "nama", nullable = false)

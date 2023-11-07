@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.apapedia.user.model.UserModel;
 
 @Repository
-// public interface UserDb extends JpaRepository<UserModel, UUID>{
-public interface UserDb extends JpaRepository<UserModel, Long>{
+public interface UserDb extends JpaRepository<UserModel, UUID>{
+// public interface UserDb extends JpaRepository<UserModel, Long>{
 }
 

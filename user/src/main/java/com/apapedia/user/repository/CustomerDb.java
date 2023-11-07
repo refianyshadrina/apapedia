@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.apapedia.user.model.Customer;
 
 @Repository
-// public interface CustomerDb extends JpaRepository<Customer, UUID>{
-public interface CustomerDb extends JpaRepository<Customer, Long>{
+public interface CustomerDb extends JpaRepository<Customer, UUID>{
+// public interface CustomerDb extends JpaRepository<Customer, Long>{
 }
 

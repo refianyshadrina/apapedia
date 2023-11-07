@@ -9,8 +9,8 @@ import com.apapedia.user.model.Seller;
 
 
 @Repository
-// public interface SellerDb extends JpaRepository<Seller, UUID>{
-public interface SellerDb extends JpaRepository<Seller, Long>{
+public interface SellerDb extends JpaRepository<Seller, UUID>{
+// public interface SellerDb extends JpaRepository<Seller, Long>{
 
     boolean existsByUsername(String username);
 
