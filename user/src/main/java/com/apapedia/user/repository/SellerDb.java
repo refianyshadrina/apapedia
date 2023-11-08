@@ -15,5 +15,7 @@ public interface SellerDb extends JpaRepository<Seller, UUID>{
     boolean existsByUsername(String username);
 
     boolean existsByEmail(String email);
+
+    Seller findByUsername(String username);
 }
 

@@ -1,5 +1,6 @@
 package com.apapedia.user.controller;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 // import org.springframework.security.core.Authentication;
 // import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -8,9 +9,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.security.core.Authentication;
 // import org.springframework.web.bind.annotation.RequestMapping;
 // import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
@@ -35,18 +40,48 @@ public class BaseController {
     @Autowired
     SellerDb sellerDb;
 
-    // @Qualifier("sellerServiceImpl")
+    @Qualifier("sellerServiceImpl")
 
     @Autowired
     SellerService sellerService;
 
-    // Logger logger = LoggerFactory.getLogger(BaseController.class);
+    Logger logger = LoggerFactory.getLogger(BaseController.class);
 
     @GetMapping("/")
     private String home(Model model) {
-
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) auth.getPrincipal();
+        String username = user.getUsername();
+        if(sellerService.getSellerByUsername(username)!=null) {
+            Seller userLoggedIn = sellerService.getSellerByUsername(username);
+            model.addAttribute("user", userLoggedIn);
+            logger.info("Seller {} logged in", userLoggedIn.getUsername());
+        } 
         return "home";
     }
+
+    @GetMapping("/login")
+    public String login(Model model){
+        return "login";
+    }
+
+    @GetMapping("/seller")
+    private String seller(Model model) {
+        return "seller";
+    }
+
+    // @GetMapping("/login")
+    // public String login(Model model, String error, String logout) {
+    //     if (error != null) {
+    //         model.addAttribute("error", "Invalid username or password");
+    //     }
+
+    //     if (logout != null) {
+    //         model.addAttribute("message", "Logged out successfully");
+    //     }
+
+    //     return "login";
+    // }
 
     @GetMapping("/signup")
     private String formRegister(Model model) {
@@ -73,7 +108,7 @@ public class BaseController {
         user.setCategory(registerRequest.getCategory());
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());
-        // Set other user properties
+        user.setRole("seller");
         sellerService.save(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));

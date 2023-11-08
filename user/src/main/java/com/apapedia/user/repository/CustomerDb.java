@@ -10,5 +10,10 @@ import com.apapedia.user.model.Customer;
 @Repository
 public interface CustomerDb extends JpaRepository<Customer, UUID>{
 // public interface CustomerDb extends JpaRepository<Customer, Long>{
+    Customer findByUsername(String username);
+
+    boolean existsByUsername(String username);
+
+    boolean existsByEmail(String email);
 }
 

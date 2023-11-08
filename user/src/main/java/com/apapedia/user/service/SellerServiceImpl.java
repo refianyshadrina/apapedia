@@ -1,18 +1,28 @@
 package com.apapedia.user.service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import org.springframework.security.core.userdetails.User;
 import com.apapedia.user.model.Seller;
 import com.apapedia.user.repository.SellerDb;
 
+import jakarta.transaction.Transactional;
+
 @Service
-public class SellerServiceImpl implements SellerService{
+@Transactional
+public class SellerServiceImpl implements SellerService {
     @Autowired
     SellerDb sellerDb;
+
 
     @Override
     public List<Seller> getAllSeller(){
@@ -41,14 +51,26 @@ public class SellerServiceImpl implements SellerService{
 
     @Override
     public void save(Seller user) {
-        // user.setPassword(encrypt(user.getPassword()));
+        user.setPassword(encrypt(user.getPassword()));
         sellerDb.save(user);
     }
 
     @Override
     public String encrypt(String password) {
-      BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
       String hashedPassword = passwordEncoder.encode(password);
       return hashedPassword;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+                Seller user = sellerDb.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("Username not found!");
+        }
+
+        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+        grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole()));
+        return new User(user.getUsername(), user.getPassword(), grantedAuthorities);
     }
 }

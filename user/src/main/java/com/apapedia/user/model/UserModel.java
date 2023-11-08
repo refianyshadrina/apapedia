@@ -65,4 +65,8 @@ public class UserModel implements Serializable {
     @DateTimeFormat(pattern = "dd-mm-yyy, hh:mm")
     private LocalDateTime updatedAt;
 
+    @NotNull
+    @Column(name="role", nullable = false)
+    private String role;
+
 }
