@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registration Form</title>
+</head>
+<body>
+    <h1>User Registration</h1>
+    <form th:action="@{/signup}" th:object="${registerRequest}" method="POST">
+
+
+        Nama: <br>
+        <input class="form-control" type="text" th:field="*{nama}" />
+        <br><br>
+
+        Username: <br>
+        <input class="form-control" type="text" th:field="*{username}" />
+        <br><br>
+
+        Email: <br>
+        <input class="form-control" type="email" th:field="*{email}" />
+        <br><br>
+
+        Password: <br>
+        <input class="form-control" type="text" th:field="*{password}" />
+        <br><br>
+
+        Address: <br>
+        <input class="form-control" type="text" th:field="*{address}" />
+        <br><br>
+        Category: <br>
+        <input class="form-control" type="text" th:field="*{category}" />
+        <br><br>
+        <br><br>
+          <button class="btn btn-primary" type="submit">Submit</button>
+          <a class="btn btn-primary" href="/">Home</a>
+      </form>
+</body>
+</html>
