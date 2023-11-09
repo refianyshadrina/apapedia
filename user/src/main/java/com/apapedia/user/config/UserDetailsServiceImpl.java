@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.apapedia.user.model.Seller;
 import com.apapedia.user.model.UserModel;
 import com.apapedia.user.repository.SellerDb;
 
@@ -23,7 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println(username);
-        UserModel user = userDb.findByUsername(username);
+        Seller user = userDb.findByUsername(username);
         System.out.println(user.getUsername());
         System.out.println(user.getRole());
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();

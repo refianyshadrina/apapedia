@@ -10,12 +10,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.security.core.Authentication;
 // import org.springframework.web.bind.annotation.RequestMapping;
 // import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
@@ -49,14 +51,33 @@ public class BaseController {
 
     @GetMapping("/")
     private String home(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) auth.getPrincipal();
-        String username = user.getUsername();
-        if(sellerService.getSellerByUsername(username)!=null) {
-            Seller userLoggedIn = sellerService.getSellerByUsername(username);
-            model.addAttribute("user", userLoggedIn);
-            logger.info("Seller {} logged in", userLoggedIn.getUsername());
-        } 
+        // Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        // User user = (User) auth.getPrincipal();
+        // String username = user.getUsername();
+        // if(sellerService.getSellerByUsername(username)!=null) {
+        //     Seller userLoggedIn = sellerService.getSellerByUsername(username);
+        //     model.addAttribute("user", userLoggedIn);
+        //     logger.info("Seller {} logged in", userLoggedIn.getUsername());
+        // } 
+        // return "home";
+
+        // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        // String roleCurrentUser = authentication.getAuthorities().toString();
+        // logger.info("logged in: ", roleCurrentUser);
+        // model.addAttribute("roleCurrentUser", roleCurrentUser);
+        // return "home";
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            String username = userDetails.getUsername();
+            logger.info(username);
+            model.addAttribute("username", username);
+        } else {
+            logger.info("not logged in");
+        }
+        
         return "home";
     }
 
@@ -90,12 +111,14 @@ public class BaseController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @ModelAttribute SellerRegisterRequest registerRequest) {
+    public String registerUser(@Valid @ModelAttribute SellerRegisterRequest registerRequest, RedirectAttributes redirectAttrs) {
         if (sellerService.existsByUsername(registerRequest.getUsername())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Username already in use!"));
+            redirectAttrs.addFlashAttribute("error", "Username already in use");
+            return "redirect:/signup";
         }
         if (sellerService.existsByEmail(registerRequest.getEmail())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Email already in use!"));
+            redirectAttrs.addFlashAttribute("error", "Email already in use");
+            return "redirect:/signup";
         }
 
         Seller user = new Seller();
@@ -111,6 +134,7 @@ public class BaseController {
         user.setRole("seller");
         sellerService.save(user);
 
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        redirectAttrs.addFlashAttribute("success", "Please login to system");
+        return "redirect:/login";
     }
 }
