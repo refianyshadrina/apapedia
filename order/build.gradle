@@ -30,6 +30,12 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
+// Ketergantungan ke modul User dan Catalog
+dependencies {
+    implementation project(':user')
+	implementation project(':catalog')
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }
