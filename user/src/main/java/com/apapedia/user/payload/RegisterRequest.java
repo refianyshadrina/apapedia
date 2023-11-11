@@ -1,10 +1,12 @@
 package com.apapedia.user.payload;
 
 
+import java.util.UUID;
+
 import lombok.Data;
 
 @Data
-public class SellerRegisterRequest {
+public class RegisterRequest {
     private String nama;
     private String email;
     private String username;
@@ -12,4 +14,5 @@ public class SellerRegisterRequest {
     private String category;
     private Long balance;
     private String address;
+    private UUID cartId;
 }

@@ -27,13 +27,16 @@
                             <span style="color: red">Invalid username and password.</span>
                         </div>
                         <br>
-                        <form th:action="@{/login}" th:object="${loginRequest}" method="POST">
+                        <form th:action="@{/login}" method="POST">
+                        <!-- <form th:action="@{/login}" th:object="${loginRequest}" method="POST"> -->
                             Username: <br>
-                            <input class="form-control" type="text" th:field="*{username}" />
+                            <!-- <input class="form-control" type="text" th:field="*{username}" /> -->
+                            <input class="form-control" type="text" name="username" />
                             <br><br>
                     
                             Password: <br>
-                            <input class="form-control" type="text" th:field="*{password}" />
+                            <!-- <input class="form-control" type="text" th:field="*{password}" /> -->
+                            <input class="form-control" type="text" name="password" />
                             <br><br>
 
                             <div class="row form-group justify-content-center">

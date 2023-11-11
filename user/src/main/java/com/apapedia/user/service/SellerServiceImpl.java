@@ -64,17 +64,17 @@ public class SellerServiceImpl implements SellerService {
       return hashedPassword;
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                Seller user = sellerDb.findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("Username not found!");
-        }
+    // @Override
+    // public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    //             Seller user = sellerDb.findByUsername(username);
+    //     if (user == null) {
+    //         throw new UsernameNotFoundException("Username not found!");
+    //     }
 
-        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole()));
-        return new User(user.getUsername(), user.getPassword(), grantedAuthorities);
-    }
+    //     Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+    //     grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole()));
+    //     return new User(user.getUsername(), user.getPassword(), grantedAuthorities);
+    // }
 
     @Override
     public Authentication getAuthentication(){

@@ -1,6 +1,12 @@
 package com.apapedia.user.config;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,15 +24,28 @@ public class SellerDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private SellerDb sellerDb;
 
+    // @Override
+    // @Transactional
+    // public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    //     Seller seller = sellerDb.findByUsername(username);
+    //     if (seller == null) {
+    //         throw new UsernameNotFoundException("User Not Found with username: " + username);
+    //     }
+
+    //     return SellerDetailsImpl.build(seller);
+    // }
+
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Seller seller = sellerDb.findByUsername(username);
-        if (seller == null) {
-            throw new UsernameNotFoundException("User Not Found with username: " + username);
+        Seller user = sellerDb.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("Username not found!");
         }
 
-        return SellerDetailsImpl.build(seller);
+        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+        grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole()));
+        return new User(user.getUsername(), user.getPassword(), grantedAuthorities);
     }
 
 }
