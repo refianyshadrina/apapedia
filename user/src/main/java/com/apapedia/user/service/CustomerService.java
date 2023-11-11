@@ -2,22 +2,20 @@ package com.apapedia.user.service;
 
 import java.util.List;
 
-import org.springframework.security.core.userdetails.UserDetailsService;
-
-import com.apapedia.user.model.Seller;
 import org.springframework.security.core.Authentication;
 
+import com.apapedia.user.model.Customer;
 
-public interface SellerService{
-    List<Seller> getAllSeller();
+public interface CustomerService {
+    List<Customer> getAllCustomers();
 
-    Seller getSellerByUsername(String username);
+    Customer getCustomerByUsername(String username);
 
     boolean existsByUsername(String username);
 
     boolean existsByEmail(String email);
 
-    void save(Seller user);
+    void save(Customer user);
 
     String encrypt(String password);
 

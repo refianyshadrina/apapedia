@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,6 +24,7 @@ public class SellerServiceImpl implements SellerService {
     @Autowired
     SellerDb sellerDb;
 
+    private Authentication userAuthentication;
 
     @Override
     public List<Seller> getAllSeller(){
@@ -62,15 +64,26 @@ public class SellerServiceImpl implements SellerService {
       return hashedPassword;
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                Seller user = sellerDb.findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("Username not found!");
-        }
+    // @Override
+    // public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    //             Seller user = sellerDb.findByUsername(username);
+    //     if (user == null) {
+    //         throw new UsernameNotFoundException("Username not found!");
+    //     }
 
-        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole()));
-        return new User(user.getUsername(), user.getPassword(), grantedAuthorities);
+    //     Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+    //     grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole()));
+    //     return new User(user.getUsername(), user.getPassword(), grantedAuthorities);
+    // }
+
+    @Override
+    public Authentication getAuthentication(){
+        return this.userAuthentication;
     }
+
+    public void setAuthentication(Authentication newAuthentication){
+        this.userAuthentication = newAuthentication;
+    }
+
+
 }
