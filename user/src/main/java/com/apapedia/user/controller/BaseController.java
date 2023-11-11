@@ -1,31 +1,30 @@
 package com.apapedia.user.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-// import org.springframework.security.core.Authentication;
-// import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-// import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-// import org.springframework.web.bind.annotation.RequestMapping;
-// import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
-
+import java.util.stream.Collectors;
+import java.util.List;
 import org.slf4j.Logger;
+
+import com.apapedia.user.config.SellerDetailsImpl;
+import com.apapedia.user.config.jwt.JwtService;
+import com.apapedia.user.config.jwt.JwtUtils;
 import com.apapedia.user.model.Seller;
-// import com.apapedia.user.model.UserModel;
-import com.apapedia.user.payload.MessageResponse;
+import com.apapedia.user.payload.JwtResponse;
+import com.apapedia.user.payload.LoginRequest;
 import com.apapedia.user.payload.SellerRegisterRequest;
 import com.apapedia.user.repository.SellerDb;
 import com.apapedia.user.repository.UserDb;
@@ -35,6 +34,14 @@ import jakarta.validation.Valid;
 
 @Controller
 public class BaseController {
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtUtils jwtUtils;
+
+    @Autowired
+    private JwtService jwtService;
 
     @Autowired
     UserDb userDb;
@@ -51,58 +58,37 @@ public class BaseController {
 
     @GetMapping("/")
     private String home(Model model) {
-        // Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        // User user = (User) auth.getPrincipal();
-        // String username = user.getUsername();
-        // if(sellerService.getSellerByUsername(username)!=null) {
-        //     Seller userLoggedIn = sellerService.getSellerByUsername(username);
-        //     model.addAttribute("user", userLoggedIn);
-        //     logger.info("Seller {} logged in", userLoggedIn.getUsername());
-        // } 
-        // return "home";
-
-        // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        // String roleCurrentUser = authentication.getAuthorities().toString();
-        // logger.info("logged in: ", roleCurrentUser);
-        // model.addAttribute("roleCurrentUser", roleCurrentUser);
-        // return "home";
-
+        // belum berhasil login
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     
-        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            String username = userDetails.getUsername();
-            logger.info(username);
-            model.addAttribute("username", username);
+        if (authentication != null ) {
+            if (authentication.getPrincipal() instanceof UserDetails) {
+                SellerDetailsImpl userDetails = (SellerDetailsImpl) authentication.getPrincipal();
+                String username = userDetails.getUsername();
+                logger.info(username);
+                model.addAttribute("username", username);
+            }
+
+
         } else {
             logger.info("not logged in");
         }
+        logger.info(authentication.getPrincipal().toString());
         
         return "home";
     }
 
     @GetMapping("/login")
     public String login(Model model){
+        model.addAttribute("loginRequest", new LoginRequest());
         return "login";
+        // 
     }
 
     @GetMapping("/seller")
     private String seller(Model model) {
         return "seller";
     }
-
-    // @GetMapping("/login")
-    // public String login(Model model, String error, String logout) {
-    //     if (error != null) {
-    //         model.addAttribute("error", "Invalid username or password");
-    //     }
-
-    //     if (logout != null) {
-    //         model.addAttribute("message", "Logged out successfully");
-    //     }
-
-    //     return "login";
-    // }
 
     @GetMapping("/signup")
     private String formRegister(Model model) {
@@ -136,5 +122,31 @@ public class BaseController {
 
         redirectAttrs.addFlashAttribute("success", "Please login to system");
         return "redirect:/login";
+    }
+
+    @PostMapping("/login")
+    public String authenticateAndGetToken(@ModelAttribute LoginRequest authRequest, RedirectAttributes redirectAttrs) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
+        sellerService.setAuthentication(authentication);
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        if (authentication.isAuthenticated()) {
+            Seller seller = sellerService.getSellerByUsername(authRequest.getUsername());
+            SellerDetailsImpl userDetails = (SellerDetailsImpl) authentication.getPrincipal();
+            List<String> roles = userDetails.getAuthorities().stream()
+                    .map(item -> item.getAuthority())
+                    .collect(Collectors.toList());
+            String jwt = jwtService.generateToken(authRequest.getUsername(), seller.getId(), roles);
+            
+            JwtResponse jwtResponse = new JwtResponse(jwt, userDetails.getUuid(), userDetails.getUsername(), userDetails.getEmail(), roles);
+            logger.info(jwt);
+            logger.info(userDetails.hasAuthority("seller"));
+            redirectAttrs.addFlashAttribute("jwtResponse", jwtResponse);
+            return "redirect:/";
+        } else {
+            redirectAttrs.addFlashAttribute("error", "Username or password invalid");
+            return "redirect:/login";
+        }
     }
 }
