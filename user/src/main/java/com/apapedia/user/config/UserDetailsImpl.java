@@ -1,6 +1,7 @@
 package com.apapedia.user.config;
 
-import com.apapedia.user.model.Seller;
+
+import com.apapedia.user.model.UserModel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import org.springframework.security.core.Authentication;
@@ -16,7 +17,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class SellerDetailsImpl implements UserDetails {
+public class UserDetailsImpl implements UserDetails {
 
     private static final long serialVersionUID = 1L;
 
@@ -31,7 +32,7 @@ public class SellerDetailsImpl implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public SellerDetailsImpl(UUID uuid, String username, String email, String password, List<GrantedAuthority> authorities) {
+    public UserDetailsImpl(UUID uuid, String username, String email, String password, List<GrantedAuthority> authorities) {
         this.uuid = uuid;
         this.username = username;
         this.email = email;
@@ -39,17 +40,17 @@ public class SellerDetailsImpl implements UserDetails {
         this.authorities = authorities;
     }
 
-    public static SellerDetailsImpl build(Seller seller) {
+    public static UserDetailsImpl build(UserModel user) {
         List<String> roles = new ArrayList<>();
-        roles.add(seller.getRole());
+        roles.add(user.getRole());
         List<GrantedAuthority> authorities = roles.stream()
                 .map(role -> new SimpleGrantedAuthority(role))
                 .collect(Collectors.toList());
-        return new SellerDetailsImpl(
-                seller.getId(),
-                seller.getUsername(),
-                seller.getEmail(),
-                seller.getPassword(),
+        return new UserDetailsImpl(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getPassword(),
                 authorities
         );
     }
@@ -102,7 +103,7 @@ public class SellerDetailsImpl implements UserDetails {
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-        SellerDetailsImpl user = (SellerDetailsImpl) o;
+        UserDetailsImpl user = (UserDetailsImpl) o;
         return Objects.equals(uuid, user.uuid);
     }
 
@@ -120,4 +121,5 @@ public class SellerDetailsImpl implements UserDetails {
     }
 
 }
+
 

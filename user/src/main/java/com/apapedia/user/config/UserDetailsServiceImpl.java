@@ -1,5 +1,6 @@
 package com.apapedia.user.config;
 
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,7 +13,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.apapedia.user.model.Customer;
 import com.apapedia.user.model.Seller;
+import com.apapedia.user.repository.CustomerDb;
 import com.apapedia.user.repository.SellerDb;
 
 import jakarta.transaction.Transactional;
@@ -20,9 +23,12 @@ import jakarta.transaction.Transactional;
 
 @Service
 @Transactional
-public class SellerDetailsServiceImpl implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private SellerDb sellerDb;
+
+    @Autowired
+    private CustomerDb customerDb;
 
     // @Override
     // @Transactional
@@ -38,14 +44,21 @@ public class SellerDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Seller user = sellerDb.findByUsername(username);
-        if (user == null) {
+        Seller seller = sellerDb.findByUsername(username);
+        Customer customer = customerDb.findByUsername(username);
+        if (seller == null && customer == null) {
             throw new UsernameNotFoundException("Username not found!");
+        } else if (customer != null) {
+            Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+            grantedAuthorities.add(new SimpleGrantedAuthority(customer.getRole()));
+            return new User(customer.getUsername(), customer.getPassword(), grantedAuthorities);
+        } else {
+            Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+            grantedAuthorities.add(new SimpleGrantedAuthority(seller.getRole()));
+            return new User(seller.getUsername(), seller.getPassword(), grantedAuthorities);
         }
 
-        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole()));
-        return new User(user.getUsername(), user.getPassword(), grantedAuthorities);
+        
     }
 
 }

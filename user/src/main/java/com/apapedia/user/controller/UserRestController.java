@@ -30,33 +30,22 @@ import java.util.UUID;
 
 import org.slf4j.Logger;
 
-import com.apapedia.user.config.CustomerDetailsImpl;
-import com.apapedia.user.config.SellerDetailsImpl;
 import com.apapedia.user.config.jwt.JwtService;
-import com.apapedia.user.config.jwt.JwtUtils;
 import com.apapedia.user.model.Customer;
-import com.apapedia.user.model.Seller;
 import com.apapedia.user.payload.JwtResponse;
 import com.apapedia.user.payload.LoginRequest;
 import com.apapedia.user.payload.RegisterRequest;
 import com.apapedia.user.repository.SellerDb;
 import com.apapedia.user.repository.UserDb;
 import com.apapedia.user.service.CustomerService;
-import com.apapedia.user.service.SellerService;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
 public class UserRestController {
     // delete to use spring login
-    // @Autowired
-    // private AuthenticationManager authenticationManager;
-
     @Autowired
-    private JwtUtils jwtUtils;
+    private AuthenticationManager authenticationManager;
+
 
     @Autowired
     private JwtService jwtService;
@@ -84,10 +73,10 @@ public class UserRestController {
             );
         } else {
             if (customerService.existsByUsername(registerRequest.getUsername())) {
-                
+                return ResponseEntity.ok("Username  already in use");
             }
             if (customerService.existsByEmail(registerRequest.getEmail())) {
-                
+                return ResponseEntity.ok("Email  already in use");
             }
 
             Customer user = new Customer();
@@ -106,35 +95,34 @@ public class UserRestController {
         }
     }
 
-    // @PostMapping("/api/login")
-    // public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-    //     Authentication authentication = authenticationManager.authenticate(
-    //             new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+    @PostMapping("/api/login")
+    @ResponseBody
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
-    //     customerService.setAuthentication(authentication);
+        customerService.setAuthentication(authentication);
 
-    //     SecurityContextHolder.getContext().setAuthentication(authentication);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-    //     if (authentication.isAuthenticated()) {
-    //         Customer customer = customerService.getCustomerByUsername(loginRequest.getUsername());
-    //         CustomerDetailsImpl userDetails = (CustomerDetailsImpl) authentication.getPrincipal();
-    //         List<String> roles = userDetails.getAuthorities().stream()
-    //                 .map(item -> item.getAuthority())
-    //                 .collect(Collectors.toList());
-    //         String jwt = jwtService.generateToken(loginRequest.getUsername(), customer.getId(), roles);
+        if (authentication.isAuthenticated()) {
+            Customer customer = customerService.getCustomerByUsername(loginRequest.getUsername());
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            List<String> roles = userDetails.getAuthorities().stream()
+                    .map(item -> item.getAuthority())
+                    .collect(Collectors.toList());
+            String jwt = jwtService.generateToken(loginRequest.getUsername(), customer.getId(), roles);
     
-    //         return ResponseEntity.ok(new JwtResponse(jwt,
-    //                 userDetails.getUuid(),
-    //                 userDetails.getUsername(),
-    //                 userDetails.getEmail(),
-    //                 roles));
-    //     } else {
-    //         return ResponseEntity.ok("could not find username");
-    //     }
-
-
-
-    // }
+            JwtResponse jwtResponse = new JwtResponse(jwt,
+                    customer.getId(),
+                    userDetails.getUsername(),
+                    customer.getEmail(),
+                    roles);
+            return new ResponseEntity<>(jwtResponse, HttpStatus.CREATED);
+        } else {
+            return ResponseEntity.ok("could not find username");
+        }
+    }
 
 }
 

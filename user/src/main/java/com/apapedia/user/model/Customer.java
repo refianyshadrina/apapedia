@@ -17,6 +17,8 @@ import jakarta.validation.constraints.NotNull;
 @Entity
 @Table(name = "customer")
 public class Customer extends UserModel {
+
+    // ke cart
     @NotNull
     @Column(name = "cart_id", nullable = false)
     private UUID cartId;
