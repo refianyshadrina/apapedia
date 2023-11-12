@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>APAPEDIA</title>
+
+</head>
+<body>
+    <h1>Home</h1>
+    <h6 th:if="${jwtResponse != null}" class="pe-2" th:text="${jwtResponse.username} + ${jwtResponse.token}"></h6>
+    <h6 th:unless="${jwtResponse != null}" class="pe-2" text="not logged in"></h6>
+</body>
+</html>
