@@ -6,6 +6,6 @@ import com.apapedia.order.model.Cart;
 
 public interface CartService {
     
-    Cart createCart(Cart cart, UUID userId);
+    Cart createCart(UUID userId);
     
 }

@@ -1,13 +1,12 @@
 package com.apapedia.order.dto;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
-import com.apapedia.order.dto.request.CreateCartRequestDTO;
 import com.apapedia.order.model.Cart;
+
+import java.util.UUID;
 
 @Mapper(componentModel = "spring")
 public interface CartMapper {
-    @Mapping(target = "listCartItem", ignore = true)
-    Cart createCartRequestDTOToCart(CreateCartRequestDTO createCartRequestDTO);
+    Cart createCartRequestDTOToCart(UUID cartId, UUID userId);
 }

@@ -17,15 +17,20 @@ import java.util.UUID;
 @Table(name = "cart_item")
 public class CartItem {
     @Id
+    @Column(name = "cart_item_id")
     private UUID id = UUID.randomUUID();
 
     @NotNull
     @Column(name = "product_id", nullable = false)
     private UUID productId;
 
+    @NotNull
+    @Column(name = "cart_id", nullable = false)
+    private UUID cartId;
+
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "cart_id", referencedColumnName = "id", nullable = false)
-    private Cart cartId;
+    @JoinColumn(name = "cart", referencedColumnName = "cart_id")
+    private Cart cart;
 
     @NotNull
     @Column(name = "quantity", nullable = false)

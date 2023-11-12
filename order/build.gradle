@@ -31,10 +31,10 @@ dependencies {
 }
 
 // Ketergantungan ke modul User dan Catalog
-dependencies {
-    implementation project(':user')
-	implementation project(':catalog')
-}
+// dependencies {
+//     implementation project(':user')
+// 	implementation project(':catalog')
+// }
 
 tasks.named('test') {
 	useJUnitPlatform()
