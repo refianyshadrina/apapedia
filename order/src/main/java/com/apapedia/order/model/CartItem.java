@@ -16,6 +16,8 @@ import java.util.UUID;
 @Entity
 @Table(name = "cart_item")
 public class CartItem {
+
+    // punya alia
     @Id
     @Column(name = "cart_item_id")
     private UUID id = UUID.randomUUID();
@@ -24,10 +26,14 @@ public class CartItem {
     @Column(name = "product_id", nullable = false)
     private UUID productId;
 
+    // punya alia
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "cart_id", referencedColumnName = "id", nullable = false)
     @NotNull
     @Column(name = "cart_id", nullable = false)
     private UUID cartId;
 
+    // cart_id jingga
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cart", referencedColumnName = "cart_id")
     private Cart cart;

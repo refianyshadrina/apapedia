@@ -1,25 +1,25 @@
 package com.apapedia.order.dto.request;
 
 import com.apapedia.order.model.Cart;
-
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
-public class CreateCartItemRequestDTO {
+public class UpdateCartItemRequestDTO {
+    @NotNull(message = "ID cannot be null")
+    private UUID id;
+
     private UUID productId;
 
     private Cart cart;
 
-    private UUID cartId;
-
-
-    @NotNull(message = "Kuantitas tidak boleh kosong")
+    @NotNull(message = "Field is required")
     private Integer quantity;
 }
