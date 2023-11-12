@@ -1,4 +1,4 @@
-package com.apapedia.catalog.repo;
+package com.apapedia.catalog.repository;
 
 import com.apapedia.catalog.model.Category;
 import jakarta.transaction.Transactional;

@@ -9,12 +9,15 @@ import lombok.Setter;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "catalog")
+// @JsonIgnoreProperties(value={"category"}, allowSetters = true)
 public class Catalog {
     @Id
     private UUID id = UUID.randomUUID();

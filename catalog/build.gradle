@@ -30,6 +30,7 @@ dependencies {
 	implementation 'com.github.javafaker:javafaker:1.0.2'// Use the same version as the main mapstruct dependency
 	implementation 'com.fasterxml.jackson.core:jackson-databind:'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
 }
 
 tasks.named('test') {
