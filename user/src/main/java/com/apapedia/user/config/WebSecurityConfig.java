@@ -22,6 +22,7 @@ package com.apapedia.user.config;
 // import org.springframework.security.authentication.AuthenticationProvider;
 // import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 // import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+// import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 
 
 // @Configuration
@@ -33,11 +34,30 @@ package com.apapedia.user.config;
 
 //     // @Bean
 //     //authentication
-//     @Autowired
-//     private UserDetailsService userDetailsService;
+//     // @Autowired
+//     // private UserDetailsService userDetailsService;
+//     // antara 2 ini
+//     // @Autowired
+//     // private SellerDetailsServiceImpl userDetailsService;
+
+//     @Bean
+//     //authentication
+//     public UserDetailsService userDetailsService() {
+//         return new SellerDetailsServiceImpl();
+//     }
+
+//     //delete
+//     // @Autowired
+//     // private AuthEntryPointJwt unauthorizedHandler;
+
+//     // @Bean
+//     // public AuthTokenFilter authenticationJwtTokenFilter(){
+//     //     return new AuthTokenFilter();
+//     // }
 
 //     @Bean
 //     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//         // pake ini
 //         http.cors().and().csrf().disable()
 //                 .authorizeHttpRequests()
 //                 .requestMatchers("/", "/signup", "/login").permitAll()
@@ -58,6 +78,17 @@ package com.apapedia.user.config;
 //                 .authenticationProvider(authenticationProvider())
 //                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
 
+                
+//         // http.cors().and().csrf().disable()
+//         //         .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+//         //         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+//         //         .authorizeRequests().requestMatchers("/api/**").permitAll()
+//         //         .requestMatchers("/").permitAll()
+//         //         .requestMatchers("/signup").permitAll()
+//         //         .requestMatchers("/seller").hasAnyAuthority("seller")
+//         //         .anyRequest().authenticated();
+//         // http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+
 //         return http.build();
 //     }
 
@@ -66,14 +97,22 @@ package com.apapedia.user.config;
 //         return new BCryptPasswordEncoder();
 //     }
 
+//     // aktifin
 //     @Bean
 //     public AuthenticationProvider authenticationProvider(){
 //         DaoAuthenticationProvider authenticationProvider=new DaoAuthenticationProvider();
-//         authenticationProvider.setUserDetailsService(userDetailsService);
+//         authenticationProvider.setUserDetailsService(userDetailsService());
 //         // authenticationProvider.setUserDetailsService(userDetailsService());
 //         authenticationProvider.setPasswordEncoder(passwordEncoder());
 //         return authenticationProvider;
 //     }
+
+//     //delete
+//     // @Bean
+//     // public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception{
+//     //     auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+//     // }
+
 //     @Bean
 //     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
 //         return config.getAuthenticationManager();

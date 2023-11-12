@@ -106,64 +106,35 @@ public class UserRestController {
         }
     }
 
-    @PostMapping("/api/login")
-    public ResponseEntity<String> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-        // Authentication authentication = authenticationManager.authenticate(
-        //         new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+    // @PostMapping("/api/login")
+    // public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    //     Authentication authentication = authenticationManager.authenticate(
+    //             new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
-        // customerService.setAuthentication(authentication);
-
-        // SecurityContextHolder.getContext().setAuthentication(authentication);
-        // String jwt = jwtUtils.generateJwtToken(authentication);
-
-        // CustomerDetailsImpl userDetails = (CustomerDetailsImpl) authentication.getPrincipal();
-        // List<String> roles = userDetails.getAuthorities().stream()
-        //         .map(item -> item.getAuthority())
-        //         .collect(Collectors.toList());
-
-        // return ResponseEntity.ok(new JwtResponse(jwt,
-        //         userDetails.getUuid(),
-        //         userDetails.getUsername(),
-        //         userDetails.getEmail(),
-        //         roles));
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    
-        if (authentication != null && authentication.getPrincipal() instanceof UserDetails ) {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            String username = userDetails.getUsername();
-            logger.info(username);
-            return ResponseEntity.ok(username);
-        } else {
-            return ResponseEntity.ok("Could not find user");
-        }
-
-    }
-
-
-    // @PostMapping("/login")
-    // public String authenticateAndGetToken(@ModelAttribute LoginRequest authRequest, RedirectAttributes redirectAttrs) {
-    //     Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
-    //     sellerService.setAuthentication(authentication);
+    //     customerService.setAuthentication(authentication);
 
     //     SecurityContextHolder.getContext().setAuthentication(authentication);
 
     //     if (authentication.isAuthenticated()) {
-    //         Seller seller = sellerService.getSellerByUsername(authRequest.getUsername());
-    //         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+    //         Customer customer = customerService.getCustomerByUsername(loginRequest.getUsername());
+    //         CustomerDetailsImpl userDetails = (CustomerDetailsImpl) authentication.getPrincipal();
     //         List<String> roles = userDetails.getAuthorities().stream()
     //                 .map(item -> item.getAuthority())
     //                 .collect(Collectors.toList());
-    //         String jwt = jwtService.generateToken(authRequest.getUsername(), seller.getId(), roles);
-            
-    //         JwtResponse jwtResponse = new JwtResponse(jwt, seller.getId(), userDetails.getUsername(), seller.getEmail(), roles);
-    //         logger.info(jwt);
-    //         // logger.info(seller.hasAuthority("seller"));
-    //         redirectAttrs.addFlashAttribute("jwtResponse", jwtResponse);
-    //         return "redirect:/";
+    //         String jwt = jwtService.generateToken(loginRequest.getUsername(), customer.getId(), roles);
+    
+    //         return ResponseEntity.ok(new JwtResponse(jwt,
+    //                 userDetails.getUuid(),
+    //                 userDetails.getUsername(),
+    //                 userDetails.getEmail(),
+    //                 roles));
     //     } else {
-    //         redirectAttrs.addFlashAttribute("error", "Username or password invalid");
-    //         return "redirect:/login";
+    //         return ResponseEntity.ok("could not find username");
     //     }
+
+
+
     // }
+
 }
 
