@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@Transactional
 public interface CatalogDb extends JpaRepository<Catalog, UUID> {
     List<Catalog> findAll();
     
@@ -18,5 +19,7 @@ public interface CatalogDb extends JpaRepository<Catalog, UUID> {
     List<Catalog> findAllOrderByProductNameIgnoreCaseAsc();
 
     Optional<Catalog> findById(UUID id);
+
+    List<Catalog> findBySellerId(long sellerId);
 
 }

@@ -3,6 +3,7 @@ package com.apapedia.catalog.restservice;
 import com.apapedia.catalog.model.Catalog;
 import com.apapedia.catalog.repository.CatalogDb;
 
+import java.awt.*;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,7 +22,6 @@ public class CatalogServiceImpl implements CatalogService {
     @Override
     public void createRestCatalog(Catalog catalog) {
         catalogDb.save(catalog);
-      
     }
 
     @Override
@@ -50,5 +50,10 @@ public class CatalogServiceImpl implements CatalogService {
         existingCatalog.setCategory(updatedCatalog.getCategory());
 
         return catalogDb.save(existingCatalog);
+    }
+
+    @Override
+    public List<Catalog> getAllCatalogsBySellerId(long sellerId) {
+        return catalogDb.findBySellerId(sellerId);
     }
 }

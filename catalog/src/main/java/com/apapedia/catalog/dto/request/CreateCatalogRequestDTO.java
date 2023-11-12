@@ -16,7 +16,6 @@ import com.apapedia.catalog.model.Category;
 @Data
 public class CreateCatalogRequestDTO {
 
-    @NotNull(message = " is still empty")
     private long sellerId;
 
     @NotNull(message = " is still empty")

@@ -12,6 +12,7 @@ public interface CatalogService {
     Catalog getCatalogById(UUID id);
     Catalog updateCatalog (Catalog updatedCatalog);
 
+    List<Catalog>getAllCatalogsBySellerId(long sellerId);
 
 
 }
