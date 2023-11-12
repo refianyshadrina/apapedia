@@ -11,7 +11,7 @@ public class RegisterRequest {
     private String email;
     private String username;
     private String password;
-    private String category;
+    private Long category;
     private Long balance;
     private String address;
     private UUID cartId;

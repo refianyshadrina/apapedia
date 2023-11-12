@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.security.access.method.P;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,9 +19,7 @@ import java.util.stream.Collectors;
 import java.util.List;
 import org.slf4j.Logger;
 
-import com.apapedia.user.config.SellerDetailsImpl;
 import com.apapedia.user.config.jwt.JwtService;
-import com.apapedia.user.config.jwt.JwtUtils;
 import com.apapedia.user.model.Seller;
 import com.apapedia.user.payload.JwtResponse;
 import com.apapedia.user.payload.LoginRequest;
@@ -31,19 +28,14 @@ import com.apapedia.user.repository.SellerDb;
 import com.apapedia.user.repository.UserDb;
 import com.apapedia.user.service.SellerService;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @Controller
 public class BaseController {
     // delete to use spring login
-    // @Autowired
-    // private AuthenticationManager authenticationManager;
-
     @Autowired
-    private JwtUtils jwtUtils;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
     private JwtService jwtService;
@@ -142,29 +134,29 @@ public class BaseController {
         return "redirect:/login";
     }
 
-    // @PostMapping("/login")
-    // public String authenticateAndGetToken(@ModelAttribute LoginRequest authRequest, RedirectAttributes redirectAttrs) {
-    //     Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
-    //     sellerService.setAuthentication(authentication);
+    @PostMapping("/login")
+    public String authenticateAndGetToken(@ModelAttribute LoginRequest authRequest, RedirectAttributes redirectAttrs) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
+        sellerService.setAuthentication(authentication);
 
-    //     SecurityContextHolder.getContext().setAuthentication(authentication);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-    //     if (authentication.isAuthenticated()) {
-    //         Seller seller = sellerService.getSellerByUsername(authRequest.getUsername());
-    //         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-    //         List<String> roles = userDetails.getAuthorities().stream()
-    //                 .map(item -> item.getAuthority())
-    //                 .collect(Collectors.toList());
-    //         String jwt = jwtService.generateToken(authRequest.getUsername(), seller.getId(), roles);
+        if (authentication.isAuthenticated()) {
+            Seller seller = sellerService.getSellerByUsername(authRequest.getUsername());
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            List<String> roles = userDetails.getAuthorities().stream()
+                    .map(item -> item.getAuthority())
+                    .collect(Collectors.toList());
+            String jwt = jwtService.generateToken(authRequest.getUsername(), seller.getId(), roles);
             
-    //         JwtResponse jwtResponse = new JwtResponse(jwt, seller.getId(), userDetails.getUsername(), seller.getEmail(), roles);
-    //         logger.info(jwt);
-    //         // logger.info(seller.hasAuthority("seller"));
-    //         redirectAttrs.addFlashAttribute("jwtResponse", jwtResponse);
-    //         return "redirect:/";
-    //     } else {
-    //         redirectAttrs.addFlashAttribute("error", "Username or password invalid");
-    //         return "redirect:/login";
-    //     }
-    // }
+            JwtResponse jwtResponse = new JwtResponse(jwt, seller.getId(), userDetails.getUsername(), seller.getEmail(), roles);
+            logger.info(jwt);
+            // logger.info(seller.hasAuthority("seller"));
+            redirectAttrs.addFlashAttribute("jwtResponse", jwtResponse);
+            return "redirect:/";
+        } else {
+            redirectAttrs.addFlashAttribute("error", "Username or password invalid");
+            return "redirect:/login";
+        }
+    }
 }

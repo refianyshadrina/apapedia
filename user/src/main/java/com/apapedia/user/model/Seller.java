@@ -16,8 +16,9 @@ import jakarta.validation.constraints.NotNull;
 @Table(name = "seller")
 public class Seller extends UserModel {
    
+    // ke category
     @NotNull
     @Column(name = "category", nullable = false)
-    private String category;
+    private Long category;
 }
 

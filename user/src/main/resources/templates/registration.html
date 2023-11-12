@@ -30,8 +30,23 @@
         Address: <br>
         <input class="form-control" type="text" th:field="*{address}" />
         <br><br>
-        Category: <br>
-        <input class="form-control" type="text" th:field="*{category}" />
+
+        <label class="labels">Category</label>  <br>
+        <select class="form-control" name="category" >
+            <option th:value="1">Aksesoris Fashion</option>
+            <option th:value="2">Buku & Alat Tulis</option>
+            <option th:value="3">Elektronik</option>
+            <option th:value="4">Fashion Bayi & Anak</option>
+            <option th:value="5">Fashion Muslim</option>
+            <option th:value="6">Fotografi</option>
+            <option th:value="7">Hobi & Koleksi</option>
+            <option th:value="8">Jam Tangan</option>
+            <option th:value="9">Perawatan & Kecantikan</option>
+            <option th:value="10">Makanan & Minuman</option>
+            <option th:value="11">Otomotif</option>
+            <option th:value="12">Perlengkapan Rumah</option>
+            <option th:value="13">Souvenir & Party Supplies</option>
+        </select>
         <br><br>
         <br><br>
           <button class="btn btn-primary" type="submit">Submit</button>
