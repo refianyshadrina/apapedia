@@ -1,4 +1,4 @@
-package com.apapedia.order.controller;
+package com.apapedia.order.restcontroller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,13 +13,13 @@ import com.apapedia.order.dto.UserDummyMapper;
 import com.apapedia.order.dto.request.CreateUserDummyRequestDTO;
 import com.apapedia.order.model.Cart;
 import com.apapedia.order.model.UserDummy;
-import com.apapedia.order.service.UserService;
+import com.apapedia.order.restservice.UserService;
 
 import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api")
-public class UserDummyController {
+public class UserDummyRestController {
     @Autowired
     private UserDummyMapper userMapper;
 
@@ -27,7 +27,7 @@ public class UserDummyController {
     private UserService userService;
 
     @Autowired
-    private CartController cartController;
+    private CartRestController cartController;
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody CreateUserDummyRequestDTO userDTO){
@@ -36,7 +36,7 @@ public class UserDummyController {
             userService.createUserDummy(userDummy);
 
             ResponseEntity<Cart> response = cartController.addCart(userDummy.getUserId());
-            if (response.getStatusCode() == HttpStatus.CREATED) {
+            if (response.getStatusCode() != HttpStatus.NOT_FOUND) {
                 userDummy.setCart(response.getBody());
                 return ResponseEntity.ok("User created");
             } else {
