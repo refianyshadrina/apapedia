@@ -1,4 +1,4 @@
-package com.apapedia.order.service;
+package com.apapedia.order.restservice;
 
 import com.apapedia.order.model.UserDummy;
 

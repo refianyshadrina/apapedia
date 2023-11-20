@@ -1,4 +1,4 @@
-package com.apapedia.order.service;
+package com.apapedia.order.restservice;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
