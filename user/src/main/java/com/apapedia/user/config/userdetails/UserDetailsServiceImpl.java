@@ -1,4 +1,4 @@
-package com.apapedia.user.config;
+package com.apapedia.user.config.userdetails;
 
 
 import java.util.HashSet;
@@ -30,29 +30,24 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private CustomerDb customerDb;
 
-    // @Override
-    // @Transactional
-    // public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    //     Seller seller = sellerDb.findByUsername(username);
-    //     if (seller == null) {
-    //         throw new UsernameNotFoundException("User Not Found with username: " + username);
-    //     }
-
-    //     return SellerDetailsImpl.build(seller);
-    // }
-
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println("masuk load");
         Seller seller = sellerDb.findByUsername(username);
         Customer customer = customerDb.findByUsername(username);
+        System.out.println("nyampe kesini?");
         if (seller == null && customer == null) {
+            System.out.println("masuk username not found?");
             throw new UsernameNotFoundException("Username not found!");
-        } else if (customer != null) {
+        } else if (customer != null ) {
             Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
             grantedAuthorities.add(new SimpleGrantedAuthority(customer.getRole()));
             return new User(customer.getUsername(), customer.getPassword(), grantedAuthorities);
         } else {
+            System.out.println("masuk ke else?");
+            System.out.println("customer null? " + (customer==null));
+            System.out.println("seller null? " + (seller==null));
             Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
             grantedAuthorities.add(new SimpleGrantedAuthority(seller.getRole()));
             return new User(seller.getUsername(), seller.getPassword(), grantedAuthorities);

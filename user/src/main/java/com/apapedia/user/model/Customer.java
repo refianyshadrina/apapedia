@@ -6,6 +6,9 @@ import lombok.Setter;
 
 import java.util.UUID;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -16,6 +19,8 @@ import jakarta.validation.constraints.NotNull;
 @AllArgsConstructor
 @Entity
 @Table(name = "customer")
+@SQLDelete(sql = "UPDATE customer SET is_deleted = true WHERE id=?")
+@Where(clause = "is_deleted=false")
 public class Customer extends UserModel {
 
     // ke cart

@@ -7,12 +7,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import org.hibernate.annotations.SQLDelete;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
+import org.hibernate.annotations.Where;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -26,8 +27,6 @@ import java.util.UUID;
 public class UserModel implements Serializable {
     @Id
     private UUID id = UUID.randomUUID();
-
-
 
     @NotNull
     @Column(name = "nama", nullable = false)
@@ -68,5 +67,9 @@ public class UserModel implements Serializable {
     @NotNull
     @Column(name="role", nullable = false)
     private String role;
+
+    @NotNull
+    @Column(name="is_deleted", nullable = false)
+    private boolean isDeleted;
 
 }
