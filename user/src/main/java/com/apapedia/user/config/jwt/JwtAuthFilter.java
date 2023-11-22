@@ -12,7 +12,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.apapedia.user.config.UserDetailsServiceImpl;
+import com.apapedia.user.config.userdetails.UserDetailsServiceImpl;
 
 import java.io.IOException;
 

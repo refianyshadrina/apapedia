@@ -1,4 +1,4 @@
-package com.apapedia.user.config;
+package com.apapedia.user.config.userdetails;
 
 
 import com.apapedia.user.model.UserModel;

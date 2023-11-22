@@ -1,12 +1,16 @@
 package com.apapedia.user.config.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+
+import com.apapedia.user.config.userdetails.UserDetailsImpl;
+
+import org.springframework.security.core.Authentication;
 
 import java.security.Key;
 import java.util.Date;
@@ -18,10 +22,15 @@ import java.util.function.Function;
 
 @Component
 public class JwtService {
-
+    private static final Logger logger = LoggerFactory.getLogger(JwtService.class);
 
     public static final String SECRET = "5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437";
 
+    // @Value("${apapedia.app.jwtSecret}")
+    private String jwtSecret;
+
+    // @Value("${apapedia.app.jwtExpirationMs}")
+    private int jwtExpirationMs;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -36,7 +45,7 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    private Claims extractAllClaims(String token) {
+    public Claims extractAllClaims(String token) {
         return Jwts
                 .parserBuilder()
                 .setSigningKey(getSignKey())
@@ -47,6 +56,24 @@ public class JwtService {
 
     private Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
+    }
+
+    public boolean validateJwtToken(String authToken) {
+        try{
+            Jwts.parser().setSigningKey(SECRET).parseClaimsJws(authToken);
+            return true;
+        } catch (SignatureException e) {
+            logger.error("Invalid JWT Signature: {}", e.getMessage());
+        } catch (MalformedJwtException e) {
+            logger.error("Invalid JWT token: {}", e.getMessage());
+        } catch (ExpiredJwtException e) {
+            logger.error("JWT token is expired: {}", e.getMessage());
+        } catch (UnsupportedJwtException e){
+            logger.error("JWT token is unsupported: {}", e.getMessage());
+        } catch (IllegalArgumentException e){
+            logger.error("JWT claims string is empty: {}", e.getMessage());
+        }
+        return false;
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
@@ -62,6 +89,16 @@ public class JwtService {
         return createToken(claims,userName);
     }
 
+    public String generateJwtToken(Authentication authentication){
+        UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+        return Jwts.builder()
+                .setSubject((userPrincipal.getUsername()))
+                .setIssuedAt(new Date())
+                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .compact();
+    }
+
     private String createToken(Map<String, Object> claims, String userName) {
         return Jwts.builder()
                 .setClaims(claims)
@@ -74,5 +111,9 @@ public class JwtService {
     private Key getSignKey() {
         byte[] keyBytes= Decoders.BASE64.decode(SECRET);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    public String getUserNameFromJwtToken(String token) {
+        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
 }
