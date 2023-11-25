@@ -1,13 +1,17 @@
 package com.apapedia.user.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import java.time.LocalDateTime;
 import com.apapedia.user.model.Customer;
+import com.apapedia.user.model.Seller;
+import com.apapedia.user.payload.RegisterRequest;
 import com.apapedia.user.repository.CustomerDb;
 
 import jakarta.transaction.Transactional;
@@ -68,5 +72,40 @@ public class CustomerServiceImpl implements CustomerService {
         this.userAuthentication = newAuthentication;
     }
 
+    @Override
+    public Customer getCustomerById(UUID fromString) {
+        for (Customer customer : getAllCustomers()) {
+            if (customer.getId().equals(fromString)) {
+                return customer;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Customer create(RegisterRequest registerRequest) {
+        Customer user = new Customer();
+        user.setNama(registerRequest.getNama());
+        user.setUsername(registerRequest.getUsername());
+        user.setPassword(registerRequest.getPassword());
+        user.setEmail(registerRequest.getEmail());
+        user.setAddress(registerRequest.getAddress());
+        user.setBalance((long) 0);
+        user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
+        user.setRole("customer");
+        user.setCartId(UUID.randomUUID());
+        save(user);
+        return user;
+    }
+
+    @Override
+    public void deleteCustomer(Customer customer) throws NoSuchElementException {
+        if (customer != null) {
+            customerDb.deleteById(customer.getId());
+        } else {
+            throw new NoSuchElementException();
+        }
+    }
 
 }

@@ -6,8 +6,12 @@ import java.util.List;
 import java.util.UUID;
 
 public interface CartItemService {
+    CartItem createCartItem(CartItem cartItem, UUID cartId);
+    
     List<CartItem> retrieveRestAllCartItem();
+
     CartItem getRestCartItemById(UUID id);
+
     CartItem updateRestCartItemQuantity(CartItem cartItemFromDTO);
 
     void deleteRestCartItem(CartItem cartItem);
