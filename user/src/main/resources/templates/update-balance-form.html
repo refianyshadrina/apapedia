@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Withdraw Form</title>
+</head>
+<body>
+    <h1>Withdraw</h1>
+    <div class="container">
+        <div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
+    </div>
+    <form th:action="@{/withdraw}" th:object="${updateRequest}" method="POST">
+        <input class="form-control" type="hidden" th:field="*{id}" />
+
+
+        Balance: <br>
+        <input class="form-control" type="text" th:field="*{balance}" />
+        <br><br>
+
+
+        <br><br>
+        <br><br>
+          <button class="btn btn-primary" type="submit">Submit</button>
+          <a class="btn btn-primary" href="/">Home</a>
+      </form>
+</body>
+</html>

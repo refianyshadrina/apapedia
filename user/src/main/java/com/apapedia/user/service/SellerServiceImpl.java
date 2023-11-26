@@ -100,7 +100,7 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
-    public void create(RegisterRequest registerRequest) {
+    public Seller create(RegisterRequest registerRequest) {
         Seller user = new Seller();
         user.setNama(registerRequest.getNama());
         user.setUsername(registerRequest.getUsername());
@@ -113,6 +113,7 @@ public class SellerServiceImpl implements SellerService {
         user.setUpdatedAt(LocalDateTime.now());
         user.setRole("seller");
         save(user);
+        return user;
     }
 
     @Override

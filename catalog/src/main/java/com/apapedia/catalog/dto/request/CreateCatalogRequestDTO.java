@@ -10,13 +10,15 @@ import jakarta.validation.Valid;
 import com.apapedia.catalog.model.Catalog;
 import com.apapedia.catalog.model.Category;
 
+import java.util.UUID;
+
 @Valid
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class CreateCatalogRequestDTO {
 
-    private long sellerId;
+    private UUID sellerId;
 
     @NotNull(message = " is still empty")
     private int price;

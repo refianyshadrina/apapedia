@@ -1,5 +1,6 @@
 package com.apapedia.catalog.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -23,7 +24,7 @@ public class Catalog {
     private UUID id = UUID.randomUUID();
 
     @Column(name = "seller_id", nullable = true)
-    private long sellerId;
+    private UUID sellerId = UUID.randomUUID();
 
     @NotNull
     @Column(name = "price", nullable = false)
@@ -37,6 +38,7 @@ public class Catalog {
     @Column(name = "product_description", nullable = false)
     private String productDescription;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", referencedColumnName = "categoryId")
     private Category category;

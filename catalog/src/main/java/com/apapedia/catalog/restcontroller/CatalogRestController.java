@@ -3,13 +3,10 @@ package com.apapedia.catalog.restcontroller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.NoSuchElementException;
 
 import com.apapedia.catalog.dto.CatalogMapper;
@@ -17,7 +14,6 @@ import com.apapedia.catalog.dto.request.CreateCatalogRequestDTO;
 import com.apapedia.catalog.dto.request.UpdateCatalogRequestDTO;
 import com.apapedia.catalog.model.Catalog;
 import com.apapedia.catalog.model.Category;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.apapedia.catalog.restservice.CatalogService;
@@ -78,4 +74,45 @@ public class CatalogRestController {
         var updatedCatalog = catalogMapper.UpdateCatalogRequestDTOToCatalog(updateCatalogRequestDTO);
         return catalogService.updateCatalog(updatedCatalog);
     }
+
+    @GetMapping("/catalog/search")
+    public List<Catalog> retrieveCatalogListByCatalogName(@RequestParam(value = "query") String productName){
+        return catalogService.getCatalogListByCatalogName(productName);
+    }
+
+    @GetMapping("catalog/filter")
+    public List<Catalog> filterCatalogByPrice(@RequestParam (value = "max", required = false) int maxPrice,
+                                              @RequestParam(value = "min", required = false) int minPrice){
+        return catalogService.getCatalogByPrice(minPrice, maxPrice); }
+
+    @GetMapping("/catalog")
+    public List<Catalog> getSortedCatalogList(
+            @RequestParam(name = "sortBy", defaultValue = "name") String sortBy,
+            @RequestParam(name = "order", defaultValue = "asc") String order) {
+        return catalogService.getSortedCatalogList(sortBy, order);
+    }
+
+    @GetMapping("/catalog/sort/name/asc")
+    public List<Catalog> sortByProductNameAsc() {
+        return catalogService.sortByProductNameAsc();
+    }
+
+    @GetMapping("/catalog/sort/name/desc")
+    public List<Catalog> sortByProductNameDesc() {
+        return catalogService.sortByProductNameAsc();
+    }
+
+    @GetMapping("/catalog/sort/price/asc")
+    public List<Catalog> sortByPriceAsc() {
+        return catalogService.sortByPriceAsc();
+    }
+
+    @GetMapping("/catalog/sort/price/desc")
+    public List<Catalog> sortByPriceDesc() {
+        return catalogService.sortByPriceDesc();
+    }
+
+
+
+
 }

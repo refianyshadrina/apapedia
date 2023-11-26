@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.apapedia.user.config.userdetails.UserDetailsImpl;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 
 import java.security.Key;
@@ -95,7 +96,7 @@ public class JwtService {
                 .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
     }
 
@@ -114,6 +115,17 @@ public class JwtService {
     }
 
     public String getUserNameFromJwtToken(String token) {
-        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public UUID getIdFromJwtToken(String token) {
+        Claims claims =  Jwts
+                .parserBuilder()
+                .setSigningKey(getSignKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        return UUID.fromString(claims.get("userId", String.class));
     }
 }

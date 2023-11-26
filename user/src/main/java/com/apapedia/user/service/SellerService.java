@@ -31,7 +31,7 @@ public interface SellerService{
 
     Seller getSellerById(UUID id);
 
-    void create(RegisterRequest user);
+    Seller create(RegisterRequest user);
 
     void deleteSeller(Seller seller);
 }
