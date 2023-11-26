@@ -1,17 +1,16 @@
 package com.apapedia.order.dto;
 
-import java.util.UUID;
-
 import org.mapstruct.Mapper;
 
-import com.apapedia.order.dto.request.CreateOrderRequestDTO;
+import com.apapedia.order.dto.request.CreateOrdersRequestDTO;
+import com.apapedia.order.dto.request.UpdateOrderRequestDTO;
 import com.apapedia.order.model.Order;
 
 
 @Mapper(componentModel = "spring")
 public interface OrderMapper {
 
-    Order CreateOrderRequestDTOToOrder(CreateOrderRequestDTO orderDTO);
+    Order CreateOrdersRequestDTOToOrders(CreateOrdersRequestDTO orderDTO);
 
-
+    Order updateOrderRequestDTOToOrder(UpdateOrderRequestDTO updateOrderRequestDTO);
 }

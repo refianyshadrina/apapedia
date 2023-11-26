@@ -1,4 +1,4 @@
-package com.apapedia.user.payload;
+package com.apapedia.user.payload.user;
 
 import lombok.Data;
 
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
-public class JwtResponse {
+public class JwtResponseDTO {
     private String token;
     private UUID uuid;
     private String username;
@@ -15,7 +15,7 @@ public class JwtResponse {
     //expirationdate
     //claims?
 
-    public JwtResponse(String token, UUID uuid, String username, String email, List<String> roles) {
+    public JwtResponseDTO(String token, UUID uuid, String username, String email, List<String> roles) {
         this.token = token;
         this.uuid = uuid;
         this.username = username;
@@ -23,7 +23,7 @@ public class JwtResponse {
         this.roles = roles;
     }
 
-    public JwtResponse() {
+    public JwtResponseDTO() {
         
     }
 }

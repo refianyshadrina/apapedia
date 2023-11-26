@@ -6,7 +6,7 @@ import java.util.UUID;
 import org.springframework.security.core.Authentication;
 
 import com.apapedia.user.model.Customer;
-import com.apapedia.user.payload.RegisterRequest;
+import com.apapedia.user.payload.user.RegisterRequestDTO;
 
 public interface CustomerService {
     List<Customer> getAllCustomers();
@@ -27,7 +27,7 @@ public interface CustomerService {
 
     Customer getCustomerById(UUID fromString);
 
-    Customer create(RegisterRequest registerRequest);
+    Customer create(RegisterRequestDTO registerRequest);
 
     void deleteCustomer(Customer customer);
 }

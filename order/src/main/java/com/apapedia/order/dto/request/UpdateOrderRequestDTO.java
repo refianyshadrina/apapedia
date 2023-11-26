@@ -1,14 +1,14 @@
-package com.apapedia.user.payload;
+package com.apapedia.order.dto.request;
 
+import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginRequest {
-    private String username;
-    private String password;
+@Data
+public class UpdateOrderRequestDTO {
+    private UUID id;
 }

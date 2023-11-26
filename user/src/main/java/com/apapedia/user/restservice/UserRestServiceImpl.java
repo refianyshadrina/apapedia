@@ -1,19 +1,17 @@
 package com.apapedia.user.restservice;
 
 import java.util.UUID;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import com.apapedia.user.model.Seller;
-import com.apapedia.user.model.UserModel;
-import com.apapedia.user.payload.JwtResponse;
-import com.apapedia.user.payload.LoginRequest;
-import com.apapedia.user.payload.RegisterRequest;
-import com.apapedia.user.payload.UpdateBalanceUser;
-import com.apapedia.user.payload.UpdateUserRequestDTO;
-import com.apapedia.user.service.UserService;
+
+import com.apapedia.user.payload.frontend.JwtResponse;
+import com.apapedia.user.payload.frontend.LoginRequest;
+import com.apapedia.user.payload.frontend.UserDTO;
+// import com.apapedia.user.payload.user.JwtResponseDTO;
+import com.apapedia.user.payload.frontend.UpdateBalanceUser;
+import com.apapedia.user.payload.frontend.UpdateUserRequest;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import reactor.core.publisher.Mono;
@@ -21,9 +19,6 @@ import reactor.core.publisher.Mono;
 @Service
 @Transactional
 public class UserRestServiceImpl implements UserRestService{
-
-    @Autowired
-    UserService userService;
 
     private final WebClient webClient;
 
@@ -34,9 +29,9 @@ public class UserRestServiceImpl implements UserRestService{
     }
     
     @Override
-    public Seller getUser(UUID idUser, String jwtToken) {
+    public UserDTO getUser(UUID idUser, String jwtToken) {
 
-        Mono<Seller> response = this.webClient
+        Mono<UserDTO> response = this.webClient
                 .get()
                 .uri("/api/user/detail/{id}", idUser)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
@@ -49,7 +44,7 @@ public class UserRestServiceImpl implements UserRestService{
                         status -> status.is5xxServerError(),
                         clientResponse -> Mono.error(new RuntimeException("Internal Server Error: " + clientResponse.rawStatusCode()))
                 )
-                .bodyToMono(Seller.class);
+                .bodyToMono(UserDTO.class);
 
         return response.block();
 
@@ -91,9 +86,9 @@ public class UserRestServiceImpl implements UserRestService{
 
 
     @Override
-    public UserModel signUp(@Valid RegisterRequest registerRequest) {
+    public UserDTO signUp(@Valid UserDTO registerRequest) {
 
-        Mono<UserModel> response = this.webClient
+        Mono<UserDTO> response = this.webClient
             .post()
             .uri("/api/user/register")
             .contentType(MediaType.APPLICATION_JSON)
@@ -108,14 +103,14 @@ public class UserRestServiceImpl implements UserRestService{
                     status -> status.is5xxServerError(),
                     clientResponse -> Mono.error(new RuntimeException("Internal Server Error: " + clientResponse.rawStatusCode()))
             )
-            .bodyToMono(UserModel.class);
+            .bodyToMono(UserDTO.class);
         return response.block();
     }
 
     @Override
-    public JwtResponse update(@Valid UpdateUserRequestDTO updateUserRequestDTO) {
+    public JwtResponse update(@Valid UpdateUserRequest updateUserRequestDTO) {
 
-        UserModel response = this.webClient
+        UserDTO response = this.webClient
             .put()
             .uri("/api/user/update")
             .contentType(MediaType.APPLICATION_JSON)
@@ -130,7 +125,7 @@ public class UserRestServiceImpl implements UserRestService{
                     status -> status.is5xxServerError(),
                     clientResponse -> Mono.error(new RuntimeException("Internal Server Error: " + clientResponse.rawStatusCode()))
             )
-            .bodyToMono(UserModel.class).block();
+            .bodyToMono(UserDTO.class).block();
 
         LoginRequest authRequest = new LoginRequest(updateUserRequestDTO.getUsername(), response.getPassword());
 
@@ -146,8 +141,8 @@ public class UserRestServiceImpl implements UserRestService{
     }
 
     @Override
-    public UserModel updateBalance(UpdateBalanceUser updateRequest) {
-        UserModel response = this.webClient
+    public UserDTO updateBalance(UpdateBalanceUser updateRequest) {
+        UserDTO response = this.webClient
             .put()
             .uri("/api/user/self-update-balance")
             .contentType(MediaType.APPLICATION_JSON)
@@ -162,7 +157,7 @@ public class UserRestServiceImpl implements UserRestService{
                     status -> status.is5xxServerError(),
                     clientResponse -> Mono.error(new RuntimeException("Internal Server Error: " + clientResponse.rawStatusCode()))
             )
-            .bodyToMono(UserModel.class).block();
+            .bodyToMono(UserDTO.class).block();
 
         return response;
 

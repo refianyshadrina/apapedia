@@ -25,6 +25,10 @@ public class UserDummy {
     @Column(name = "nama", nullable = false)
     private String nama;
 
+    @NotNull
+    @Column(name = "balance", nullable = false)
+    private Long balance;
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Cart cart;
 
