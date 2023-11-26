@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.apapedia.user.config.userdetails.UserDetailsImpl;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 
 import java.security.Key;
