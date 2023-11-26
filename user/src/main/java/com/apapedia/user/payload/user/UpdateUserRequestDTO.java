@@ -1,4 +1,4 @@
-package com.apapedia.user.payload;
+package com.apapedia.user.payload.user;
 
 import java.util.UUID;
 

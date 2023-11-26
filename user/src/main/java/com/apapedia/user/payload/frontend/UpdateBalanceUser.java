@@ -1,4 +1,4 @@
-package com.apapedia.user.payload;
+package com.apapedia.user.payload.frontend;
 
 import java.util.UUID;
 
@@ -14,4 +14,3 @@ public class UpdateBalanceUser {
 
     private long balance;
 }
-

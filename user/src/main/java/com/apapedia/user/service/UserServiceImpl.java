@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.time.LocalDateTime;
@@ -15,7 +14,7 @@ import com.apapedia.exception.UserNotFoundException;
 import com.apapedia.user.model.Customer;
 import com.apapedia.user.model.Seller;
 import com.apapedia.user.model.UserModel;
-import com.apapedia.user.payload.UpdateUserRequestDTO;
+import com.apapedia.user.payload.user.UpdateUserRequestDTO;
 import com.apapedia.user.repository.CustomerDb;
 import com.apapedia.user.repository.SellerDb;
 

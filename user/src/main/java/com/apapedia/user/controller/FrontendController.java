@@ -12,13 +12,12 @@ import org.slf4j.LoggerFactory;
 import java.util.UUID;
 import org.slf4j.Logger;
 import com.apapedia.user.config.jwt.JwtService;
-import com.apapedia.user.model.Seller;
-import com.apapedia.user.model.UserModel;
-import com.apapedia.user.payload.JwtResponse;
-import com.apapedia.user.payload.LoginRequest;
-import com.apapedia.user.payload.RegisterRequest;
-import com.apapedia.user.payload.UpdateBalanceUser;
-import com.apapedia.user.payload.UpdateUserRequestDTO;
+import com.apapedia.user.payload.frontend.JwtResponse;
+import com.apapedia.user.payload.frontend.LoginRequest;
+import com.apapedia.user.payload.frontend.UserDTO;
+// import com.apapedia.user.payload.user.JwtResponseDTO;
+import com.apapedia.user.payload.frontend.UpdateBalanceUser;
+import com.apapedia.user.payload.frontend.UpdateUserRequest;
 import com.apapedia.user.restservice.UserRestService;
 import com.apapedia.user.service.FrontEndService;
 import com.apapedia.user.service.UserService;
@@ -55,12 +54,12 @@ public class FrontendController {
 
     @GetMapping("/signup")
     private String formRegister(Model model) {
-        model.addAttribute("registerRequest", new RegisterRequest());
+        model.addAttribute("registerRequest", new UserDTO());
         return "registration";
     }
 
     @PostMapping("/signup")
-    public String registerUser(@Valid @ModelAttribute RegisterRequest registerRequest, RedirectAttributes redirectAttrs) {
+    public String registerUser(@Valid @ModelAttribute UserDTO registerRequest, RedirectAttributes redirectAttrs) {
 
         try {
             userRestService.signUp(registerRequest);
@@ -109,9 +108,9 @@ public class FrontendController {
         } else {
             UUID id = jwtService.getIdFromJwtToken(jwtToken);
 
-            Seller seller = (Seller) userRestService.getUser(id, jwtToken);
+            UserDTO seller = userRestService.getUser(id, jwtToken);
 
-            userRestService.deleteUser(seller.getId());
+            userRestService.deleteUser(id);
 
             return "redirect:/logout";
         }
@@ -127,7 +126,7 @@ public class FrontendController {
             UUID id = jwtService.getIdFromJwtToken(jwtToken);
 
             try {
-                Seller seller = (Seller) userRestService.getUser(id, jwtToken);
+                UserDTO seller = userRestService.getUser(id, jwtToken);
                 model.addAttribute("seller", seller);
 
                 return "profile";
@@ -146,7 +145,7 @@ public class FrontendController {
             UUID id = jwtService.getIdFromJwtToken(jwtToken);
             var user = userRestService.getUser(id, jwtToken);
 
-            var updateRequest = new UpdateUserRequestDTO();
+            var updateRequest = new UpdateUserRequest();
             updateRequest.setId(id);
             updateRequest.setAddress(user.getAddress());
             updateRequest.setEmail(user.getEmail());
@@ -160,7 +159,7 @@ public class FrontendController {
     }
 
     @PostMapping("/updateprofile")
-    private String update(Model model, @ModelAttribute UpdateUserRequestDTO updateRequest, @CookieValue(value = "jwtToken", defaultValue = "") String jwtToken, HttpServletResponse response, RedirectAttributes redirectAttrs, HttpServletRequest request) {
+    private String update(Model model, @ModelAttribute UpdateUserRequest updateRequest, @CookieValue(value = "jwtToken", defaultValue = "") String jwtToken, HttpServletResponse response, RedirectAttributes redirectAttrs, HttpServletRequest request) {
         if (!frontEndService.validateCookieJwt(request, jwtToken)) {
             logger.info("not logged in");
             return "redirect:/login";
@@ -171,7 +170,7 @@ public class FrontendController {
 
                 frontEndService.setCookie(response, jwt.getToken());
 
-                Seller seller = (Seller) userService.getUserByUsername(jwt.getUsername());
+                UserDTO seller = userRestService.getUser(jwt.getUuid(), jwt.getToken());
 
                 redirectAttrs.addFlashAttribute("seller", seller);
                 return "redirect:/sellerprofile";
@@ -192,7 +191,6 @@ public class FrontendController {
             return "redirect:/login";
         } else {
             UUID id = jwtService.getIdFromJwtToken(jwtToken);
-            var user = userRestService.getUser(id, jwtToken);
 
             var updateRequest = new UpdateBalanceUser();
             updateRequest.setId(id);
@@ -212,7 +210,7 @@ public class FrontendController {
 
             try {
 
-                UserModel user = userRestService.updateBalance(updateRequest);
+                UserDTO user = userRestService.updateBalance(updateRequest);
 
                 redirectAttrs.addFlashAttribute("seller", user);
                 return "redirect:/sellerprofile";

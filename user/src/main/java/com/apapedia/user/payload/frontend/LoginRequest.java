@@ -1,5 +1,4 @@
-package com.apapedia.user.payload;
-
+package com.apapedia.user.payload.frontend;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -10,8 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import com.apapedia.user.model.Customer;
-import com.apapedia.user.model.Seller;
-import com.apapedia.user.payload.RegisterRequest;
+import com.apapedia.user.payload.user.RegisterRequestDTO;
 import com.apapedia.user.repository.CustomerDb;
 
 import jakarta.transaction.Transactional;
@@ -83,7 +82,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer create(RegisterRequest registerRequest) {
+    public Customer create(RegisterRequestDTO registerRequest) {
         Customer user = new Customer();
         user.setNama(registerRequest.getNama());
         user.setUsername(registerRequest.getUsername());

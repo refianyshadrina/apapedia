@@ -1,23 +1,15 @@
 package com.apapedia.user.service;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.security.core.userdetails.User;
 
-import com.apapedia.user.model.Customer;
 import com.apapedia.user.model.Seller;
-import com.apapedia.user.payload.RegisterRequest;
+import com.apapedia.user.payload.user.RegisterRequestDTO;
 import com.apapedia.user.repository.SellerDb;
 import java.time.LocalDateTime;
 import jakarta.transaction.Transactional;
@@ -100,7 +92,7 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
-    public Seller create(RegisterRequest registerRequest) {
+    public Seller create(RegisterRequestDTO registerRequest) {
         Seller user = new Seller();
         user.setNama(registerRequest.getNama());
         user.setUsername(registerRequest.getUsername());
