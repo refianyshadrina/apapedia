@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Update Form</title>
+</head>
+<body>
+    <h1>User Update</h1>
+    <div class="container">
+        <div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
+    </div>
+    <form th:action="@{/updateprofile}" th:object="${updateRequest}" method="POST">
+        <input class="form-control" type="hidden" th:field="*{id}" />
+
+
+        Nama: <br>
+        <input class="form-control" type="text" th:field="*{nama}" />
+        <br><br>
+
+        Username: <br>
+        <input class="form-control" type="text" th:field="*{username}" />
+        <br><br>
+
+        Email: <br>
+        <input class="form-control" type="email" th:field="*{email}" />
+        <br><br>
+<!-- 
+        Password: <br>
+        <input class="form-control" type="text" th:field="*{password}" />
+        <br><br> -->
+
+        Address: <br>
+        <input class="form-control" type="text" th:field="*{address}" />
+        <br><br>
+
+        <br><br>
+        <br><br>
+          <button class="btn btn-primary" type="submit">Submit</button>
+          <a class="btn btn-primary" href="/">Home</a>
+      </form>
+</body>
+</html>

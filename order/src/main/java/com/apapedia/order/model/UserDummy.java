@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.UUID;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,7 +18,7 @@ import java.util.UUID;
 @Table(name = "user_dummy")
 public class UserDummy {
     @Id
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false)
     private UUID userId = UUID.randomUUID();
 
     @NotNull
@@ -26,4 +27,8 @@ public class UserDummy {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Cart cart;
+
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
+    private List<Order> listOrder;
+
 }

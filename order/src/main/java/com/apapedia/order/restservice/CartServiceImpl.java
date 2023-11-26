@@ -37,6 +37,22 @@ public class CartServiceImpl implements CartService {
     };
 
     @Override
+    public Cart getRestCartById(UUID id) {
+        for (Cart cart : retrieveRestAllCart()) {
+            if (cart.getCartId().equals(id)) {
+                return cart;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<Cart> retrieveRestAllCart() {
+        return cartDb.findAll();
+    }
+ 
+
+    @Override
     public List<CartItem> retrieveRestAllCartItemByUserId(UUID userId) {
         Cart cart = cartDb.findByUserUserId(userId);
         return cart != null ? cart.getListCartItem() : Collections.emptyList();

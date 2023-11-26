@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Profile Seller</title>
+</head>
+
+<body>
+<div class="container">
+  <div class="text-center pt-5">
+    <h2 clasa>Profile Seller</h2>
+  </div>
+  <div class="row justify-content-center">
+    <div class="card" style="width: 30rem;">
+      <div class="card-body">
+        <div class="row text-center mb-2">
+          <h4 class="card-title" th:text="${seller.nama}"></h4>
+        </div>
+        <div>
+          <p class="card-text m-0"><b>Username</b></p>
+          <p class="card-text" th:text="${seller.username}"></p>
+
+          <p class="card-text m-0"><b>Email</b></p>
+          <p class="card-text" th:text="${seller.email}"></p>
+
+          <p class="card-text m-0"><b>Balance</b></p>
+          <p class="card-text" th:text="${seller.balance}"></p>
+
+          <p class="card-text m-0"><b>Address</b></p>
+          <p class="card-text" th:text="${seller.address}" ></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="text-center m-3">
+    <a type="button" class="btn btn-primary btn-md" href="/">Home</a>
+    <a type="button" class="btn btn-primary btn-md" href="/deleteseller">Delete</a>
+  </div>
+</div>
+</body>
+
+</html>

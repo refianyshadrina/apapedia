@@ -53,7 +53,51 @@ public class CatalogServiceImpl implements CatalogService {
     }
 
     @Override
-    public List<Catalog> getAllCatalogsBySellerId(long sellerId) {
+    public List<Catalog> getAllCatalogsBySellerId(UUID sellerId) {
         return catalogDb.findBySellerId(sellerId);
     }
+
+    @Override
+    public List<Catalog> getCatalogListByCatalogName(String productName){
+        return catalogDb.findByProductNameContainingIgnoreCase(productName);
+    }
+
+    @Override
+    public List<Catalog> getCatalogByPrice(int minPrice, int maxPrice) {
+        return catalogDb.findByPriceBetween(minPrice, maxPrice);
+    }
+
+    @Override
+    public List<Catalog> getSortedCatalogList(String sortBy, String order) {
+        if ("name".equalsIgnoreCase(sortBy)) {
+            return "desc".equalsIgnoreCase(order) ?
+                    catalogDb.findAllByOrderByProductNameDesc() :
+                    catalogDb.findAllByOrderByProductNameAsc();
+        } else if ("price".equalsIgnoreCase(sortBy)) {
+            return "desc".equalsIgnoreCase(order) ?
+                    catalogDb.findAllByOrderByPriceDesc() :
+                    catalogDb.findAllByOrderByPriceAsc();
+        } return catalogDb.findAllByOrderByProductNameAsc();
+    }
+
+    // versi 2 in case implementasi yang di atas ribet
+    @Override
+    public List<Catalog> sortByProductNameAsc() {
+        return catalogDb.findAllByOrderByProductNameAsc();
+    }
+    @Override
+    public List<Catalog> sortByProductNameDesc() {
+        return catalogDb.findAllByOrderByProductNameDesc();
+    }
+    @Override
+    public List<Catalog> sortByPriceAsc() {
+        return catalogDb.findAllByOrderByPriceAsc();
+    }
+    @Override
+    public List<Catalog> sortByPriceDesc() {
+        return catalogDb.findAllByOrderByPriceDesc();
+    }
+
+
+
 }

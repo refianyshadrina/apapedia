@@ -20,6 +20,19 @@ public interface CatalogDb extends JpaRepository<Catalog, UUID> {
 
     Optional<Catalog> findById(UUID id);
 
-    List<Catalog> findBySellerId(long sellerId);
+    // find semua daftar produk berdasarkan nama catalog
+    List<Catalog> findByProductNameContainingIgnoreCase(String productName);
+
+    List<Catalog> findBySellerId(UUID sellerId);
+
+    List<Catalog> findByPriceBetween(int minPrice, int maxPrice);
+
+    List<Catalog> findAllByOrderByPriceAsc();
+
+    List<Catalog> findAllByOrderByPriceDesc();
+
+    List<Catalog> findAllByOrderByProductNameAsc();
+
+    List<Catalog> findAllByOrderByProductNameDesc();
 
 }

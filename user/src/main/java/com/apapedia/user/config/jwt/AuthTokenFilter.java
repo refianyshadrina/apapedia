@@ -34,13 +34,15 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         System.out.println("masuk filter internal");
+
+        // if (isLogoutRequest(request)) {
+        //     SecurityContextHolder.clearContext();
+        //     return;
+        // }
+
         try {
             String jwt = parseJwt(request);
-            if (request!=null) {
-                System.out.println(request);
-            } else {
-                System.out.println("request is null");
-            }
+            
             if (jwt != null && jwtService.validateJwtToken(jwt)){
                 System.out.println("masuk jwt not null and tervalidasi");
                 Claims claims = jwtService.extractAllClaims(jwt);
@@ -54,8 +56,14 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             }
         } catch (Exception e){
             logger.error("Cannot set user authentication: {}",(Object) e);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
         }
         filterChain.doFilter(request, response);
+    }
+
+    private boolean isLogoutRequest(HttpServletRequest request) {
+        return request.getRequestURI().equals("/logout");
     }
 
     private String parseJwt(HttpServletRequest request) {

@@ -12,7 +12,25 @@ public interface CatalogService {
     Catalog getCatalogById(UUID id);
     Catalog updateCatalog (Catalog updatedCatalog);
 
-    List<Catalog>getAllCatalogsBySellerId(long sellerId);
+    List<Catalog>getAllCatalogsBySellerId(UUID sellerId);
+
+    List<Catalog> getCatalogListByCatalogName(String productName);
+
+    List<Catalog> getCatalogByPrice(int minPrice, int maxPrice);
+
+    List<Catalog> getSortedCatalogList(String sortBy, String order);
+
+    List<Catalog> sortByProductNameAsc();
+
+    List<Catalog> sortByProductNameDesc();
+
+    List<Catalog> sortByPriceAsc();
+
+    List<Catalog> sortByPriceDesc();
+
+
+
+
 
 
 }
