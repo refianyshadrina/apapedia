@@ -5,6 +5,7 @@ import com.apapedia.catalog.repository.CatalogDb;
 
 import java.awt.*;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -68,6 +69,23 @@ public class CatalogServiceImpl implements CatalogService {
     }
 
     @Override
+    public void hardDeleteCatalog(UUID id) {
+        catalogDb.deleteById(id);
+    }
+
+    @Override
+    public void deleteCatalog(UUID id) {
+
+        Optional<Catalog> optionalCatalog = catalogDb.findById(id);
+
+        if (optionalCatalog.isPresent()) {
+            Catalog current = optionalCatalog.get();
+            current.setDeleted(true);
+            catalogDb.save(current);
+        }
+    }
+
+    @Override
     public List<Catalog> getSortedCatalogList(String sortBy, String order) {
         if ("name".equalsIgnoreCase(sortBy)) {
             return "desc".equalsIgnoreCase(order) ?
@@ -97,7 +115,5 @@ public class CatalogServiceImpl implements CatalogService {
     public List<Catalog> sortByPriceDesc() {
         return catalogDb.findAllByOrderByPriceDesc();
     }
-
-
 
 }
