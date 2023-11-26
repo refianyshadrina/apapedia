@@ -1,4 +1,4 @@
-package com.apapedia.user.payload;
+package com.apapedia.user.payload.user;
 
 
 import java.util.UUID;
@@ -6,7 +6,7 @@ import java.util.UUID;
 import lombok.Data;
 
 @Data
-public class RegisterRequest {
+public class RegisterRequestDTO {
     private String nama;
     private String email;
     private String username;

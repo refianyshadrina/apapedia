@@ -3,12 +3,12 @@ package com.apapedia.user.restcontroller;
 import com.apapedia.user.model.Customer;
 import com.apapedia.user.model.Seller;
 import com.apapedia.user.model.UserModel;
-import com.apapedia.user.payload.JwtResponse;
-import com.apapedia.user.payload.LoginRequest;
 import com.apapedia.user.payload.MessageResponse;
-import com.apapedia.user.payload.RegisterRequest;
-import com.apapedia.user.payload.UpdateBalanceUser;
-import com.apapedia.user.payload.UpdateUserRequestDTO;
+import com.apapedia.user.payload.user.JwtResponseDTO;
+import com.apapedia.user.payload.user.LoginRequestDTO;
+import com.apapedia.user.payload.user.RegisterRequestDTO;
+import com.apapedia.user.payload.user.UpdateBalanceUserDTO;
+import com.apapedia.user.payload.user.UpdateUserRequestDTO;
 import com.apapedia.exception.InsufficientBalanceException;
 import com.apapedia.exception.UserNotFoundException;
 import com.apapedia.user.config.jwt.JwtService;
@@ -95,7 +95,7 @@ public class UserRestController {
 
     @PostMapping("/register")
     @ResponseBody
-    public ResponseEntity<?> createUser(@Valid @RequestBody RegisterRequest registerRequest, BindingResult bindingResult) {
+    public ResponseEntity<?> createUser(@Valid @RequestBody RegisterRequestDTO registerRequest, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field"
@@ -121,7 +121,7 @@ public class UserRestController {
     // login seller, di authenticatenya di frontend.
     @PostMapping("/v2/login")
     @ResponseBody
-    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest authRequest) {
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDTO authRequest) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
@@ -139,7 +139,7 @@ public class UserRestController {
                         .collect(Collectors.toList());
                 String jwt = jwtUtils.generateToken(authRequest.getUsername(), seller.getId(), roles);
         
-                JwtResponse jwtResponse = new JwtResponse(jwt, seller.getId(), userDetails.getUsername(), seller.getEmail(), roles);
+                JwtResponseDTO jwtResponse = new JwtResponseDTO(jwt, seller.getId(), userDetails.getUsername(), seller.getEmail(), roles);
                 
                 return new ResponseEntity<>(jwtResponse, HttpStatus.CREATED);
             } else {
@@ -153,7 +153,7 @@ public class UserRestController {
 
     @PostMapping("/generate-new-token")
     @ResponseBody
-    public ResponseEntity<?> generateNewJwt(@Valid @RequestBody LoginRequest authRequest) {
+    public ResponseEntity<?> generateNewJwt(@Valid @RequestBody LoginRequestDTO authRequest) {
         UserModel user = usersService.getUserByUsername(authRequest.getUsername());
         if (user == null) {
             return ResponseEntity.badRequest().body("If you're a customer, you can login with our mobile app");
@@ -162,7 +162,7 @@ public class UserRestController {
         roles.add(user.getRole());
         String jwt = jwtUtils.generateToken(authRequest.getUsername(), user.getId(), roles);
     
-        JwtResponse jwtResponse = new JwtResponse(jwt, user.getId(), user.getUsername(), user.getEmail(), roles);
+        JwtResponseDTO jwtResponse = new JwtResponseDTO(jwt, user.getId(), user.getUsername(), user.getEmail(), roles);
         
         return new ResponseEntity<>(jwtResponse, HttpStatus.CREATED);
     }
@@ -170,7 +170,7 @@ public class UserRestController {
     // login customer
     @PostMapping("/v1/login")
     @ResponseBody
-    public ResponseEntity<?> authenticateCustomer(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> authenticateCustomer(@Valid @RequestBody LoginRequestDTO loginRequest) {
 
         try {
             Authentication authentication = authenticationManager.authenticate(
@@ -189,7 +189,7 @@ public class UserRestController {
                         .collect(Collectors.toList());
                 String jwt = jwtUtils.generateToken(loginRequest.getUsername(), customer.getId(), roles);
         
-                JwtResponse jwtResponse = new JwtResponse(jwt, customer.getId(), userDetails.getUsername(), customer.getEmail(), roles);
+                JwtResponseDTO jwtResponse = new JwtResponseDTO(jwt, customer.getId(), userDetails.getUsername(), customer.getEmail(), roles);
                 
                 return new ResponseEntity<>(jwtResponse, HttpStatus.CREATED);
             } else {
@@ -240,7 +240,7 @@ public class UserRestController {
     // }
 
     @PutMapping("/self-update-balance")
-    public ResponseEntity<?> selfUpdateBalance(@Valid @RequestBody UpdateBalanceUser updateBalanceUser){
+    public ResponseEntity<?> selfUpdateBalance(@Valid @RequestBody UpdateBalanceUserDTO updateBalanceUser){
 
         try {
             usersService.updateBalance(updateBalanceUser.getId(), updateBalanceUser.getBalance());

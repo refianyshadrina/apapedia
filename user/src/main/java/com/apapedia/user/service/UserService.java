@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.apapedia.user.model.UserModel;
-import com.apapedia.user.payload.UpdateUserRequestDTO;
+import com.apapedia.user.payload.user.UpdateUserRequestDTO;
 
 public interface UserService {
     boolean existsByUsername(String username);

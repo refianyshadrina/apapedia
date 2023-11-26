@@ -9,4 +9,5 @@ import lombok.NoArgsConstructor;
 @Data
 public class CreateUserDummyRequestDTO {
     private String nama;
+    private Long balance;
 }

@@ -1,6 +1,5 @@
 package com.apapedia.user.config;
 
-import com.apapedia.user.config.jwt.AuthEntryPointJwt;
 import com.apapedia.user.config.jwt.AuthTokenFilter;
 import com.apapedia.user.config.userdetails.UserDetailsServiceImpl;
 

@@ -22,5 +22,18 @@ public class OrderApplication {
 
 	}
 
+	@Bean
+	@Transactional
+	CommandLineRunner run(SellerService sellerService) {
+		return args -> {
+			Faker faker = new Faker(new Locale("in-ID"));
+
+			for(int j=0;j<10;j++){
+				SellerDummy seller = new SellerDummy();
+				seller.setNama(faker.name().firstName());
+				sellerService.createSellerDummy(seller);
+			}
+		};
+	}
 
 }
