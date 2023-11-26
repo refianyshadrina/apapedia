@@ -32,5 +32,26 @@ public interface CatalogService {
 
 
 
+    List<Catalog> getCatalogListByCatalogName(String productName);
+
+    List<Catalog> getCatalogByPrice(int minPrice, int maxPrice);
+
+    void hardDeleteCatalog(UUID id);
+
+    void deleteCatalog(UUID id);
+
+    void deleteCatalog(UUID id);
+
+    void hardDeleteCatalog(UUID id);
+
+    List<Catalog> getSortedCatalogList(String sortBy, String order);
+
+    List<Catalog> sortByProductNameAsc();
+
+    List<Catalog> sortByProductNameDesc();
+
+    List<Catalog> sortByPriceAsc();
+
+    List<Catalog> sortByPriceDesc();
 
 }
