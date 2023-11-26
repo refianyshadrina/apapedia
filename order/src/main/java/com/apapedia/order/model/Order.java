@@ -6,8 +6,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,7 +30,7 @@ public class Order {
     private Date updatedAt;
 
     @Column(name = "status")
-    private Integer status;
+    private Integer status = 0;
 
     @Column(name = "total_price")
     private Integer totalPrice;
@@ -38,4 +42,8 @@ public class Order {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private UserDummy userId;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "orders", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<OrderItem> listOrderItem;
 }

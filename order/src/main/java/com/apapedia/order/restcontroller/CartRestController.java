@@ -63,7 +63,6 @@ public class CartRestController {
 
     @PutMapping("/cart-item")
     public CartItem restUpdateQuantityCartItem(@Valid @RequestBody UpdateCartItemRequestDTO cartItemDTO,
-
                                                BindingResult bindingResult){
         if(bindingResult.hasFieldErrors()) {
             throw new ResponseStatusException(
