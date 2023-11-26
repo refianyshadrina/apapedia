@@ -184,45 +184,5 @@ public class FrontendController {
         }
     }
 
-    @GetMapping("/withdraw")
-    private String withdrawBalance(Model model, @CookieValue(value = "jwtToken", defaultValue = "") String jwtToken, HttpServletRequest request) {
-        if (!frontEndService.validateCookieJwt(request, jwtToken)) {
-            logger.info("not logged in");
-            return "redirect:/login";
-        } else {
-            UUID id = jwtService.getIdFromJwtToken(jwtToken);
-
-            var updateRequest = new UpdateBalanceUser();
-            updateRequest.setId(id);
-            updateRequest.setBalance(0);
-
-            model.addAttribute("updateRequest", updateRequest);
-            return "update-balance-form";
-        }
-    }
-
-    @PostMapping("/withdraw")
-    private String withdrawBalanceSuccess(Model model, @ModelAttribute UpdateBalanceUser updateRequest, @CookieValue(value = "jwtToken", defaultValue = "") String jwtToken, HttpServletResponse response, RedirectAttributes redirectAttrs, HttpServletRequest request) {
-        if (!frontEndService.validateCookieJwt(request, jwtToken)) {
-            logger.info("not logged in");
-            return "redirect:/login";
-        } else {
-
-            try {
-
-                UserDTO user = userRestService.updateBalance(updateRequest);
-
-                redirectAttrs.addFlashAttribute("seller", user);
-                return "redirect:/sellerprofile";
-            
-            } catch (RuntimeException e) {
-                
-                redirectAttrs.addFlashAttribute("error", e.getMessage());
-                return "redirect:/withdraw";
-
-            } 
-        }
-    }
-
 
 }
