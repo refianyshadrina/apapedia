@@ -24,7 +24,7 @@ public class Catalog {
     private UUID id = UUID.randomUUID();
 
     @Column(name = "seller_id", nullable = true)
-    private UUID sellerId = UUID.randomUUID();
+    private UUID sellerId;
 
     @NotNull
     @Column(name = "price", nullable = false)
@@ -50,5 +50,8 @@ public class Catalog {
     @Lob
     @Column(name = "image", nullable = true)
     private byte[] image;
+
+    @Column(name = "is_deleted", nullable = false)
+    private boolean isDeleted = false;
 
 }

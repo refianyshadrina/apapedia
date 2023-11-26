@@ -85,6 +85,21 @@ public class CatalogRestController {
                                               @RequestParam(value = "min", required = false) int minPrice){
         return catalogService.getCatalogByPrice(minPrice, maxPrice); }
 
+    @DeleteMapping("/catalog/{id}")
+    public ResponseEntity<String> deleteCatalogById(@PathVariable("catalogId") UUID id) {
+        try {
+            catalogService.deleteCatalog(id);
+            return new ResponseEntity<>("Delete Successful", HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>("Catalog to be deleted found", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/catalog/top")
+    public List<Catalog> retrieveCatalogBySellerId(@RequestParam(value = "sellerId") UUID sellerId){
+        return catalogService.getAllCatalogsBySellerId(sellerId);
+    }
+
     @GetMapping("/catalog")
     public List<Catalog> getSortedCatalogList(
             @RequestParam(name = "sortBy", defaultValue = "name") String sortBy,
@@ -111,8 +126,6 @@ public class CatalogRestController {
     public List<Catalog> sortByPriceDesc() {
         return catalogService.sortByPriceDesc();
     }
-
-
 
 
 }
