@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.slf4j.LoggerFactory;
 import java.util.UUID;
@@ -47,9 +48,10 @@ public class FrontEndController {
     @Autowired
     JwtService jwtService;
 
-    @PostMapping("/logout")
+    @RequestMapping("/logout")
     public String logout(HttpServletResponse response) {
-        return "redirect:/";
+        frontEndService.setCookie(response, null);
+        return "redirect:/login";
     }
 
     @GetMapping("/signup")

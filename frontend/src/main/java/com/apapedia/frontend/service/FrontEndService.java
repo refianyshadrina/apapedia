@@ -21,9 +21,13 @@ public class FrontEndService {
 
         for (String path : paths) {
             Cookie cookie = new Cookie("jwtToken", jwtString);
-            cookie.setMaxAge((int) (EXPIRATION_TIME / 1000));
             cookie.setHttpOnly(true);
             cookie.setPath(path);
+            if (jwtString == null) {
+                cookie.setMaxAge(0);
+            } else {
+                cookie.setMaxAge((int) (EXPIRATION_TIME / 1000));
+            }
             response.addCookie(cookie);
         }
     }
