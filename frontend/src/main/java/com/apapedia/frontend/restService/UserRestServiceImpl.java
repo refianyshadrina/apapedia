@@ -50,10 +50,11 @@ public class UserRestServiceImpl implements UserRestService{
     }
 
     @Override
-    public void deleteUser(UUID idUser) {
+    public void deleteUser(UUID idUser, String jwtToken) {
         this.webClient
             .delete()
             .uri("api/user/delete/{id}", idUser)
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
             .retrieve()
             .bodyToMono(Void.class)
             .block();
@@ -107,11 +108,12 @@ public class UserRestServiceImpl implements UserRestService{
     }
 
     @Override
-    public JwtResponse update(@Valid UpdateUserRequest updateUserRequestDTO) {
+    public JwtResponse update(@Valid UpdateUserRequest updateUserRequestDTO, String jwtToken) {
 
         UserDTO response = this.webClient
             .put()
             .uri("/api/user/update")
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValue(updateUserRequestDTO)
             .retrieve()
@@ -140,10 +142,11 @@ public class UserRestServiceImpl implements UserRestService{
     }
 
     @Override
-    public UserDTO updateBalance(UpdateBalanceUser updateRequest) {
+    public UserDTO updateBalance(UpdateBalanceUser updateRequest, String jwtToken) {
         UserDTO response = this.webClient
             .put()
             .uri("/api/user/self-update-balance")
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValue(updateRequest)
             .retrieve()

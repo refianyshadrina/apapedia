@@ -67,25 +67,35 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        // http.csrf(csrf -> csrf.disable())
+        //         // .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
+        //         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        //         .authorizeHttpRequests(auth ->
+        //                 auth.requestMatchers("/", "/signup", "/login", "/api/register", "/api/login").permitAll()
+        //                         .requestMatchers(HttpMethod.POST, "/logout").permitAll()
+        //                         .requestMatchers("/api/test/**").permitAll()
+        //                         .requestMatchers(new AntPathRequestMatcher("/css/**")).permitAll()
+        //                         .requestMatchers(new AntPathRequestMatcher("/js/**")).permitAll()
+        //                         .requestMatchers("/seller/**").permitAll()
+        //                         .requestMatchers("/sellerprofile").permitAll()
+        //                         .requestMatchers("/updateprofile").permitAll()
+        //                         .requestMatchers("/withdraw").permitAll()
+        //                         .requestMatchers("/customer").permitAll()
+        //                         // .requestMatchers("/seller/**").hasAnyAuthority("seller")
+        //                         // .requestMatchers("/customer").hasAnyAuthority("customer")
+        //                         .requestMatchers("/api/customer/**").permitAll()
+        //                         .requestMatchers("/api/user/**").permitAll()
+        //                         .requestMatchers("/deleteseller").permitAll()
+        //                         .anyRequest().authenticated()
+        //         );
+
         http.csrf(csrf -> csrf.disable())
-                // .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/", "/signup", "/login", "/api/register", "/api/login").permitAll()
+                        auth.requestMatchers("/", "/signup", "/login", "/api/user/register", "/api/user/v2/login", "/api/user/v1/login", "/api/user/generate-new-token").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/logout").permitAll()
-                                .requestMatchers("/api/test/**").permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/css/**")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/js/**")).permitAll()
-                                .requestMatchers("/seller/**").permitAll()
-                                .requestMatchers("/sellerprofile").permitAll()
-                                .requestMatchers("/updateprofile").permitAll()
-                                .requestMatchers("/withdraw").permitAll()
-                                .requestMatchers("/customer").permitAll()
-                                // .requestMatchers("/seller/**").hasAnyAuthority("seller")
-                                // .requestMatchers("/customer").hasAnyAuthority("customer")
-                                .requestMatchers("/api/customer/**").permitAll()
-                                .requestMatchers("/api/user/**").permitAll()
-                                .requestMatchers("/deleteseller").permitAll()
                                 .anyRequest().authenticated()
                 );
 

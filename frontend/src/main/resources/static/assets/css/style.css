@@ -1,0 +1,119 @@
+.new_card {
+    border: none;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #fff;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  }
+  
+  .new_card:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background-color: #eeca95;
+    transform: scaleY(1);
+    transition: all 0.5s;
+    transform-origin: bottom;
+  }
+  
+  .new_card:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background-color: #ffc451;
+    transform: scaleY(0);
+    transition: all 0.5s;
+    transform-origin: bottom
+  }
+  
+  .new_card:hover::after {
+    transform: scaleY(1)
+  }
+  
+  .new_card:hover h4{
+    transition: all 0.5s;
+  }
+  
+  .new_card:hover h4{
+    color: #ffc451;
+  }
+  
+  .form-control:focus {
+    box-shadow: none;
+    border-color: #ffc451;
+    border-radius: 4px;
+  }
+  
+  .deactivate button:nth-child(1) {
+    border: 1px solid #556270 !important;
+    color: #556270;
+    height: 40px
+  }
+  
+  .deactivate button:nth-child(1):hover {
+    border: 1px solid #556270 !important;
+    color: #fff;
+    height: 40px;
+    background-color: #556270;
+  }
+  
+  .buttons button:nth-child(1) {
+    border: 1px solid #ffc451 !important;
+    color: #ffc451;
+    height: 40px;
+  }
+  
+  .buttons button:nth-child(1):hover {
+    border: 1px solid #ffc451 !important;
+    color: #fff;
+    height: 40px;
+    background-color: #ffc451;
+  }
+  
+  .content-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    min-width: 400px;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  .content-table thead tr {
+    background-color: #ffc451;
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+  }
+  
+  .content-table th,
+  .content-table td {
+    padding: 12px 15px;
+  }
+  
+  .content-table .action th {
+    text-align: center;
+    border: 3px solid green;
+  }
+  
+  .content-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+    transition: all 0.5s;
+  }
+  
+  .content-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+  }
+  
+  .content-table tbody tr:last-of-type {
+    border-bottom: 2px solid #ffc451;
+  }

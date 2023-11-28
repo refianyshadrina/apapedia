@@ -36,23 +36,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         System.out.println("masuk load");
         Seller seller = sellerDb.findByUsername(username);
         Customer customer = customerDb.findByUsername(username);
-        System.out.println("nyampe kesini?");
-        if (seller == null && customer == null) {
-            System.out.println("masuk username not found?");
-            throw new UsernameNotFoundException("Username not found!");
-        } else if (customer != null ) {
+
+        if (customer != null && seller == null) {
             Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
             grantedAuthorities.add(new SimpleGrantedAuthority(customer.getRole()));
             return new User(customer.getUsername(), customer.getPassword(), grantedAuthorities);
-        } else {
-            System.out.println("masuk ke else?");
-            System.out.println("customer null? " + (customer==null));
-            System.out.println("seller null? " + (seller==null));
+        } else if (seller != null && customer == null) {
             Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-            System.out.println("sini pi");
             grantedAuthorities.add(new SimpleGrantedAuthority(seller.getRole()));
-            System.out.println("sini piyy");
             return new User(seller.getUsername(), seller.getPassword(), grantedAuthorities);
+        } else {
+            throw new UsernameNotFoundException("Username not found!");
         }
 
         

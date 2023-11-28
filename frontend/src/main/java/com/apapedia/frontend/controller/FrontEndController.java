@@ -112,7 +112,7 @@ public class FrontEndController {
 
             UserDTO seller = userRestService.getUser(id, jwtToken);
 
-            userRestService.deleteUser(id);
+            userRestService.deleteUser(id, jwtToken);
 
             return "redirect:/logout";
         }
@@ -168,7 +168,7 @@ public class FrontEndController {
         } else {
 
             try {
-                JwtResponse jwt = userRestService.update(updateRequest);
+                JwtResponse jwt = userRestService.update(updateRequest, jwtToken);
 
                 frontEndService.setCookie(response, jwt.getToken());
 
@@ -212,7 +212,7 @@ public class FrontEndController {
 
             try {
 
-                UserDTO user = userRestService.updateBalance(updateRequest);
+                UserDTO user = userRestService.updateBalance(updateRequest, jwtToken);
 
                 redirectAttrs.addFlashAttribute("seller", user);
                 return "redirect:/sellerprofile";
