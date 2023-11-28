@@ -55,9 +55,9 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     public String encrypt(String password) {
-    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-      String hashedPassword = passwordEncoder.encode(password);
-      return hashedPassword;
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String hashedPassword = passwordEncoder.encode(password);
+        return hashedPassword;
     }
 
     // @Override

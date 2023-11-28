@@ -18,9 +18,9 @@ public interface UserRestService {
 
     UserDTO signUp(@Valid UserDTO registerRequest);
 
-    JwtResponse update(@Valid UpdateUserRequest updateUserRequestDTO);
+    JwtResponse update(@Valid UpdateUserRequest updateUserRequestDTO, String jwtToken);
 
-    void deleteUser(UUID idUser);
+    void deleteUser(UUID idUser, String jwtToken);
 
-    UserDTO updateBalance(UpdateBalanceUser updateRequest);
+    UserDTO updateBalance(UpdateBalanceUser updateRequest, String jwtToken);
 }
