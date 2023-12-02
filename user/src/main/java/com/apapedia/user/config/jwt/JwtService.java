@@ -28,7 +28,7 @@ public class JwtService {
     // @Value("${apapedia.app.jwtSecret}")
     private static final String jwtSecret = "5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437";
 
-    @Value("${apapedia.app.jwtExpirationMs}")
+    // @Value("${apapedia.app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
     public String extractUsername(String token) {
