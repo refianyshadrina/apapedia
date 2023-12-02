@@ -1,4 +1,4 @@
-package com.apapedia.exception;
+package com.apapedia.user.exception;
 
 public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException(String message) {

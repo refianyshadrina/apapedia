@@ -9,9 +9,9 @@ import com.apapedia.user.payload.user.LoginRequestDTO;
 import com.apapedia.user.payload.user.RegisterRequestDTO;
 import com.apapedia.user.payload.user.UpdateBalanceUserDTO;
 import com.apapedia.user.payload.user.UpdateUserRequestDTO;
-import com.apapedia.exception.InsufficientBalanceException;
-import com.apapedia.exception.UserNotFoundException;
 import com.apapedia.user.config.jwt.JwtService;
+import com.apapedia.user.exception.InsufficientBalanceException;
+import com.apapedia.user.exception.UserNotFoundException;
 import com.apapedia.user.service.CustomerService;
 import com.apapedia.user.service.SellerService;
 import com.apapedia.user.service.UserService;
@@ -76,7 +76,7 @@ public class UserRestController {
             }
             return ResponseEntity.ok(user);
         } else {
-            return ResponseEntity.badRequest().body("Cant find customer with that id");
+            return ResponseEntity.badRequest().body("Cant find user with that id");
         }
     }
 
@@ -167,6 +167,22 @@ public class UserRestController {
         return new ResponseEntity<>(jwtResponse, HttpStatus.CREATED);
     }
 
+    @GetMapping("/get-user-sso/{username}")
+    @ResponseBody
+    public ResponseEntity<?> getUserSSO(@PathVariable("username") String username){
+        UserModel user = usersService.getUserByUsername(username);
+        if (user != null) {
+            if (user instanceof Seller) {
+                user = (Seller) user;
+            } else {
+                user = (Customer) user;
+            }
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.badRequest().body("Cant find user with that username");
+        }
+    }
+
     // login customer
     @PostMapping("/v1/login")
     @ResponseBody
@@ -187,6 +203,7 @@ public class UserRestController {
                 List<String> roles = userDetails.getAuthorities().stream()
                         .map(item -> item.getAuthority())
                         .collect(Collectors.toList());
+                // String jwt = jwtUtils.generateToken(loginRequest.getUsername(), customer.getId(), roles);
                 String jwt = jwtUtils.generateToken(loginRequest.getUsername(), customer.getId(), roles);
         
                 JwtResponseDTO jwtResponse = new JwtResponseDTO(jwt, customer.getId(), userDetails.getUsername(), customer.getEmail(), roles);

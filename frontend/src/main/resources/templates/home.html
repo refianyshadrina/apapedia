@@ -22,7 +22,7 @@
 								<div class="hero-btns">
 									<div th:if="${user == null}">
 										<a th:href="@{/signup}" class="boxed-btn">Sign Up as Seller</a>
-										<a th:href="@{/login}" class="bordered-btn">Log in</a>
+										<a th:href="@{/login-sso}" class="bordered-btn">Log in</a>
 									</div>
 									<div th:unless="${user == null}">
 										<a th:href="@{/}" class="boxed-btn">My Catalog</a>
@@ -46,7 +46,7 @@
 								<div class="hero-btns">
 									<div th:if="${user == null}">
 										<a th:href="@{/signup}" class="boxed-btn">Sign Up as Seller</a>
-										<a th:href="@{/login}" class="bordered-btn">Log in</a>
+										<a th:href="@{/login-sso}" class="bordered-btn">Log in</a>
 									</div>
 									<div th:unless="${user == null}">
 										<a th:href="@{/}" class="boxed-btn">My Catalog</a>
@@ -70,7 +70,7 @@
 								<div class="hero-btns">
 									<div th:if="${user == null}">
 										<a th:href="@{/signup}" class="boxed-btn">Sign Up as Seller</a>
-										<a th:href="@{/login}" class="bordered-btn">Log in</a>
+										<a th:href="@{/login-sso}" class="bordered-btn">Log in</a>
 									</div>
 									<div th:unless="${user == null}">
 										<a th:href="@{/}" class="boxed-btn">My Catalog</a>

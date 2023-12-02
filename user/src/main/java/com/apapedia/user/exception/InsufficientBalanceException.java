@@ -1,4 +1,4 @@
-package com.apapedia.exception;
+package com.apapedia.user.exception;
 
 public class InsufficientBalanceException extends RuntimeException {
     public InsufficientBalanceException(String message) {
