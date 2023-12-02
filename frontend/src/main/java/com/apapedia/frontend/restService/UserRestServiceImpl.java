@@ -50,6 +50,26 @@ public class UserRestServiceImpl implements UserRestService{
     }
 
     @Override
+    public UserDTO getUserByUsername(String username) {
+        Mono<UserDTO> response = this.webClient
+                .get()
+                .uri("/api/user/get-user-sso/{username}", username)
+                .retrieve()
+                .onStatus(
+                    status -> status.is4xxClientError(),
+                    clientResponse -> clientResponse.bodyToMono(String.class)
+                    .flatMap(errorMessage -> Mono.error(new RuntimeException(errorMessage)))
+                )
+                .onStatus(
+                        status -> status.is5xxServerError(),
+                        clientResponse -> Mono.error(new RuntimeException("Internal Server Error: " + clientResponse.rawStatusCode()))
+                )
+                .bodyToMono(UserDTO.class);
+
+        return response.block();
+    }
+
+    @Override
     public void deleteUser(UUID idUser, String jwtToken) {
         this.webClient
             .delete()
@@ -86,7 +106,7 @@ public class UserRestServiceImpl implements UserRestService{
 
 
     @Override
-    public UserDTO signUp(@Valid UserDTO registerRequest) {
+    public UserDTO createUser(@Valid UserDTO registerRequest) {
 
         Mono<UserDTO> response = this.webClient
             .post()
@@ -163,6 +183,35 @@ public class UserRestServiceImpl implements UserRestService{
 
         return response;
 
+    }
+
+    @Override
+    public String getTokenForSSO(String username, String name) {
+        UserDTO user = null;
+
+        try {
+            user = getUserByUsername(username);
+
+        } catch (RuntimeException e) {
+            user = new UserDTO();
+            user.setAddress("");
+            user.setEmail(username + "@ui.ac.id");
+            user.setNama(name);
+            user.setUsername(username);
+            user.setPassword("apapedia");
+            user.setCategory((long) 1);
+            user = createUser(user);
+
+        }
+
+        
+        LoginRequest authRequest = new LoginRequest(user.getUsername(), "apapedia");
+
+        JwtResponse jwt = login(authRequest);
+
+        String jwtString = jwt.getToken();
+
+        return jwtString;
     }
 
     

@@ -1,4 +1,4 @@
-package com.apapedia.user.config.xml;
+package com.apapedia.frontend.security.xml;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;

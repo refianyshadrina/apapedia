@@ -92,7 +92,7 @@ public class WebSecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/", "/signup", "/login", "/api/user/register", "/api/user/v2/login", "/api/user/v1/login", "/api/user/generate-new-token").permitAll()
+                        auth.requestMatchers("/", "/signup", "/login", "/api/user/register", "/api/user/v2/login", "/api/user/v1/login", "/api/user/generate-new-token", "/api/user/get-user-sso/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/logout").permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/css/**")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/js/**")).permitAll()

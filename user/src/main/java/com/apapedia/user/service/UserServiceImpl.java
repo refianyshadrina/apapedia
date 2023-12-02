@@ -9,8 +9,8 @@ import java.util.List;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-import com.apapedia.exception.InsufficientBalanceException;
-import com.apapedia.exception.UserNotFoundException;
+import com.apapedia.user.exception.InsufficientBalanceException;
+import com.apapedia.user.exception.UserNotFoundException;
 import com.apapedia.user.model.Customer;
 import com.apapedia.user.model.Seller;
 import com.apapedia.user.model.UserModel;

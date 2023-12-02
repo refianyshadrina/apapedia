@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import com.apapedia.user.config.userdetails.UserDetailsImpl;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 
 import java.security.Key;
@@ -25,12 +24,11 @@ import java.util.function.Function;
 public class JwtService {
     private static final Logger logger = LoggerFactory.getLogger(JwtService.class);
 
-    public static final String SECRET = "5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437";
 
     // @Value("${apapedia.app.jwtSecret}")
-    private String jwtSecret;
+    private static final String jwtSecret = "5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437";
 
-    // @Value("${apapedia.app.jwtExpirationMs}")
+    @Value("${apapedia.app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
     public String extractUsername(String token) {
@@ -61,7 +59,7 @@ public class JwtService {
 
     public boolean validateJwtToken(String authToken) {
         try{
-            Jwts.parser().setSigningKey(SECRET).parseClaimsJws(authToken);
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
             return true;
         } catch (SignatureException e) {
             logger.error("Invalid JWT Signature: {}", e.getMessage());
@@ -96,7 +94,7 @@ public class JwtService {
                 .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-                .signWith(SignatureAlgorithm.HS512, SECRET)
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
 
@@ -110,12 +108,12 @@ public class JwtService {
     }
 
     private Key getSignKey() {
-        byte[] keyBytes= Decoders.BASE64.decode(SECRET);
+        byte[] keyBytes= Decoders.BASE64.decode(jwtSecret);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
     public String getUserNameFromJwtToken(String token) {
-        return Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
 
     public UUID getIdFromJwtToken(String token) {

@@ -16,11 +16,15 @@ public interface UserRestService {
 
     JwtResponse login(@Valid LoginRequest authRequest);
 
-    UserDTO signUp(@Valid UserDTO registerRequest);
+    UserDTO createUser(@Valid UserDTO registerRequest);
 
     JwtResponse update(@Valid UpdateUserRequest updateUserRequestDTO, String jwtToken);
 
     void deleteUser(UUID idUser, String jwtToken);
 
     UserDTO updateBalance(UpdateBalanceUser updateRequest, String jwtToken);
+
+    UserDTO getUserByUsername(String username);
+
+    String getTokenForSSO(String username, String name);
 }
