@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService{
         } else if (seller != null && customer == null) {
             return seller;
         } else if (customer != null && seller == null) {
-            return seller;
+            return customer;
         } 
         return null;
 
