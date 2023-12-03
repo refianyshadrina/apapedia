@@ -123,30 +123,23 @@ public class UserRestController {
     @ResponseBody
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDTO authRequest) {
         try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            if (authentication.isAuthenticated()) {
-                Seller seller = sellerService.getSellerByUsername(authRequest.getUsername());
-                if (seller == null) {
-                    return ResponseEntity.badRequest().body("If you're a customer, you can login with our mobile app");
-                }
-                UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-                List<String> roles = userDetails.getAuthorities().stream()
-                        .map(item -> item.getAuthority())
-                        .collect(Collectors.toList());
-                String jwt = jwtUtils.generateToken(authRequest.getUsername(), seller.getId(), roles);
-        
-                JwtResponseDTO jwtResponse = new JwtResponseDTO(jwt, seller.getId(), userDetails.getUsername(), seller.getEmail(), roles);
-                
-                return new ResponseEntity<>(jwtResponse, HttpStatus.CREATED);
-            } else {
-                return ResponseEntity.badRequest().body("could not find username");
+            Seller seller = sellerService.getSellerByUsername(authRequest.getUsername());
+            if (seller == null) {
+                return ResponseEntity.badRequest().body("If you're a customer, you can login with our mobile app");
             }
-        } catch (UsernameNotFoundException | BadCredentialsException | IOException e) {
-            return ResponseEntity.badRequest().body("Username or password invalid");
+
+            List<String> roles = new ArrayList<>();
+            roles.add(seller.getRole());
+
+            String jwt = jwtUtils.generateToken(authRequest.getUsername(), seller.getId(), roles);
+    
+            JwtResponseDTO jwtResponse = new JwtResponseDTO(jwt, seller.getId(), seller.getUsername(), seller.getEmail(), roles);
+            
+            return new ResponseEntity<>(jwtResponse, HttpStatus.CREATED);
+            
+        } catch (UsernameNotFoundException | UserNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
             
     }

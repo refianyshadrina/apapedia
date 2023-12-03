@@ -26,7 +26,6 @@ public class WebSecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/login")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/logout")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/login-sso")).permitAll()
                         .anyRequest().authenticated()
                 ) 
                 .formLogin((form) -> form
@@ -36,7 +35,7 @@ public class WebSecurityConfig {
                 );
                 // .logout((logout) -> logout
                 //         .logoutRequestMatcher(new AntPathRequestMatcher("/logout-sso"))
-                //         .logoutSuccessUrl("/login-sso")
+                //         .logoutSuccessUrl("/")
                 // );
         return http.build();
 

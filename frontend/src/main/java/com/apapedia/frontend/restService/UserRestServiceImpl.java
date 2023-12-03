@@ -192,26 +192,17 @@ public class UserRestServiceImpl implements UserRestService{
         try {
             user = getUserByUsername(username);
 
+            LoginRequest authRequest = new LoginRequest(user.getUsername(), "apapedia");
+
+            JwtResponse jwt = login(authRequest);
+
+            String jwtString = jwt.getToken();
+
+            return jwtString;
+
         } catch (RuntimeException e) {
-            user = new UserDTO();
-            user.setAddress("");
-            user.setEmail(username + "@ui.ac.id");
-            user.setNama(name);
-            user.setUsername(username);
-            user.setPassword("apapedia");
-            user.setCategory((long) 1);
-            user = createUser(user);
-
+            throw e;
         }
-
-        
-        LoginRequest authRequest = new LoginRequest(user.getUsername(), "apapedia");
-
-        JwtResponse jwt = login(authRequest);
-
-        String jwtString = jwt.getToken();
-
-        return jwtString;
     }
 
     
