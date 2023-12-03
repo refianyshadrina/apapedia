@@ -125,6 +125,7 @@ public class UserServiceImpl implements UserService{
             if (user instanceof Seller) {
                 sellerDb.save((Seller) user);
             } else {
+                user.setPassword(updateUserRequestDTO.getPassword());
                 customerDb.save((Customer) user);
             }
         }

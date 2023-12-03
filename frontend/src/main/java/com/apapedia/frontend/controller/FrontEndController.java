@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.codec.xml.Jaxb2XmlDecoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -27,7 +29,8 @@ import com.apapedia.frontend.security.xml.ServiceResponse;
 import com.apapedia.frontend.service.FrontEndService;
 import com.apapedia.frontend.service.JwtService;
 import com.apapedia.frontend.setting.Setting;
-
+import java.util.List;
+import java.util.ArrayList;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -284,13 +287,23 @@ public class FrontEndController {
     }
 
     @PostMapping("/withdraw")
-    private String withdrawBalanceSuccess(Model model, @ModelAttribute UpdateBalanceUser updateRequest, @CookieValue(value = "jwtToken", defaultValue = "") String jwtToken, HttpServletResponse response, RedirectAttributes redirectAttrs, HttpServletRequest request) {
+    private String withdrawBalanceSuccess(Model model, @ModelAttribute UpdateBalanceUser updateRequest, BindingResult bindingResult, @CookieValue(value = "jwtToken", defaultValue = "") String jwtToken, HttpServletResponse response, RedirectAttributes redirectAttrs, HttpServletRequest request) {
         if (!frontEndService.validateCookieJwt(request, jwtToken)) {
             logger.info("not logged in");
             return "redirect:/login-sso";
         } else {
 
             try {
+
+                if (updateRequest.getBalance() < 0 | bindingResult.hasErrors()) {
+                    List<ObjectError> errors = bindingResult.getAllErrors();
+                    List<String> errorMessage = new ArrayList<>();
+                    for (ObjectError error : errors) {
+                        errorMessage.add(error.getDefaultMessage());
+                    }
+                    redirectAttrs.addFlashAttribute("error", "Please input a valid number");
+                    return "redirect:/withdraw";
+                }
 
                 UserDTO user = userRestService.updateBalance(updateRequest, jwtToken);
 
