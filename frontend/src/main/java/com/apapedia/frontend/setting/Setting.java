@@ -7,6 +7,8 @@ public class Setting {
 
     final public static String CLIENT_LOGOUT = CLIENT_BASE_URL + "/logout";
 
+    final public static String CLIENT_LOGIN_FAILED = CLIENT_BASE_URL + "/signup-v2";
+
 
     final public static String SERVER_BASE_URL = "https://sso.ui.ac.id/cas2";
 

@@ -24,15 +24,12 @@
 						  <h4 class="text-center">Register</h4>
 						</div>
 						<form th:action="@{/signup}" th:object="${registerRequest}" method="POST">
-						  <div class="row mt-4 d-flex justify-content-center">
-							<div class="col-md-5">
+						  <div class="row mt-3 d-flex justify-content-center">
+							<div class="col-md-10">
 								<label class="labels">Name</label>
 							  <input required class="form-control" type="text" placeholder="Name" th:field="*{nama}" />
 							</div>
-							<div class="col-md-5">
-							  <label class="labels">Email</label>
-							  <input required class="form-control" type="email" placeholder="youremail@example.com" th:field="*{email}" />
-							</div>
+							
 						  </div>
 		
 						  <div class="row mt-3 d-flex justify-content-center">
@@ -41,9 +38,9 @@
 								<input required class="form-control" type="text" placeholder="Username" th:field="*{username}" />
 							</div>
 							<div class="col-md-5">
-								<label class="labels">Password</label>
-								<input required class="form-control" type="text" placeholder="Password" th:field="*{password}" />
-							</div>
+								<label class="labels">Email</label>
+								<input required class="form-control" type="email" placeholder="youremail@example.com" th:field="*{email}" />
+							  </div>
 						  </div>
 		
 						  <div class="row mt-3 d-flex justify-content-center">

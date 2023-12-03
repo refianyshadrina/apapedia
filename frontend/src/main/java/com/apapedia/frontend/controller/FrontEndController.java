@@ -74,6 +74,13 @@ public class FrontEndController {
         return "registration";
     }
 
+    @GetMapping("/signup-v2")
+    private String formRegister2(Model model) {
+        model.addAttribute("registerRequest", new UserDTO());
+        model.addAttribute("error", "Username not found. Are you sure you are registered?");
+        return "registration";
+    }
+
     @PostMapping("/signup")
     public String registerUser(@Valid @ModelAttribute UserDTO registerRequest, RedirectAttributes redirectAttrs) {
 
@@ -91,35 +98,42 @@ public class FrontEndController {
     @GetMapping("/validate-ticket")
     public ModelAndView adminLoginSSO(
         @RequestParam(value = "ticket", required = false) String ticket,
-        HttpServletRequest request, HttpServletResponse response
+        HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttrs
     ) {
-        ServiceResponse serviceResponse = this.webClient.get().uri(
-                String.format(
-                        Setting.SERVER_VALIDATE_TICKET,
-                        ticket,
-                        Setting.CLIENT_LOGIN
-                )
-        ).retrieve().bodyToMono(ServiceResponse.class).block();
 
-        Attributes attributes = serviceResponse.getAuthenticationSuccess().getAttributes();
-        String username = serviceResponse.getAuthenticationSuccess().getUser();
-        String name = attributes.getNama(); 
+        try {
 
-        var token = userRestService.getTokenForSSO(username, name);
+            ServiceResponse serviceResponse = this.webClient.get().uri(
+                    String.format(
+                            Setting.SERVER_VALIDATE_TICKET,
+                            ticket,
+                            Setting.CLIENT_LOGIN
+                    )
+            ).retrieve().bodyToMono(ServiceResponse.class).block();
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(username, "apapedia", null);
+            Attributes attributes = serviceResponse.getAuthenticationSuccess().getAttributes();
+            String username = serviceResponse.getAuthenticationSuccess().getUser();
+            String name = attributes.getNama(); 
+            var token = userRestService.getTokenForSSO(username, name);
 
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        securityContext.setAuthentication(authentication);
+            Authentication authentication = new UsernamePasswordAuthenticationToken(username, "apapedia", null);
 
-        // set cookie
-        frontEndService.setCookie(response, token);
+            SecurityContext securityContext = SecurityContextHolder.getContext();
+            securityContext.setAuthentication(authentication);
 
-        HttpSession httpSession = request.getSession(true);
-        httpSession.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
-        httpSession.setAttribute("token", token);
+            // set cookie
+            frontEndService.setCookie(response, token);
 
-        return new ModelAndView("redirect:/");
+            HttpSession httpSession = request.getSession(true);
+            httpSession.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
+            httpSession.setAttribute("token", token);
+
+            return new ModelAndView("redirect:/");
+        } catch (RuntimeException e) {
+            redirectAttrs.addFlashAttribute("error", "Username not found. Are you sure you are registered?");
+            // return new ModelAndView("redirect:/signup");
+            return new ModelAndView("redirect:/logout-sso-v2");
+        }
     }
 
     @GetMapping("/login-sso")
@@ -131,6 +145,12 @@ public class FrontEndController {
     public ModelAndView logoutSSO(Principal principal, HttpServletResponse response) {
         frontEndService.setCookie(response, null);
         return new ModelAndView("redirect:" + Setting.SERVER_LOGOUT + Setting.CLIENT_LOGOUT);
+    }
+
+    @GetMapping("/logout-sso-v2")
+    public ModelAndView logoutSSOFailed(Principal principal, HttpServletResponse response) {
+        frontEndService.setCookie(response, null);
+        return new ModelAndView("redirect:" + Setting.SERVER_LOGOUT + Setting.CLIENT_LOGIN_FAILED);
     }
 
     // @GetMapping("/login")

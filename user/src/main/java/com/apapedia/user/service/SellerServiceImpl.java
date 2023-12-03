@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.apapedia.user.exception.UserNotFoundException;
 import com.apapedia.user.model.Seller;
 import com.apapedia.user.payload.user.RegisterRequestDTO;
 import com.apapedia.user.repository.SellerDb;
@@ -34,7 +35,7 @@ public class SellerServiceImpl implements SellerService {
                 return seller;
             }
         }
-        return null;
+        throw new UserNotFoundException("Username tidak ditemukan");
     }
 
     @Override
@@ -96,7 +97,7 @@ public class SellerServiceImpl implements SellerService {
         Seller user = new Seller();
         user.setNama(registerRequest.getNama());
         user.setUsername(registerRequest.getUsername());
-        user.setPassword(registerRequest.getPassword());
+        user.setPassword("apapedia");
         user.setEmail(registerRequest.getEmail());
         user.setAddress(registerRequest.getAddress());
         user.setBalance((long) 0);
