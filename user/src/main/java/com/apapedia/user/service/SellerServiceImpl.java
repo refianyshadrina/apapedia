@@ -35,7 +35,7 @@ public class SellerServiceImpl implements SellerService {
                 return seller;
             }
         }
-        throw new UserNotFoundException("Username tidak ditemukan");
+        return null;
     }
 
     @Override

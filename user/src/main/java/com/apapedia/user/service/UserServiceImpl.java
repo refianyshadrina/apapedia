@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService{
         } else if (seller != null && customer == null) {
             return seller;
         } else if (customer != null && seller == null) {
-            return seller;
+            return customer;
         } 
         return null;
 
@@ -125,6 +125,7 @@ public class UserServiceImpl implements UserService{
             if (user instanceof Seller) {
                 sellerDb.save((Seller) user);
             } else {
+                user.setPassword(updateUserRequestDTO.getPassword());
                 customerDb.save((Customer) user);
             }
         }
