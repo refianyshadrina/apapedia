@@ -23,6 +23,7 @@ public class WebSecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/validate-ticket")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/logout-sso")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/signup")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/signup-v2")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/login")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/logout")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
