@@ -1,4 +1,5 @@
 
+import 'package:apapedia_mobile/bloc/authentication_state.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class AuthenticationEvent extends Equatable {

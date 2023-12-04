@@ -80,7 +80,7 @@ public class FrontEndController {
     @GetMapping("/signup-v2")
     private String formRegister2(Model model) {
         model.addAttribute("registerRequest", new UserDTO());
-        model.addAttribute("error", "Username not found. Are you sure you are registered?");
+        model.addAttribute("error", "Sorry, we are unable to find that username. Are you sure you are registered?");
         return "registration";
     }
 
@@ -133,7 +133,6 @@ public class FrontEndController {
 
             return new ModelAndView("redirect:/");
         } catch (RuntimeException e) {
-            redirectAttrs.addFlashAttribute("error", "Username not found. Are you sure you are registered?");
             // return new ModelAndView("redirect:/signup");
             return new ModelAndView("redirect:/logout-sso-v2");
         }
