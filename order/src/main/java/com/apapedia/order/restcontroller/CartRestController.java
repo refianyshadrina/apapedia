@@ -6,8 +6,8 @@ import com.apapedia.order.dto.request.CreateCartItemRequestDTO;
 import com.apapedia.order.dto.request.UpdateCartItemRequestDTO;
 import com.apapedia.order.model.Cart;
 import com.apapedia.order.model.CartItem;
-import com.apapedia.order.restservice.CartItemService;
-import com.apapedia.order.restservice.CartService;
+import com.apapedia.order.restservice.CartItemRestService;
+import com.apapedia.order.restservice.CartRestService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,24 +27,24 @@ public class CartRestController {
     private CartMapper cartMapper;
 
     @Autowired
-    private CartService cartService;
+    private CartRestService cartService;
 
     @Autowired
     private CartItemMapper cartItemMapper;
 
     @Autowired
-    private CartItemService cartItemService;
+    private CartItemRestService cartItemService;
     
-    @PostMapping(value = "/cart/create")
+    @PostMapping(value = "/cart/create/user")
     public ResponseEntity<Cart> addCart(@RequestParam("userId") UUID userId){
-        try{
+        // try{
             var cart = cartService.createCart(userId);
             return ResponseEntity.ok(cart);
-        } catch (NoSuchElementException e){
-            throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "User ID " + userId + " not found"
-            );
-        }
+        // } catch (NoSuchElementException e){
+        //     throw new ResponseStatusException(
+        //         HttpStatus.NOT_FOUND, "User ID " + userId + " not found"
+        //     );
+        // }
     }
     
     @PostMapping(value = "/cart-item/create")
@@ -61,7 +61,7 @@ public class CartRestController {
         }
     }
 
-    @PutMapping("/cart-item")
+    @PutMapping("/cart-item/update")
     public CartItem restUpdateQuantityCartItem(@Valid @RequestBody UpdateCartItemRequestDTO cartItemDTO,
                                                BindingResult bindingResult){
         if(bindingResult.hasFieldErrors()) {

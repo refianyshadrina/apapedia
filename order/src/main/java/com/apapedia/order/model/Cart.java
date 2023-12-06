@@ -28,6 +28,10 @@ public class Cart {
     private UserDummy user;
 
     @NotNull
+    @Column(name = "id_user")
+    private UUID userId;
+
+    @NotNull
     @Column(name = "total_price", nullable = false)
     private Integer totalPrice = 0;
 

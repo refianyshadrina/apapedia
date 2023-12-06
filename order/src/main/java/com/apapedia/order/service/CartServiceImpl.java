@@ -24,14 +24,14 @@ public class CartServiceImpl implements CartService {
     
     @Override
     public Cart createCart(UUID userId) {
-        UserDummy user = userDb.findByUserId(userId);
+        // UserDummy user = userDb.findByUserId(userId);
         Cart cart = new Cart();
 
-        cart.setUser(user);
-        user.setCart(cart);
+        // cart.setUser(user);
+        // user.setCart(cart);
 
-        cartDb.save(cart);
-        userDb.save(user);
+        // cartDb.save(cart);
+        // userDb.save(user);
         return cart;
     };
 }

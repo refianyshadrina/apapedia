@@ -10,7 +10,7 @@ import jakarta.transaction.Transactional;
 
 @Service
 @Transactional
-public class SellerServiceImpl implements SellerService {
+public class SellerRestServiceImpl implements SellerRestService {
     @Autowired
     SellerDb sellerDb;
 

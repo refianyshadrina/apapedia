@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Service
 @Transactional
-public class CartItemServiceImpl implements CartItemService {
+public class CartItemRestServiceImpl implements CartItemRestService {
     @Autowired
     CartDb cartDb;
 

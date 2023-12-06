@@ -19,8 +19,8 @@ import com.apapedia.order.model.Cart;
 import com.apapedia.order.model.Order;
 import com.apapedia.order.model.SellerDummy;
 import com.apapedia.order.model.UserDummy;
-import com.apapedia.order.restservice.CartService;
-import com.apapedia.order.restservice.OrderService;
+import com.apapedia.order.restservice.CartRestService;
+import com.apapedia.order.restservice.OrderRestService;
 
 import jakarta.validation.Valid;
 
@@ -35,10 +35,10 @@ public class OrderRestController {
     private OrderMapper orderMapper;
 
     @Autowired
-    private OrderService orderService;
+    private OrderRestService orderService;
 
     @Autowired
-    private CartService cartService;
+    private CartRestService cartService;
 
     @PostMapping("/orders/create")
     public Order addOrder(@Valid @RequestBody CreateOrdersRequestDTO orderDTO) {

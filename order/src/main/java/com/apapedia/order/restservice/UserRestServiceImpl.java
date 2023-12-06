@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
 
 @Service
 @Transactional
-public class UserServiceImpl implements UserService {
+public class UserRestServiceImpl implements UserRestService {
     @Autowired
     UserDb userDb;
 
@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
 
     private final WebClient webClient;
 
-    public UserServiceImpl(WebClient.Builder webClientBuilder) {
+    public UserRestServiceImpl(WebClient.Builder webClientBuilder) {
         this.webClient = webClientBuilder.baseUrl("http://localhost:8080")
                             .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                             .build();

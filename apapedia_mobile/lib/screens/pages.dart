@@ -24,4 +24,4 @@ import 'dart:async';
 import 'dart:convert';
 
 part 'sign_in_page.dart';
-// part 'sign_up_page.dart';
+part 'sign_up_page.dart';

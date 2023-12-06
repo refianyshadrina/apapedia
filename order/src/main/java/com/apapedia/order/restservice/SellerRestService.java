@@ -2,6 +2,6 @@ package com.apapedia.order.restservice;
 
 import com.apapedia.order.model.SellerDummy;
 
-public interface SellerService {
+public interface SellerRestService {
     SellerDummy createSellerDummy(SellerDummy user);
 }

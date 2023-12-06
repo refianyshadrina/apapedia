@@ -48,17 +48,17 @@ public class CartController {
         }
     }
     
-    @PostMapping(value = "/cart-item/create")
-    public ResponseEntity<CartItem> addCartItem(@RequestBody CreateCartItemRequestDTO cartItemDTO){
-        try{
-            var cartId = cartItemDTO.getCartId();
-            var cartItem = cartItemMapper.createCartItemRequestDTOToCartItem(cartItemDTO);
-            cartItemService.createCartItem(cartItem, cartId);
-            return ResponseEntity.ok(cartItem);
-        } catch (NoSuchElementException e){
-            throw new ResponseStatusException(
-                HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field"
-            );
-        }
-    }
+    // @PostMapping(value = "/cart-item/create")
+    // public ResponseEntity<CartItem> addCartItem(@RequestBody CreateCartItemRequestDTO cartItemDTO){
+    //     try{
+    //         var cartId = cartItemDTO.getCartId();
+    //         var cartItem = cartItemMapper.createCartItemRequestDTOToCartItem(cartItemDTO);
+    //         cartItemService.createCartItem(cartItem, cartId);
+    //         return ResponseEntity.ok(cartItem);
+    //     } catch (NoSuchElementException e){
+    //         throw new ResponseStatusException(
+    //             HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field"
+    //         );
+    //     }
+    // }
 }

@@ -14,7 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.apapedia.order.dto.UserDTO;
-import com.apapedia.order.restservice.UserService;
+import com.apapedia.order.restservice.UserRestService;
 
 import jakarta.transaction.Transactional;
 
@@ -22,9 +22,9 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class UserDetailsServiceImpl implements UserDetailsService {
-    @Qualifier("userServiceImpl")
+    @Qualifier("userRestServiceImpl")
     @Autowired
-    private UserService userService;
+    private UserRestService userService;
 
     @Override
     @Transactional

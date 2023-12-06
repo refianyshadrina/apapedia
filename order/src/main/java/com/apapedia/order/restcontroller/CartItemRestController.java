@@ -6,8 +6,8 @@ import com.apapedia.order.dto.request.CreateCartRequestDTO;
 import com.apapedia.order.dto.request.UpdateCartItemRequestDTO;
 import com.apapedia.order.model.Cart;
 import com.apapedia.order.model.CartItem;
-import com.apapedia.order.restservice.CartItemService;
-import com.apapedia.order.restservice.CartService;
+import com.apapedia.order.restservice.CartItemRestService;
+import com.apapedia.order.restservice.CartRestService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,13 +25,13 @@ import java.util.UUID;
 public class CartItemRestController {
 
     @Autowired
-    private CartItemService cartItemService;
+    private CartItemRestService cartItemService;
 
     @Autowired
     private CartItemMapper cartItemMapper;
 
     @Autowired
-    private CartService cartService;
+    private CartRestService cartService;
 
     @PutMapping("/cart-item")
     public CartItem restUpdateQuantityCartItem(@Valid @RequestBody UpdateCartItemRequestDTO cartItemDTO,
@@ -48,25 +48,25 @@ public class CartItemRestController {
         }
     }
 
-    @GetMapping("/cart/view-all/{userId}")
-    private List<CartItem> restGetCartItemByUserId(@PathVariable("userId") UUID userId) {
-        return cartService.retrieveRestAllCartItemByUserId(userId);
-    }
+    // @GetMapping("/cart/view-all/{userId}")
+    // private List<CartItem> restGetCartItemByUserId(@PathVariable("userId") UUID userId) {
+    //     return cartService.retrieveRestAllCartItemByUserId(userId);
+    // }
 
-    @DeleteMapping("/cart/{id}")
-    private ResponseEntity deleteCartItem(@PathVariable("id") UUID id) {
-        try {
-            var cartItem = cartItemService.getRestCartItemById(id);
-            cartItemService.deleteRestCartItem(cartItem);
-            return ResponseEntity.ok("Cart Item has been deleted");
+    // @DeleteMapping("/cart/{id}")
+    // private ResponseEntity deleteCartItem(@PathVariable("id") UUID id) {
+    //     try {
+    //         var cartItem = cartItemService.getRestCartItemById(id);
+    //         cartItemService.deleteRestCartItem(cartItem);
+    //         return ResponseEntity.ok("Cart Item has been deleted");
 
-        } catch (NoSuchElementException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Cart Item cannot be found!"
-            );
+    //     } catch (NoSuchElementException e) {
+    //         throw new ResponseStatusException(
+    //                 HttpStatus.NOT_FOUND, "Cart Item cannot be found!"
+    //         );
 
-        }
-    }
+    //     }
+    // }
 
 
 

@@ -1,5 +1,6 @@
 package com.apapedia.order.restservice;
 
+import com.apapedia.order.dto.UserDTO;
 import com.apapedia.order.model.Cart;
 import com.apapedia.order.model.CartItem;
 import com.apapedia.order.model.UserDummy;
@@ -7,8 +8,13 @@ import com.apapedia.order.repository.CartDb;
 import com.apapedia.order.repository.UserDb;
 
 import jakarta.transaction.Transactional;
+import reactor.core.publisher.Mono;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Collections;
 import java.util.List;
@@ -16,23 +22,31 @@ import java.util.UUID;
 
 @Service
 @Transactional
-public class CartServiceImpl implements CartService {
+public class CartRestServiceImpl implements CartRestService {
     @Autowired
     CartDb cartDb;
     
     @Autowired
     UserDb userDb;
+
+    private final WebClient webClient;
+
+    public CartRestServiceImpl(WebClient.Builder webClientBuilder) {
+        this.webClient = webClientBuilder.baseUrl("http://localhost:8080")
+                            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                            .build();
+    }
     
     @Override
     public Cart createCart(UUID userId) {
-        UserDummy user = userDb.findByUserId(userId);
+        // UserDummy user = userDb.findByUserId(userId);
         Cart cart = new Cart();
 
-        cart.setUser(user);
-        user.setCart(cart);
+        cart.setUserId(userId);
+        // user.setCart(cart);
 
         cartDb.save(cart);
-        userDb.save(user);
+        // userDb.save(user);
         return cart;
     };
 

@@ -24,7 +24,7 @@ import javax.xml.catalog.Catalog;
 
 @Service
 @Transactional
-public class OrderServiceImpl implements OrderService {
+public class OrderRestServiceImpl implements OrderRestService {
     @Autowired
     SellerDb sellerDb;
    

@@ -5,7 +5,7 @@ import com.apapedia.order.model.CartItem;
 import java.util.List;
 import java.util.UUID;
 
-public interface CartItemService {
+public interface CartItemRestService {
     CartItem createCartItem(CartItem cartItem, UUID cartId);
     
     List<CartItem> retrieveRestAllCartItem();

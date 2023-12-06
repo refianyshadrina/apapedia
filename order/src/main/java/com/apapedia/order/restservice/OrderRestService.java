@@ -9,7 +9,7 @@ import com.apapedia.order.model.SellerDummy;
 import java.util.List;
 import java.util.UUID;
 
-public interface OrderService {
+public interface OrderRestService {
     
     void createOrders(Order order);
 

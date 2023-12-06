@@ -13,7 +13,7 @@ import com.apapedia.order.dto.UserDummyMapper;
 import com.apapedia.order.dto.request.CreateUserDummyRequestDTO;
 import com.apapedia.order.model.Cart;
 import com.apapedia.order.model.UserDummy;
-import com.apapedia.order.restservice.UserService;
+import com.apapedia.order.restservice.UserRestService;
 
 import java.util.NoSuchElementException;
 
@@ -24,31 +24,31 @@ public class UserDummyRestController {
     private UserDummyMapper userMapper;
 
     @Autowired
-    private UserService userService;
+    private UserRestService userService;
 
     @Autowired
     private CartRestController cartController;
 
-    @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody CreateUserDummyRequestDTO userDTO){
-        try{
-            UserDummy userDummy = userMapper.createUserDummyRequestDTOToUserDummy(userDTO);
-            userService.createUserDummy(userDummy);
+    // @PostMapping("/register")
+    // public ResponseEntity<String> registerUser(@RequestBody CreateUserDummyRequestDTO userDTO){
+    //     try{
+    //         UserDummy userDummy = userMapper.createUserDummyRequestDTOToUserDummy(userDTO);
+    //         userService.createUserDummy(userDummy);
 
-            ResponseEntity<Cart> response = cartController.addCart(userDummy.getUserId());
-            if (response.getStatusCode() != HttpStatus.NOT_FOUND) {
-                userDummy.setCart(response.getBody());
-                return ResponseEntity.ok("User created");
-            } else {
-                throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field"
-                );
-            }
-        } catch (NoSuchElementException e){
-            throw new ResponseStatusException(
-                HttpStatus.BAD_REQUEST, "User not found after creation. Request body has invalid type or missing field", e
-            );
-        }
+    //         ResponseEntity<Cart> response = cartController.addCart(userDummy.getUserId());
+    //         if (response.getStatusCode() != HttpStatus.NOT_FOUND) {
+    //             userDummy.setCart(response.getBody());
+    //             return ResponseEntity.ok("User created");
+    //         } else {
+    //             throw new ResponseStatusException(
+    //                 HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field"
+    //             );
+    //         }
+    //     } catch (NoSuchElementException e){
+    //         throw new ResponseStatusException(
+    //             HttpStatus.BAD_REQUEST, "User not found after creation. Request body has invalid type or missing field", e
+    //         );
+    //     }
         
-    }
+    // }
 }
