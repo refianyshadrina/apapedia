@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
-import com.apapedia.user.exception.UserNotFoundException;
 import com.apapedia.user.model.Seller;
 import com.apapedia.user.payload.user.RegisterRequestDTO;
 import com.apapedia.user.repository.SellerDb;
@@ -22,6 +24,14 @@ public class SellerServiceImpl implements SellerService {
     SellerDb sellerDb;
 
     private Authentication userAuthentication;
+
+    private final WebClient webClient;
+
+    public SellerServiceImpl(WebClient.Builder webClientBuilder) {
+        this.webClient = webClientBuilder.baseUrl("http://localhost:8082")
+                            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                            .build();
+    }
 
     @Override
     public List<Seller> getAllSeller(){
@@ -101,6 +111,10 @@ public class SellerServiceImpl implements SellerService {
         user.setEmail(registerRequest.getEmail());
         user.setAddress(registerRequest.getAddress());
         user.setBalance((long) 0);
+
+        // CategoryDTO response = this.webClient 
+        //         .get()
+        //         .uri("/api/category/by-name/{name}", registerRequest.getCategory())
         user.setCategory(registerRequest.getCategory());
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());
