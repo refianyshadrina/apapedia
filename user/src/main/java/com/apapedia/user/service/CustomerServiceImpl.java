@@ -109,8 +109,7 @@ public class CustomerServiceImpl implements CustomerService {
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());
         user.setRole("customer");
-        user.setCartId(UUID.randomUUID());
-        save(user);
+        // save(user);
 
         createCart(user);
         return user;
