@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:convert';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:apapedia_mobile/bloc/authentication_state.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+// import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 import 'package:apapedia_mobile/bloc/authentication_bloc.dart';
 import 'package:apapedia_mobile/bloc/authentication_event.dart';
@@ -23,4 +24,4 @@ import 'dart:async';
 import 'dart:convert';
 
 part 'sign_in_page.dart';
-part 'sign_up_page.dart';
+// part 'sign_up_page.dart';

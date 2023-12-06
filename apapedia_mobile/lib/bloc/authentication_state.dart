@@ -1,22 +1,41 @@
 import 'package:equatable/equatable.dart';
 
-enum AuthenticationStatus { authenticated, unauthenticated }
+abstract class AuthenticationState extends Equatable {
+  @override
+  List<Object> get props => [];
+}
 
-class AuthenticationState extends Equatable {
-  const AuthenticationState._({
-    this.status = AuthenticationStatus.unauthenticated,
-  });
+class AuthenticationInitialState extends AuthenticationState {}
 
-  const AuthenticationState.uninitialized() : this._();
+class AuthenticationAuthenticatedState extends AuthenticationState {
+  final String jwtToken;
 
-  const AuthenticationState.authenticated()
-      : this._(status: AuthenticationStatus.authenticated);
-
-  const AuthenticationState.unauthenticated()
-      : this._(status: AuthenticationStatus.unauthenticated);
-
-  final AuthenticationStatus status;
+  AuthenticationAuthenticatedState({required this.jwtToken});
 
   @override
-  List<Object> get props => [status];
+  List<Object> get props => [jwtToken];
 }
+
+class AuthenticationUnauthenticatedState extends AuthenticationState {}
+
+
+// enum AuthenticationStatus { authenticated, unauthenticated }
+
+// class AuthenticationState extends Equatable {
+//   const AuthenticationState._({
+//     this.status = AuthenticationStatus.unauthenticated,
+//   });
+
+//   const AuthenticationState.uninitialized() : this._();
+
+//   const AuthenticationState.authenticated()
+//       : this._(status: AuthenticationStatus.authenticated);
+
+//   const AuthenticationState.unauthenticated()
+//       : this._(status: AuthenticationStatus.unauthenticated);
+
+//   final AuthenticationStatus status;
+
+//   @override
+//   List<Object> get props => [status];
+// }
