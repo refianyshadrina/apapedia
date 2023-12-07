@@ -7,7 +7,7 @@ class Api {
   static final String url = 'http://localhost:8080/api/user';
   static final dio = Dio(BaseOptions(baseUrl: url));
 
-  static Future<int> signUp(String email, String password, String username, String nama,  String address) async {
+  static Future<http.Response> signUp(String email, String password, String username, String nama,  String address) async {
     Uri uri = Uri.parse('${url}/register');
     final response = await http.post(
       uri,
@@ -23,8 +23,48 @@ class Api {
       }),
     );
 
-    return response.statusCode;
+    return response;
   }
+
+  static void _setupInterceptors(String jwtToken) {
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          // Set the Authorization header with Bearer + jwtToken
+          options.headers['Authorization'] = 'Bearer $jwtToken';
+          return handler.next(options);
+        },
+      ),
+    );
+  }
+
+  static Future<http.Response> getUserProfile(String storedToken) async {
+      final decodedToken = JwtDecoder.decode(storedToken);
+      final userId = decodedToken['userId'];
+
+      print(userId);
+
+      Uri uri = Uri.parse('${url}/detail/${userId}');
+      _setupInterceptors(storedToken);
+
+      print(uri);
+
+      Map<String, String> header = new Map();
+      header['Access-Control-Allow-Origin'] = '*';
+      header["content-type"] =  "application/x-www-form-urlencoded";
+      header['Content-Type'] = 'application/json';
+      header['Authorization'] =  'Bearer $storedToken';
+      header['Accept'] =  '*/*';
+
+
+
+      final response = await http.get(uri, headers: header
+      );
+      // await dio.get('/profile/$userId');
+
+      return response;
+
+  } 
 
   static Future<Map> signIn(String username, String password) async {
     Uri uri = Uri.parse('${url}/v1/login');

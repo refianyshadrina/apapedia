@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import jakarta.servlet.http.Cookie;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpMethod;
@@ -91,6 +93,7 @@ public class WebSecurityConfig {
 
         http.csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .cors(withDefaults())
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/", "/signup", "/login", "/api/user/register", "/api/user/v2/login", "/api/user/v1/login", "/api/user/generate-new-token", "/api/user/get-user-sso/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/logout").permitAll()

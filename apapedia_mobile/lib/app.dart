@@ -1,4 +1,4 @@
-import 'package:apapedia_mobile/api/api.dart';
+import 'package:apapedia_mobile/api/user_api.dart';
 import 'package:apapedia_mobile/screens/pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        title: 'Your App',
+        title: 'Apapedia',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),

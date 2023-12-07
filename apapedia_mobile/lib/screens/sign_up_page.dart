@@ -527,23 +527,27 @@ class _SignUpPageState extends State<SignUpPage> {
                                             .addressController.text;
 
                                         // try {
-                                          int statusCode = await Api.signUp(
+                                          var response = await Api.signUp(
                                               emailAddress, password, username,
                                               name, address);
+                                          final Map parsedResponse = json.decode(response.body);
 
-                                          if (statusCode == 201) {
+                                          if (response.statusCode == 201) {
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (BuildContext context) =>
                                                         LoginPage()));
-                                          } else if (statusCode == 400) {
+                                          } else if (response.statusCode == 400) {
                                             showDialog(
                                                 context: context,
                                                 builder: (BuildContext context) =>
-                                                    _buildPopupDialog(context, "Gagal wle"));
+                                                    _buildPopupDialog(context, parsedResponse['message']));
                                           } else {
-                                            print("hehe internal server error");
+                                            showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) =>
+                                                    _buildPopupDialog(context, "Internal server error :("));
                                           }
                                         // }
                                       },

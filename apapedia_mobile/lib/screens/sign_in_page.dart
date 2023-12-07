@@ -108,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Welcome Back',
+                                    'Welcome',
                                     style: FlutterFlowTheme.of(context)
                                         .displaySmall,
                                   ),
@@ -305,24 +305,25 @@ class _LoginPageState extends State<LoginPage> {
                                               builder: (BuildContext context) =>
                                                   _buildPopupDialog(context, "Username or password invalid"));
                                         } else {
-                                          showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                title: const Text('Success!'),
-                                                content: const Text(
-                                                    'Authenticated!'),
-                                                actions: <Widget>[
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      Navigator.of(context).pop();
-                                                    },
-                                                    child: const Text('OK'),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
+                                          // showDialog(
+                                          //   context: context,
+                                          //   builder: (BuildContext context) {
+                                          //     return AlertDialog(
+                                          //       title: const Text('Success!'),
+                                          //       content: const Text(
+                                          //           'Authenticated!'),
+                                          //       actions: <Widget>[
+                                          //         TextButton(
+                                          //           onPressed: () {
+                                          //             Navigator.of(context).pop();
+                                          //           },
+                                          //           child: const Text('OK'),
+                                          //         ),
+                                          //       ],
+                                          //     );
+                                          //   },
+                                          // );
+                                          Navigator.of(context).push(ProfilePage.route());
                                         }
                                       },
                                       text: 'Sign In',
