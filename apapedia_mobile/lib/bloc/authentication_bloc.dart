@@ -41,6 +41,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:apapedia_mobile/api/api.dart'; // Import your API class
+import '../repository/user_repository.dart';
 import 'authentication_event.dart';
 import 'authentication_state.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -65,8 +66,15 @@ class AuthenticationBloc
 
           if (response['token'] != "Failed") {
             final jwtToken = response['token'];
+
             await secureStorage.write(key: 'jwtToken', value: jwtToken);
+
+            // RepositoryProvider.of<UserRepository>(event.context)
+            //     .setEmail(response['email']); // Replace with actual key for email in the response
+            // RepositoryProvider.of<UserRepository>(event.context)
+            //     .setUsername(response['username']);
             yield AuthenticationAuthenticatedState(jwtToken: jwtToken);
+
           } else {
             yield AuthenticationUnauthenticatedState();
           }
@@ -83,7 +91,8 @@ class AuthenticationBloc
     } else if (event is AuthenticationCheckEvent) {
        try {
         final storedToken = await secureStorage.read(key: 'jwtToken');
-
+        // final storedToken = await RepositoryProvider.of<UserRepository>(event.context)
+        //     .getToken();
         if (storedToken != null) {
           // Token exists, consider the user as authenticated
           yield AuthenticationAuthenticatedState(jwtToken: storedToken);

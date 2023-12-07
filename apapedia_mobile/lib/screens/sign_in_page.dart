@@ -1,126 +1,5 @@
 part of 'pages.dart';
 
-// class LoginPage extends StatefulWidget {
-//     static String routeName = "/LoginPage";
-//
-//     static Route<void> route() {
-//       return MaterialPageRoute<void>(builder: (_) => LoginPage());
-//     }
-//
-//     @override
-//     _LoginPageState createState() => _LoginPageState();
-// }
-//
-// class _LoginPageState extends State<LoginPage> {
-//   final TextEditingController usernameController = TextEditingController();
-//   final TextEditingController passwordController = TextEditingController();
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Login Page'),
-//       ),
-//       body: BlocConsumer<AuthenticationBloc, AuthenticationState>(
-//         listener: (context, state) {
-//             Navigator.of(context).pushReplacement(
-//               MaterialPageRoute(
-//                 builder: (context) => LoginPage(),
-//               ),
-//             );
-//
-//         },
-//         builder: (context, state) {
-//           if (state is AuthenticationInitialState) {
-//             return const Center(
-//               child: CircularProgressIndicator(),
-//             );
-//           } else if (state is AuthenticationUnauthenticatedState) {
-//             return _buildLoginForm(context);
-//           } else {
-//             return Center(
-//               child: Column(
-//                 mainAxisAlignment: MainAxisAlignment.center,
-//                 children: [
-//                   const Text('Authenticated!'),
-//                   const SizedBox(height: 16.0),
-//                   ElevatedButton(
-//                     onPressed: () {
-//                       // Dispatch a logout event
-//                       context.read<AuthenticationBloc>().add(AuthenticationSignOutEvent());
-//                     },
-//                     child: const Text('Log Out'),
-//                   ),
-//                 ],
-//               ),
-//             );
-//           }
-//         },
-//       ),
-//     );
-//   }
-//
-//   Widget _buildLoginForm(BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.all(16.0),
-//       child: Column(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children: [
-//           TextField(
-//             controller: usernameController,
-//             decoration: const InputDecoration(labelText: 'Username'),
-//           ),
-//           const SizedBox(height: 16.0),
-//           TextField(
-//             controller: passwordController,
-//             obscureText: true,
-//             decoration: const InputDecoration(labelText: 'Password'),
-//           ),
-//           const SizedBox(height: 16.0),
-//           ElevatedButton(
-//             onPressed: () async {
-//
-//             final authenticationBloc = context.read<AuthenticationBloc>();
-//             authenticationBloc.add(
-//               AuthenticationSignInEvent(
-//                 username: usernameController.text,
-//                 password: passwordController.text,
-//               ),
-//             );
-//
-//             await Future.delayed(const Duration(milliseconds: 500));
-//
-//             final state = authenticationBloc.state;
-//             if (state is AuthenticationUnauthenticatedState) {
-//               showDialog(
-//                 context: context,
-//                 builder: (BuildContext context) {
-//                   return AlertDialog(
-//                     title: const Text('Invalid Credentials'),
-//                     content: const Text('The username or password is incorrect.'),
-//                     actions: <Widget>[
-//                       TextButton(
-//                         onPressed: () {
-//                           Navigator.of(context).pop();
-//                         },
-//                         child: const Text('OK'),
-//                       ),
-//                     ],
-//                   );
-//                 },
-//               );
-//             }
-//           },
-//             child: const Text('Sign In'),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-// export 'package:apapedia_mobile/model/login_model.dart';
-//
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -142,9 +21,6 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     _model = createModel(context, () => Login1Model());
-
-    // On page load action.
-
 
     _model.emailAddressController ??= TextEditingController();
     _model.emailAddressFocusNode ??= FocusNode();
@@ -416,6 +292,7 @@ class _LoginPageState extends State<LoginPage> {
                                         authenticationBloc.add(AuthenticationSignInEvent(
                                           username: _model.emailAddressController.text,
                                           password: _model.passwordController.text,
+                                          context: context
                                         ));
 
                                         await Future.delayed(const Duration(milliseconds: 500));
@@ -424,12 +301,17 @@ class _LoginPageState extends State<LoginPage> {
                                         if (state is AuthenticationUnauthenticatedState) {
                                           // Show error dialog
                                           showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) =>
+                                                  _buildPopupDialog(context, "Username or password invalid"));
+                                        } else {
+                                          showDialog(
                                             context: context,
                                             builder: (BuildContext context) {
                                               return AlertDialog(
-                                                title: const Text('Invalid Credentials'),
+                                                title: const Text('Success!'),
                                                 content: const Text(
-                                                    'The username or password is incorrect.'),
+                                                    'Authenticated!'),
                                                 actions: <Widget>[
                                                   TextButton(
                                                     onPressed: () {
@@ -492,6 +374,10 @@ class _LoginPageState extends State<LoginPage> {
                                                   color: Color(0xFFEF7039),
                                                   fontWeight: FontWeight.w600,
                                                 ),
+                                            recognizer: TapGestureRecognizer()
+                                              ..onTap = () {
+                                                Navigator.of(context).push(SignUpPage.route());
+                                              },
                                           )
                                         ],
                                         style: FlutterFlowTheme.of(context)
@@ -540,5 +426,55 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  Widget _buildPopupDialog(BuildContext context, String msg) {
+    return AlertDialog(
+        shape: RoundedRectangleBorder(
+            borderRadius:
+            BorderRadius.all(
+                Radius.circular(
+                    20.0))),
+        title: Center(
+            child: Text("Invalid Credentials",
+                style: FlutterFlowTheme.of(context)
+                    .titleSmall
+                    .override(
+                  fontFamily: 'Readex Pro',
+                  color: Color(0xFFEF7039),
+                ),)),
+        content: Text(
+          msg,
+          textAlign:
+          TextAlign.center,
+          style: FlutterFlowTheme.of(context)
+              .labelMedium
+              .override(
+            fontFamily: 'Readex Pro',
+          ),
+
+        ),
+        actions: [
+          Center(
+              child: ElevatedButton(
+                child: Text("Ok"),
+                onPressed: () => Navigator.pop(context),
+                style: ButtonStyle(
+                  backgroundColor:
+                  MaterialStateProperty
+                      .resolveWith<
+                      Color>(
+                        (Set<MaterialState>
+                    states) {
+                      if (states.contains(
+                          MaterialState
+                              .pressed))
+                        return kPrimaryColor;
+                      return kPrimaryColor;
+                    },
+                  ),
+                ),
+              ))
+        ]);
   }
 }

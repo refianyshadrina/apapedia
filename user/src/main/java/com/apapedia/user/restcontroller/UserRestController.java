@@ -102,10 +102,10 @@ public class UserRestController {
             );
         } else {
             if (usersService.existsByUsername(registerRequest.getUsername())) {
-                return ResponseEntity.badRequest().body("Username alread in use!");
+                return ResponseEntity.badRequest().body(new MessageResponse("Username already in use!"));
             }
             if (usersService.existsByEmail(registerRequest.getEmail())) {
-                return ResponseEntity.badRequest().body("Email  already in use");
+                return ResponseEntity.badRequest().body(new MessageResponse("Email  already in use"));
             }
             // customer
             if (registerRequest.getCategory() == null) {

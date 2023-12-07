@@ -30,6 +30,7 @@
 // }
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 
 abstract class AuthenticationEvent extends Equatable {
   @override
@@ -39,8 +40,9 @@ abstract class AuthenticationEvent extends Equatable {
 class AuthenticationSignInEvent extends AuthenticationEvent {
   final String username;
   final String password;
+  final BuildContext context;
 
-  AuthenticationSignInEvent({required this.username, required this.password});
+  AuthenticationSignInEvent({required this.username, required this.password, required this.context});
 
   @override
   List<Object> get props => [username, password];
@@ -48,4 +50,8 @@ class AuthenticationSignInEvent extends AuthenticationEvent {
 
 class AuthenticationSignOutEvent extends AuthenticationEvent {}
 
-class AuthenticationCheckEvent extends AuthenticationEvent {}
+class AuthenticationCheckEvent extends AuthenticationEvent {
+  final BuildContext context;
+
+  AuthenticationCheckEvent({required this.context});
+}

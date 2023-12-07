@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
           create: (context) => AuthenticationBloc(
             api: Api(), 
             secureStorage: storage,
-          )..add(AuthenticationCheckEvent()),
+          )..add(AuthenticationCheckEvent(context: context)),
         ),
       ],
       child: MaterialApp(

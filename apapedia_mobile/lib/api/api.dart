@@ -7,7 +7,7 @@ class Api {
   static final String url = 'http://localhost:8080/api/user';
   static final dio = Dio(BaseOptions(baseUrl: url));
 
-  static Future<int> signUp(String email, String password, String username, String nama, String balance, String address, String cartId) async {
+  static Future<int> signUp(String email, String password, String username, String nama,  String address) async {
     Uri uri = Uri.parse('${url}/register');
     final response = await http.post(
       uri,
@@ -19,9 +19,7 @@ class Api {
         "email": email,
         "username": username,
         "password": password,
-        "balance": balance,
-        "address": address,
-        "cartId": cartId
+        "address": address
       }),
     );
 
