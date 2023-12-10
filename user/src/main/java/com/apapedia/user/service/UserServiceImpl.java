@@ -136,7 +136,7 @@ public class UserServiceImpl implements UserService{
                 sellerDb.save((Seller) user);
             } else {
                 user.setPassword(updateUserRequestDTO.getPassword());
-                customerDb.save((Customer) user);
+                customerService.save((Customer) user);
             }
         }
         return user;

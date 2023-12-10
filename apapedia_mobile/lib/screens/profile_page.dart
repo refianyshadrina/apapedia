@@ -65,64 +65,35 @@ class _ProfilePageState extends State<ProfilePage> {
         key: scaffoldKey,
         backgroundColor: Color(0xFFEF7039),
         appBar: AppBar(
-          backgroundColor: Color(0xFFEF7039),
-          automaticallyImplyLeading: false,
-          leading: FlutterFlowIconButton(
-            borderColor: Colors.transparent,
-            borderRadius: 30.0,
-            borderWidth: 1.0,
-            buttonSize: 60.0,
-            icon: Icon(
-              Icons.arrow_back_rounded,
-              color: FlutterFlowTheme.of(context).info,
-              size: 30.0,
-            ),
+        backgroundColor: Color(0xFFEF7039),
+        automaticallyImplyLeading: false,
+        leading: FlutterFlowIconButton(
+          borderColor: Colors.transparent,
+          borderRadius: 30.0,
+          buttonSize: 48.0,
+          icon: Icon(
+            Icons.arrow_back_rounded,
+            color: FlutterFlowTheme.of(context).info,
+            size: 30.0,
           ),
-          actions: [],
-          centerTitle: false,
-          elevation: 0.0,
+          onPressed: () {
+            Navigator.of(context).push(LoginPage.route());
+          },
         ),
+        title: Text(
+          'Profile',
+          style: FlutterFlowTheme.of(context).titleSmall,
+        ),
+        actions: [],
+        centerTitle: false,
+        elevation: 0.0,
+      ),
         body: Align(
           alignment: AlignmentDirectional(0.00, 0.00),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-              Container(
-                width: 140.0,
-                child: Stack(
-                  children: [
-                    Align(
-                      alignment: AlignmentDirectional(0.00, 0.00),
-                      child: Padding(
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
-                        child: Container(
-                          width: 100.0,
-                          height: 100.0,
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                2.0, 2.0, 2.0, 2.0),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(50.0),
-                              child: Image.network(
-                                'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=900&q=60',
-                                width: 100.0,
-                                height: 100.0,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 12.0),
                 child: Text(
@@ -354,40 +325,41 @@ class _ProfilePageState extends State<ProfilePage> {
                                 thickness: 1.0,
                                 color: Color(0xFF072135),
                               ),
-                              Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 0.0, 0.0, 8.0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 8.0, 16.0, 8.0),
-                                      child: Icon(
-                                        Icons.edit,
-                                        color: Color(0xFFEF7039),
-                                        size: 24.0,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 0.0, 12.0, 0.0),
-                                        child: Text(
-                                          'Profile Settings',
-                                          textAlign: TextAlign.start,
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium,
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(EditProfilePage.route());
+                                },
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 8.0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 16.0, 8.0),
+                                        child: Icon(
+                                          Icons.edit,
+                                          color: Color(0xFFEF7039),
+                                          size: 24.0,
                                         ),
                                       ),
-                                    ),
-                                    Icon(
-                                      Icons.chevron_right_rounded,
-                                      color: Color(0xFF14456E),
-                                      size: 24.0,
-                                    ),
-                                  ],
+                                      Expanded(
+                                        child: Padding(
+                                          padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
+                                          child: Text(
+                                            'Profile Settings',
+                                            textAlign: TextAlign.start,
+                                            style: FlutterFlowTheme.of(context).bodyMedium,
+                                          ),
+                                        ),
+                                      ),
+                                      Icon(
+                                        Icons.chevron_right_rounded,
+                                        color: Color(0xFF14456E),
+                                        size: 24.0,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                               Padding(
@@ -546,7 +518,7 @@ void showConfirmationDialog(BuildContext context, String action, String msg) {
                     }
                     context.read<AuthenticationBloc>().add(AuthenticationSignOutEvent());
                     Navigator.of(dialogContext).pop(); // Close the dialog
-                    Navigator.of(context).popAndPushNamed("/LoginPage");
+                    Navigator.of(context).push(LoginPage.route());
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.resolveWith<Color>(

@@ -30,23 +30,31 @@ class AuthenticationBloc
   ) async* {
     if (event is AuthenticationSignInEvent) {
       try {
-        final response = await Api.signIn(event.username, event.password);
 
-        if (response.containsKey('token')) {
+        if (event.isLogin == true) {
+            final response = await Api.signIn(event.username, event.password);
 
-          if (response['token'] != "Failed") {
-            final jwtToken = response['token'];
+            if (response.containsKey('token')) {
 
-            await secureStorage.write(key: 'jwtToken', value: jwtToken);
+              if (response['token'] != "Failed") {
+                final jwtToken = response['token'];
 
-            yield AuthenticationAuthenticatedState(jwtToken: jwtToken);
+                await secureStorage.write(key: 'jwtToken', value: jwtToken);
 
-          } else {
-            yield AuthenticationUnauthenticatedState();
-          }
+                yield AuthenticationAuthenticatedState(jwtToken: jwtToken);
 
+              } else {
+                yield AuthenticationUnauthenticatedState();
+              }
+
+            } else {
+              yield AuthenticationUnauthenticatedState();
+            }
         } else {
-          yield AuthenticationUnauthenticatedState();
+          final String jwtToken = await Api.generateNewToken(event.username, event.password);
+
+          await secureStorage.write(key: 'jwtToken', value: jwtToken);
+          yield AuthenticationAuthenticatedState(jwtToken: jwtToken);
         }
       } catch (error) {
         yield AuthenticationUnauthenticatedState();

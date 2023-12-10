@@ -26,6 +26,52 @@ class Api {
     return response;
   }
 
+  static Future<http.Response> updateUser(String storedToken, String email, String password, String username, String nama,  String address) async {
+    final decodedToken = JwtDecoder.decode(storedToken);
+    final userId = decodedToken['userId'];
+
+    Uri uri = Uri.parse('${url}/update');
+
+    Map<String, String> header = new Map();
+    header['Access-Control-Allow-Origin'] = '*';
+    header["content-type"] =  "application/x-www-form-urlencoded";
+    header['Content-Type'] = 'application/json; charset=UTF-8';
+    header['Authorization'] =  'Bearer $storedToken';
+    header['Accept'] =  '*/*';
+
+    final response = await http.put(
+      uri,
+      headers: header,
+      body: jsonEncode(<String, String>{
+        "id": userId,
+        "nama": nama,
+        "email": email,
+        "username": username,
+        "password": password,
+        "address": address
+      }),
+    );
+
+    return response;
+  }
+
+ static Future<String> generateNewToken(String username, String passwordDTO) async {
+    Uri uri = Uri.parse('${url}/generate-new-token');
+    final response = await http.post(
+      uri,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+          <String, String>{'username': username, 'password': passwordDTO}),
+    );
+
+    final Map parsedResponse = json.decode(response.body);
+    final String token = parsedResponse['token'];
+
+    return token;
+ }
+
   static void _setupInterceptors(String jwtToken) {
     dio.interceptors.add(
       InterceptorsWrapper(

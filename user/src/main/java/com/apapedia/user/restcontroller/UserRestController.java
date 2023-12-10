@@ -159,7 +159,7 @@ public class UserRestController {
     public ResponseEntity<?> generateNewJwt(@Valid @RequestBody LoginRequestDTO authRequest) {
         UserModel user = usersService.getUserByUsername(authRequest.getUsername());
         if (user == null) {
-            return ResponseEntity.badRequest().body("If you're a customer, you can login with our mobile app");
+            return ResponseEntity.badRequest().body("Username or password invalid");
         }
         List<String> roles = new ArrayList<>();
         roles.add(user.getRole());

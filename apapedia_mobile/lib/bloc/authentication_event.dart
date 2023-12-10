@@ -9,9 +9,10 @@ abstract class AuthenticationEvent extends Equatable {
 class AuthenticationSignInEvent extends AuthenticationEvent {
   final String username;
   final String password;
+  final bool isLogin;
   final BuildContext context;
 
-  AuthenticationSignInEvent({required this.username, required this.password, required this.context});
+  AuthenticationSignInEvent({required this.username, required this.password, required this.isLogin,required this.context});
 
   @override
   List<Object> get props => [username, password];

@@ -27,6 +27,8 @@ import 'dart:convert';
 part 'sign_in_page.dart';
 part 'sign_up_page.dart';
 part 'profile_page.dart';
+part 'edit_profile_page.dart';
 part '../model/login_model.dart';
 part '../model/signup_model.dart';
 part '../model/profile_model.dart';
+part '../model/edit_profile_model.dart';

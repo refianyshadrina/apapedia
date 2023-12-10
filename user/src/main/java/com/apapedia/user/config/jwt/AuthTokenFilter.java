@@ -48,7 +48,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 System.out.println("masuk jwt not null and tervalidasi");
                 Claims claims = jwtService.extractAllClaims(jwt);
                 String username = claims.getSubject();
-
+                System.out.println(username);
                 UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
