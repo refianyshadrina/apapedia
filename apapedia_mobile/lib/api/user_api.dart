@@ -38,6 +38,21 @@ class Api {
     );
   }
 
+  // static Future<dynamic> updateSaldo(dynamic data, String storedToken) async {
+  //   final decodedToken = JwtDecoder.decode(storedToken);
+  //   final userId = decodedToken['userId'];
+    
+  //   final response = await http.put(
+  //     Uri.parse('${url}/delete/${userId}'),
+  //     headers:{
+  //       'Content-Type': 'application/json',
+  //       'Accept': 'application/json',
+  //       'Authorization': 'Bearer $storedToken',
+  //     },);
+
+  //   return response;
+  // }
+
   static Future<http.Response> getUserProfile(String storedToken) async {
       final decodedToken = JwtDecoder.decode(storedToken);
       final userId = decodedToken['userId'];
@@ -65,6 +80,21 @@ class Api {
       return response;
 
   } 
+
+  static Future<int> deleteUserPage(String storedToken) async {
+      final decodedToken = JwtDecoder.decode(storedToken);
+      final userId = decodedToken['userId'];
+
+      final response = await http.delete(
+      Uri.parse('${url}/delete/${userId}'),
+      headers:{
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $storedToken',
+      },);
+
+      return response.statusCode;
+  }
 
   static Future<Map> signIn(String username, String password) async {
     Uri uri = Uri.parse('${url}/v1/login');

@@ -166,7 +166,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               Row(
                                 children: [
                                   Text(
-                                    'Rp',
+                                    'Rp ',
                                     style: FlutterFlowTheme.of(context)
                                           .bodyMedium
                                           .override(
@@ -243,7 +243,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           0.0, 8.0, 16.0, 8.0),
                                       child: Icon(
-                                        Icons.work_outline,
+                                        Icons.account_circle,
                                         color: Color(0xFFEF7039),
                                         size: 24.0,
                                       ),
@@ -325,21 +325,28 @@ class _ProfilePageState extends State<ProfilePage> {
                                   mainAxisSize: MainAxisSize.max,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Align(
-                                          alignment:
-                                              AlignmentDirectional(-1.00, 0.00),
-                                          child: Text(
-                                            '${customer!.address}',
-                                            textAlign: TextAlign.center,
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodyMedium,
-                                          ),
-                                        ),
-                                      ],
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0.0, 8.0, 16.0, 8.0),
+                                      child: Icon(
+                                      Icons.location_on,
+                                      color: Color(0xFFEF7039),
+                                      size: 24.0,
                                     ),
+                                    ),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 12.0, 0.0),
+                                        child: Text(
+                                          '${customer!.address}',
+                                          textAlign: TextAlign.start,
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium,
+                                        ),
+                                      ),
+                                    ),
+                                    
                                   ],
                                 ),
                               ),
@@ -414,7 +421,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     
                                     GestureDetector(
                                       onTap: () {
-                                        showLogoutConfirmationDialog(context);
+                                        showConfirmationDialog(context, "Log Out", "Are you sure you want to log out?");
                                       },
                                       child: Text(
                                       'Log Out?',
@@ -427,6 +434,50 @@ class _ProfilePageState extends State<ProfilePage> {
                                           ),
                                       
                                     ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Divider(
+                                thickness: 1.0,
+                                color: Color(0xFF072135),
+                              ),
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 8.0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 16.0, 8.0),
+                                      child: Icon(
+                                        Icons.delete,
+                                        color: Color(0xFFEF7039),
+                                        size: 24.0,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
+                                        child: Text(
+                                          'Delete Account',
+                                          textAlign: TextAlign.start,
+                                          style: FlutterFlowTheme.of(context).bodyMedium,
+                                        ),
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        showConfirmationDialog(context, "Delete Account", "Are you sure you want to delete your account?");
+                                      },
+                                      child: Text(
+                                        'Delete',
+                                        textAlign: TextAlign.center,
+                                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                          fontFamily: 'Readex Pro',
+                                          color: Color(0xFFEF7039),
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -446,32 +497,87 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-    void showLogoutConfirmationDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          title: Text('Log Out?'),
-          content: Text('Are you sure you want to log out?'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(dialogContext).pop(); // Close the dialog
-              },
-              child: Text('Cancel'),
+void showConfirmationDialog(BuildContext context, String action, String msg) {
+  showDialog(
+    context: context,
+    builder: (BuildContext dialogContext) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        ),
+        title: Center(
+          child: Text(
+            action + " ?",
+            style: FlutterFlowTheme.of(context).titleSmall.override(
+              fontFamily: 'Readex Pro',
+              color: Color(0xFFEF7039),
             ),
-            TextButton(
-              onPressed: () {
-                // Dispatch the sign-out event
-                context.read<AuthenticationBloc>().add(AuthenticationSignOutEvent());
-                Navigator.of(dialogContext).pop(); // Close the dialog
-                Navigator.of(context).popAndPushNamed("/LoginPage");
-              },
-              child: Text('Log Out'),
+          ),
+        ),
+        content: Text(
+          msg,
+          textAlign: TextAlign.center,
+          style: FlutterFlowTheme.of(context).labelMedium.override(
+            fontFamily: 'Readex Pro',
+          ),
+        ),
+        actions: [
+          Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(dialogContext).pop(); // Close the dialog
+                  },
+                  child: Text(
+                    'Cancel',
+                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                      fontFamily: 'Readex Pro',
+                      color: Color(0xFFEF7039),
+                    ),
+                  ),
+                ),
+                ElevatedButton(
+                  child: Text(action),
+                  onPressed: () {
+                    if (action == "Delete Account") {
+                      deletePage();
+                    }
+                    context.read<AuthenticationBloc>().add(AuthenticationSignOutEvent());
+                    Navigator.of(dialogContext).pop(); // Close the dialog
+                    Navigator.of(context).popAndPushNamed("/LoginPage");
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                      (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.pressed))
+                          return kPrimaryColor;
+                        return kPrimaryColor;
+                      },
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        );
-      },
-    );
+          ),
+        ],
+      );
+    },
+  );
+}
+
+
+  void deletePage() async {
+    try {
+      String? storedToken =
+          await BlocProvider.of<AuthenticationBloc>(context).getStoredToken();
+
+      if (storedToken != null) {
+        final response = await Api.deleteUserPage(storedToken);
+      }
+    } catch (error) {
+      print('Error deleting user page: $error');
+    }
   }
 }
