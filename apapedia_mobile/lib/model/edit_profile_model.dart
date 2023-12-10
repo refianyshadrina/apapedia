@@ -23,12 +23,16 @@ class EditProfilePageModel extends FlutterFlowModel<EditProfilePage> {
   FocusNode? passwordFocusNode;
   TextEditingController? passwordController;
   late bool passwordVisibility;
+  Color? passwordBorderColor;
+  String? passwordErrorMessage;
   String? Function(BuildContext, String?)? passwordControllerValidator;
 
   /// Initialization and disposal methods.
 
   void initState(BuildContext context) {
     passwordVisibility = false;
+    passwordBorderColor = Colors.transparent;
+    passwordErrorMessage = '';
   }
 
   void dispose() {

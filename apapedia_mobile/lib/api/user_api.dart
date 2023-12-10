@@ -84,20 +84,24 @@ class Api {
     );
   }
 
-  // static Future<dynamic> updateSaldo(dynamic data, String storedToken) async {
-  //   final decodedToken = JwtDecoder.decode(storedToken);
-  //   final userId = decodedToken['userId'];
-    
-  //   final response = await http.put(
-  //     Uri.parse('${url}/delete/${userId}'),
-  //     headers:{
-  //       'Content-Type': 'application/json',
-  //       'Accept': 'application/json',
-  //       'Authorization': 'Bearer $storedToken',
-  //     },);
+  static Future<dynamic> topUp(String storedToken, String balance) async {
+    final decodedToken = JwtDecoder.decode(storedToken);
+    final userId = decodedToken['userId'];
+    Uri uri = Uri.parse('${url}/self-update-balance');
+    final response = await http.put(
+      uri,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $storedToken'
+      },
+      body: jsonEncode(<String, String>{
+        "id": userId,
+        "balance": balance
+      }),
+    );
 
-  //   return response;
-  // }
+    return response;
+  }
 
   static Future<http.Response> getUserProfile(String storedToken) async {
       final decodedToken = JwtDecoder.decode(storedToken);

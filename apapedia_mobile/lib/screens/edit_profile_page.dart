@@ -128,62 +128,84 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         padding: EdgeInsetsDirectional.fromSTEB(
                             16.0, 24.0, 16.0, 24.0),
                         child: Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(16.0, 24.0, 16.0, 32.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        width: 300,
-                        height: 105,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          padding: EdgeInsetsDirectional.fromSTEB(16.0, 24.0, 16.0, 32.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(
-                                'APAPAY Balance',
-                                style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Readex Pro',
-                                            color: Color(0xFFEF7039),
-                                          ),
-                              ),
-                              SizedBox(height: 8),
-                              Row(
-                                children: [
-                                  Text(
-                                    'Rp ',
-                                    style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Readex Pro',
-                                            color: Color(0xFFEF7039),
-                                          ),
+                              Expanded(
+                                child: Container(
+                                  width: 300,
+                                  height: 160, // Increased height to accommodate the button
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(16),
                                   ),
-                                  Text(
-                                    '${customer!.balance}',
-                                    style: FlutterFlowTheme.of(context).headlineLarge.override(
-                                      fontFamily: 'Outfit',
-                                     color: Color(0xFFEF7039),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'APAPAY Balance',
+                                          style: FlutterFlowTheme.of(context)
+                                                    .bodyMedium
+                                                    .override(
+                                                      fontFamily: 'Readex Pro',
+                                                      color: Color(0xFFEF7039),
+                                                    ),
+                                        ),
+                                        SizedBox(height: 8),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'Rp ',
+                                              style: FlutterFlowTheme.of(context)
+                                                    .bodyMedium
+                                                    .override(
+                                                      fontFamily: 'Readex Pro',
+                                                      color: Color(0xFFEF7039),
+                                                    ),
+                                            ),
+                                            Text(
+                                              '${customer!.balance}',
+                                              style: FlutterFlowTheme.of(context).headlineLarge.override(
+                                                fontFamily: 'Outfit',
+                                                color: Color(0xFFEF7039),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 16),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.of(context).push(TopUpPage.route());
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            primary: Color(0xFFEF7039),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(12), 
+                                            ),
+                                          ),
+                                          child: Text(
+                                            'Top Up',
+                                            style: FlutterFlowTheme.of(context)
+                                                    .bodyMedium
+                                                    .override(
+                                                      fontFamily: 'Readex Pro',
+                                                      color: Colors.white,
+                                                    ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
+                                ),
+
                               ),
                             ],
                           ),
                         ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
                       ),
                     ),
                   ),
@@ -481,18 +503,19 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                   ),
                                   errorBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: FlutterFlowTheme.of(context).error,
+                                      color: _model.passwordBorderColor ?? FlutterFlowTheme.of(context).primary,
                                       width: 2.0,
                                     ),
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
                                   focusedErrorBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: FlutterFlowTheme.of(context).error,
+                                      color: _model.passwordBorderColor ?? FlutterFlowTheme.of(context).primary,
                                       width: 2.0,
                                     ),
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
+                                  
                                   filled: true,
                                   fillColor: FlutterFlowTheme.of(context)
                                       .primaryBackground,
@@ -511,6 +534,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                       size: 24.0,
                                     ),
                                   ),
+                                  errorText: _model.passwordErrorMessage,
                                 ),
                                 style: FlutterFlowTheme.of(context).bodyMedium,
                                 validator: _model.passwordControllerValidator
@@ -527,10 +551,30 @@ class _EditProfilePageState extends State<EditProfilePage> {
               FFButtonWidget(
                 onPressed: () async {
                   String name = _model.nameController.text;
+                  if (name == "") {
+                    name = '${customer!.nama}';
+                  }
                   String username = _model.usernameController.text;
+                  if (username == "") {
+                    username = '${customer!.username}';
+                  }
                   String emailAddress = _model.emailController.text;
+                  if (emailAddress == "") {
+                    emailAddress = '${customer!.email}';
+                  }
                   String password = _model.passwordController.text;
+                  if (password == "") {
+                    setState(() {
+                      _model.passwordBorderColor = Colors.red; 
+                      _model.passwordErrorMessage = 'Please enter your password'; 
+                    });
+                    return;
+                  }
+                  
                   String address = _model.addressController.text;
+                  if (address == "") {
+                    address = '${customer!.address}';
+                  }
 
                   String? storedToken = await BlocProvider.of<AuthenticationBloc>(context).getStoredToken();
 

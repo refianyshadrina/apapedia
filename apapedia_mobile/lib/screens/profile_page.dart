@@ -77,11 +77,12 @@ class _ProfilePageState extends State<ProfilePage> {
             size: 30.0,
           ),
           onPressed: () {
-            Navigator.of(context).push(LoginPage.route());
+            // Navigator.of(context).push(LoginPage.route());
+            Navigator.pop(context);
           },
         ),
         title: Text(
-          'Profile',
+          'Home',
           style: FlutterFlowTheme.of(context).titleSmall,
         ),
         actions: [],
@@ -113,51 +114,121 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     Expanded(
                       child: Container(
-                        width: 300,
-                        height: 105,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'APAPAY Balance',
-                                style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Readex Pro',
-                                            color: Color(0xFFEF7039),
-                                          ),
-                              ),
-                              SizedBox(height: 8),
-                              Row(
-                                children: [
-                                  Text(
-                                    'Rp ',
-                                    style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Readex Pro',
-                                            color: Color(0xFFEF7039),
-                                          ),
-                                  ),
-                                  Text(
-                                    '${customer!.balance}',
-                                    style: FlutterFlowTheme.of(context).headlineLarge.override(
-                                      fontFamily: 'Outfit',
-                                     color: Color(0xFFEF7039),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Color(0xFFEF7039),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(
+                            16.0, 24.0, 16.0, 24.0),
+                        child: Container(
+                          width: MediaQuery.sizeOf(context).width * 0.9,
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context).accent4,
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 8.0,
+                                color: Color(0x36000000),
+                                offset: Offset(0.0, 4.0),
+                              )
+                            ],
+                            borderRadius: BorderRadius.circular(16.0),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                12.0, 12.0, 12.0, 12.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Card(
+                                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                                      color: Color(0xFFEBB97B),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            8.0, 8.0, 8.0, 8.0),
+                                        child: FaIcon(
+                                          FontAwesomeIcons.moneyCheckAlt,
+                                          color:
+                                              FlutterFlowTheme.of(context).info,
+                                          size: 24.0,
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            8.0, 0.0, 0.0, 0.0),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.max,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(8.0, 0.0, 0.0, 0.0),
+                                              child: Text(
+                                                'Rp ${customer!.balance}',
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .headlineSmall,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(
+                                                      8.0, 4.0, 12.0, 0.0),
+                                              child: Text(
+                                                'APAPAY Balance',
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodySmall
+                                                        .override(
+                                                          fontFamily:
+                                                              'Readex Pro',
+                                                          fontSize: 12.0,
+                                                        ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 16),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).push(TopUpPage.route());
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Color(0xFFEF7039),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12), 
                                     ),
                                   ),
-                                ],
-                              ),
-                            ],
+                                  child: Text(
+                                    'Top Up',
+                                    style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily: 'Readex Pro',
+                                              color: Colors.white,
+                                            ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
+                    ),
                     ),
                   ],
                 ),
