@@ -18,7 +18,7 @@ import jakarta.validation.constraints.NotNull;
 @Entity
 @Table(name = "seller")
 @SQLDelete(sql = "UPDATE seller SET is_deleted = true WHERE id=?")
-@Where(clause = "is_deleted=false")
+// @Where(clause = "is_deleted=false")
 public class Seller extends UserModel {
    
     // ke category

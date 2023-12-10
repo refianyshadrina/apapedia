@@ -18,6 +18,7 @@ import com.apapedia.user.model.Customer;
 import com.apapedia.user.payload.CartDTO;
 import com.apapedia.user.payload.frontend.UserDTO;
 import com.apapedia.user.payload.user.RegisterRequestDTO;
+import com.apapedia.user.payload.user.UpdateUserRequestDTO;
 import com.apapedia.user.repository.CustomerDb;
 
 import jakarta.transaction.Transactional;

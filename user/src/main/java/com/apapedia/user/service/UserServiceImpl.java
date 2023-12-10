@@ -50,6 +50,15 @@ public class UserServiceImpl implements UserService{
         return sellerDb.existsByEmail(email) | customerDb.existsByEmail(email);
     }
 
+    @Override
+    public boolean checkAccountExists(String username) {
+        UserModel user = getUserByUsername(username);
+        if (user == null) {
+            return false;
+        }
+        return user.isDeleted();
+    }
+
     @Override 
     public UserModel deleteUser(UserModel user) {
         if (user instanceof Seller) {
@@ -121,6 +130,7 @@ public class UserServiceImpl implements UserService{
             user.setEmail(updateUserRequestDTO.getEmail());
             user.setNama(updateUserRequestDTO.getNama());
             user.setUsername(updateUserRequestDTO.getUsername());
+            user.setDeleted(false);
 
             if (user instanceof Seller) {
                 sellerDb.save((Seller) user);

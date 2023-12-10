@@ -8,6 +8,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.apapedia.frontend.payloads.JwtResponse;
 import com.apapedia.frontend.payloads.LoginRequest;
+import com.apapedia.frontend.payloads.MessageResponse;
 import com.apapedia.frontend.payloads.UserDTO;
 import com.apapedia.frontend.payloads.UpdateBalanceUser;
 import com.apapedia.frontend.payloads.UpdateUserRequest;
@@ -116,8 +117,8 @@ public class UserRestServiceImpl implements UserRestService{
             .retrieve()
             .onStatus(
                     status -> status.is4xxClientError(),
-                    clientResponse -> clientResponse.bodyToMono(String.class)
-                    .flatMap(errorMessage -> Mono.error(new RuntimeException(errorMessage)))
+                    clientResponse -> clientResponse.bodyToMono(MessageResponse.class)
+                    .flatMap(errorMessage -> Mono.error(new RuntimeException(errorMessage.getMessage())))
             )
             .onStatus(
                     status -> status.is5xxServerError(),

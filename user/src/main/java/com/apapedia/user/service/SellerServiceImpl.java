@@ -11,8 +11,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.apapedia.user.model.Customer;
 import com.apapedia.user.model.Seller;
 import com.apapedia.user.payload.user.RegisterRequestDTO;
+import com.apapedia.user.payload.user.UpdateUserRequestDTO;
 import com.apapedia.user.repository.SellerDb;
 import java.time.LocalDateTime;
 import jakarta.transaction.Transactional;

@@ -20,7 +20,7 @@ import jakarta.validation.constraints.NotNull;
 @Entity
 @Table(name = "customer")
 @SQLDelete(sql = "UPDATE customer SET is_deleted = true WHERE id=?")
-@Where(clause = "is_deleted=false")
+// @Where(clause = "is_deleted=false")
 public class Customer extends UserModel {
 
     // ke cart

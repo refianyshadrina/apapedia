@@ -26,4 +26,6 @@ public interface UserService {
     UserModel update(UpdateUserRequestDTO updateUserRequestDTO);
 
     void updateBalance(UUID id, long balance);
+
+    boolean checkAccountExists(String username);
 }

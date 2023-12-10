@@ -102,10 +102,17 @@ public class UserRestController {
             );
         } else {
             if (usersService.existsByUsername(registerRequest.getUsername())) {
-                return ResponseEntity.badRequest().body(new MessageResponse("Username already in use!"));
+                if (usersService.getUserByUsername(registerRequest.getUsername()).isDeleted() == false) {
+                    return ResponseEntity.badRequest().body(new MessageResponse("Username already in use!"));
+                }
             }
             if (usersService.existsByEmail(registerRequest.getEmail())) {
                 return ResponseEntity.badRequest().body(new MessageResponse("Email  already in use"));
+            }
+            if (usersService.checkAccountExists(registerRequest.getUsername()) == true) {
+                UserModel user = usersService.getUserByUsername(registerRequest.getUsername());
+                UpdateUserRequestDTO updateUser = new UpdateUserRequestDTO(user.getId(), user.getUsername(), registerRequest.getNama(), registerRequest.getAddress(), registerRequest.getEmail(), registerRequest.getPassword());
+                return new ResponseEntity<>(usersService.update(updateUser), HttpStatus.CREATED);
             }
             // customer
             if (registerRequest.getCategory() == null) {
@@ -127,6 +134,9 @@ public class UserRestController {
             Seller seller = sellerService.getSellerByUsername(authRequest.getUsername());
             if (seller == null) {
                 return ResponseEntity.badRequest().body("If you're a customer, you can login with our mobile app");
+            }
+            if (seller.isDeleted() == true) {
+                return ResponseEntity.badRequest().body("Username or password invalid");
             }
 
             List<String> roles = new ArrayList<>();
@@ -191,6 +201,9 @@ public class UserRestController {
                 Customer customer = customerService.getCustomerByUsername(loginRequest.getUsername());
                 if (customer == null) {
                     return ResponseEntity.badRequest().body("Are you a seller?");
+                }
+                if (customer.isDeleted() == true) {
+                    return ResponseEntity.badRequest().body("Username or password invalid");
                 }
                 UserDetails userDetails = (UserDetails) authentication.getPrincipal();
                 List<String> roles = userDetails.getAuthorities().stream()
