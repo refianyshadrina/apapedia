@@ -31,7 +31,7 @@ public class CustomerServiceImpl implements CustomerService {
     private final WebClient webClient;
 
     public CustomerServiceImpl(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("http://web-order:8083")
+        this.webClient = webClientBuilder.baseUrl("http://localhost:8083")
                             .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                             .build();
     }
