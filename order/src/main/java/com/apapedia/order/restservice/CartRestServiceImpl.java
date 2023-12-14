@@ -1,14 +1,10 @@
 package com.apapedia.order.restservice;
 
-import com.apapedia.order.dto.UserDTO;
 import com.apapedia.order.model.Cart;
 import com.apapedia.order.model.CartItem;
-import com.apapedia.order.model.UserDummy;
 import com.apapedia.order.repository.CartDb;
-import com.apapedia.order.repository.UserDb;
 
 import jakarta.transaction.Transactional;
-import reactor.core.publisher.Mono;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -25,9 +21,6 @@ import java.util.UUID;
 public class CartRestServiceImpl implements CartRestService {
     @Autowired
     CartDb cartDb;
-    
-    @Autowired
-    UserDb userDb;
 
     private final WebClient webClient;
 
@@ -39,14 +32,9 @@ public class CartRestServiceImpl implements CartRestService {
     
     @Override
     public Cart createCart(UUID userId) {
-        // UserDummy user = userDb.findByUserId(userId);
         Cart cart = new Cart();
-
         cart.setUserId(userId);
-        // user.setCart(cart);
-
         cartDb.save(cart);
-        // userDb.save(user);
         return cart;
     };
 
@@ -65,10 +53,9 @@ public class CartRestServiceImpl implements CartRestService {
         return cartDb.findAll();
     }
  
-
     @Override
     public List<CartItem> retrieveRestAllCartItemByUserId(UUID userId) {
-        Cart cart = cartDb.findByUserUserId(userId);
+        Cart cart = cartDb.findByUserId(userId);
         return cart != null ? cart.getListCartItem() : Collections.emptyList();
     }
 

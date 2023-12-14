@@ -187,6 +187,30 @@ public class UserRestServiceImpl implements UserRestService{
     }
 
     @Override
+    public UserDTO updateBalanceV2(UpdateBalanceUser updateRequest, String jwtToken) {
+        UserDTO response = this.webClient
+            .put()
+            .uri("/api/user/self-update-balance-v2")
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(updateRequest)
+            .retrieve()
+            .onStatus(
+                    status -> status.is4xxClientError(),
+                    clientResponse -> clientResponse.bodyToMono(String.class)
+                    .flatMap(errorMessage -> Mono.error(new RuntimeException(errorMessage)))
+            )
+            .onStatus(
+                    status -> status.is5xxServerError(),
+                    clientResponse -> Mono.error(new RuntimeException("Internal Server Error: " + clientResponse.rawStatusCode()))
+            )
+            .bodyToMono(UserDTO.class).block();
+
+        return response;
+
+    }
+
+    @Override
     public String getTokenForSSO(String username, String name) {
         UserDTO user = null;
 

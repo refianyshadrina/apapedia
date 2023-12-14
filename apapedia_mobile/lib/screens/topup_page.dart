@@ -44,7 +44,6 @@ class _TopUpPageState extends State<TopUpPage> {
         });
       }
     } catch (error) {
-      // Handle the error
       print('Error loading profile data: $error');
     }
   }

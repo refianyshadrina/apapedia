@@ -16,9 +16,9 @@ public class CatalogDTO {
     private int price;
     private String productName;
     private String productDescription;
-    private CategoryDTO category;
+    private UUID category;
     private int stock;
-    private byte[] image;
+    private String image;
     private boolean isDeleted;
 
 }

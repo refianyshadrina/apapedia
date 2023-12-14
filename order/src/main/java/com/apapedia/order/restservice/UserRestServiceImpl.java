@@ -1,30 +1,20 @@
 package com.apapedia.order.restservice;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.apapedia.order.dto.UserDTO;
-import com.apapedia.order.model.UserDummy;
-import com.apapedia.order.repository.UserDb;
 
 import jakarta.transaction.Transactional;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 @Service
 @Transactional
 public class UserRestServiceImpl implements UserRestService {
-    @Autowired
-    UserDb userDb;
-
-    @Override
-    public UserDummy createUserDummy(UserDummy user) {
-        userDb.save(user);
-        return user;
-    }
-
     private final WebClient webClient;
 
     public UserRestServiceImpl(WebClient.Builder webClientBuilder) {
@@ -51,6 +41,28 @@ public class UserRestServiceImpl implements UserRestService {
                 .bodyToMono(UserDTO.class);
 
         return response.block();
+    }
+
+    @Override
+    public UserDTO getUser(UUID idUser) {
+
+        Mono<UserDTO> response = this.webClient
+                .get()
+                .uri("/api/user/detail/{id}", idUser)
+                .retrieve()
+                .onStatus(
+                    status -> status.is4xxClientError(),
+                    clientResponse -> clientResponse.bodyToMono(String.class)
+                    .flatMap(errorMessage -> Mono.error(new RuntimeException(errorMessage)))
+                )
+                .onStatus(
+                        status -> status.is5xxServerError(),
+                        clientResponse -> Mono.error(new RuntimeException("Internal Server Error: " + clientResponse.rawStatusCode()))
+                )
+                .bodyToMono(UserDTO.class);
+
+        return response.block();
+
     }
     
 }

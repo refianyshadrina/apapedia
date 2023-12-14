@@ -1,6 +1,5 @@
 package com.apapedia.order.dto.request;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,9 +11,6 @@ import java.util.UUID;
 @Data
 public class CreateCartItemRequestDTO {
     private UUID productId;
-
     private UUID cartId;
-
-    @NotNull(message = "Kuantitas tidak boleh kosong")
     private Integer quantity;
 }

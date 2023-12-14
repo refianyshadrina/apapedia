@@ -1,9 +1,11 @@
 package com.apapedia.catalog.restservice;
 
+import com.apapedia.catalog.dto.request.CreateCatalogRequestDTO;
 import com.apapedia.catalog.model.Catalog;
+import com.apapedia.catalog.model.Category;
 import com.apapedia.catalog.repository.CatalogDb;
 
-import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -20,10 +22,31 @@ public class CatalogServiceImpl implements CatalogService {
     @Autowired
     private CatalogDb catalogDb;
 
+    @Autowired
+    CategoryService categoryService;
+//    @Override
+//    public void createRestCatalog(Catalog catalog) {
+//        catalogDb.save(catalog);
+//    }
+
     @Override
-    public void createRestCatalog(Catalog catalog) {
+    public Catalog createRestCatalog(CreateCatalogRequestDTO catalogDTO) {
+        Category category = categoryService.retrieveByCategoryId(catalogDTO.getCategory()).get();
+        Catalog catalog = new Catalog();
+        catalog.setSellerId(catalogDTO.getSellerId());
+        catalog.setProductName(catalogDTO.getProductName());
+        catalog.setProductDescription(catalogDTO.getProductDescription());
+        catalog.setPrice(catalogDTO.getPrice());
+        catalog.setImage(catalogDTO.getImage());
+        catalog.setStock(catalogDTO.getStock());
+        catalog.setCategory(category);
+
         catalogDb.save(catalog);
+
+        return catalog;
     }
+
+
 
     @Override
     public List<Catalog> retrieveAllCatalog() {
@@ -32,22 +55,18 @@ public class CatalogServiceImpl implements CatalogService {
 
     @Override
     public Catalog getCatalogById(UUID id) {
-        for (Catalog catalog : retrieveAllCatalog()) {
-            if (catalog.getId().equals(id)) {
-                return catalog;
-            }
-        }
-        return null;
+        return catalogDb.findById(id).orElse(null);
     }
 
 
     @Override
     public Catalog updateCatalog(Catalog updatedCatalog) {
         Catalog existingCatalog = getCatalogById(updatedCatalog.getId());
+        existingCatalog.setSellerId(existingCatalog.getSellerId());
         existingCatalog.setProductName(updatedCatalog.getProductName());
         existingCatalog.setPrice(updatedCatalog.getPrice());
         existingCatalog.setProductDescription(updatedCatalog.getProductDescription());
-        existingCatalog.setImage(updatedCatalog.getImage());
+        // existingCatalog.setImage(updatedCatalog.getImage());
         existingCatalog.setCategory(updatedCatalog.getCategory());
 
         return catalogDb.save(existingCatalog);
@@ -61,6 +80,30 @@ public class CatalogServiceImpl implements CatalogService {
     @Override
     public List<Catalog> getCatalogListByCatalogName(String productName){
         return catalogDb.findByProductNameContainingIgnoreCase(productName);
+    }
+
+    @Override
+    public List<Catalog> getCatalogListByCatalogNameBySellerId(String productName, UUID sellerId) {
+        List<Catalog> filtered = catalogDb.findByProductNameContainingIgnoreCase(productName);
+        List<Catalog> filtered2 = new ArrayList<>();
+        for (Catalog catalog : filtered) {
+            if (catalog.getSellerId().equals(sellerId)) {
+                filtered2.add(catalog);
+            }
+        }
+        return filtered2;
+    }
+
+    @Override
+    public List<Catalog> getCatalogByPriceBySellerId(int minPrice, int maxPrice, UUID sellerId) {
+        List<Catalog> filtered = catalogDb.findByPriceBetween(minPrice, maxPrice);
+        List<Catalog> filtered2 = new ArrayList<>();
+        for (Catalog catalog : filtered) {
+            if (catalog.getSellerId().equals(sellerId)) {
+                filtered2.add(catalog);
+            }
+        }
+        return filtered2;
     }
 
     @Override

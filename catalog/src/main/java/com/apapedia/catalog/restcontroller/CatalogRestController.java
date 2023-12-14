@@ -1,5 +1,6 @@
 package com.apapedia.catalog.restcontroller;
 
+import com.apapedia.catalog.restservice.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -37,14 +39,12 @@ public class CatalogRestController {
     private CatalogMapper catalogMapper;
     
     @PostMapping(value = "/catalog")
-    private Catalog createCatalog(@Valid @RequestBody CreateCatalogRequestDTO CatalogRequestDTO, BindingResult bindingResult) {
+    private Catalog createCatalog(@Valid @RequestBody CreateCatalogRequestDTO catalogRequestDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field");
 
         }else{
-            var catalog = catalogMapper.CreateCatalogRequestDTOToCatalog(CatalogRequestDTO);
-            catalogService.createRestCatalog(catalog);
-            return catalog;    
+            return catalogService.createRestCatalog(catalogRequestDTO);
         }
     }
 
@@ -54,9 +54,18 @@ public class CatalogRestController {
     }
     
     @GetMapping(value="/catalog/{id}")
-    private Catalog retrieveCatalogbyId(@PathVariable("id") UUID id){
+    private CreateCatalogRequestDTO retrieveCatalogbyId(@PathVariable("id") UUID id){
         try{
-            return catalogService.getCatalogById(id);
+            Catalog catalog = catalogService.getCatalogById(id);
+            CreateCatalogRequestDTO catalogDTO = new CreateCatalogRequestDTO();
+            catalogDTO.setSellerId(catalog.getSellerId());
+            catalogDTO.setProductName(catalog.getProductName());
+            catalogDTO.setProductDescription(catalog.getProductDescription());
+            catalogDTO.setPrice(catalog.getPrice());
+            catalogDTO.setStock(catalog.getStock());
+            catalogDTO.setImage(catalog.getImage());
+            catalogDTO.setCategory(catalog.getCategory().getCategoryId());
+            return catalogDTO;
         } catch (NoSuchElementException e){
             throw new ResponseStatusException(
                 HttpStatus.NOT_FOUND, "Customer with " + id + " not found"
@@ -99,6 +108,18 @@ public class CatalogRestController {
     public List<Catalog> retrieveCatalogBySellerId(@RequestParam(value = "sellerId") UUID sellerId){
         return catalogService.getAllCatalogsBySellerId(sellerId);
     }
+
+    @GetMapping("/catalog/top/search")
+    public List<Catalog> searchCatalogByNameBySellerId(@RequestParam(value = "sellerId") UUID sellerId,
+                                                       @RequestParam(value = "query") String productName){
+        return catalogService.getCatalogListByCatalogNameBySellerId(productName, sellerId);
+    }
+
+    @GetMapping("catalog/top/filter")
+    public List<Catalog> filterCatalogByPrice(@RequestParam(value = "sellerId") UUID sellerId,
+                                              @RequestParam (value = "max", required = false) int maxPrice,
+                                              @RequestParam(value = "min", required = false) int minPrice){
+        return catalogService.getCatalogByPriceBySellerId(minPrice, maxPrice, sellerId); }
 
     @GetMapping("/catalog")
     public List<Catalog> getSortedCatalogList(

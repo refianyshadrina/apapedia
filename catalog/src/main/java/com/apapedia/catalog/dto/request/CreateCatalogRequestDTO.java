@@ -12,31 +12,22 @@ import com.apapedia.catalog.model.Category;
 
 import java.util.UUID;
 
-@Valid
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class CreateCatalogRequestDTO {
-
     private UUID sellerId;
-
-    @NotNull(message = " is still empty")
     private int price;
-
-    @NotEmpty(message = "is still empty")
     private String productName;
-
-    @NotEmpty(message = " is still empty")
     private String productDescription;
 
     @NotNull(message = " is still empty")
-    private Category category;
+    private UUID category;
 
-    @NotNull(message = "penerbit is still empty")
     private int stock;
 
     @NotNull(message = "penerbit is still empty")
-    private byte[] image;
+    private String image;
 
     
 

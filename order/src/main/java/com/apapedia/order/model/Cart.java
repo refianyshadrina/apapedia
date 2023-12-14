@@ -1,7 +1,6 @@
 package com.apapedia.order.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,15 +22,9 @@ public class Cart {
     @Column(name = "cart_id")
     private UUID cartId = UUID.randomUUID();
 
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-    private UserDummy user;
-
-    @NotNull
     @Column(name = "id_user")
     private UUID userId;
 
-    @NotNull
     @Column(name = "total_price", nullable = false)
     private Integer totalPrice = 0;
 

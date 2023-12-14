@@ -24,6 +24,8 @@ public interface UserRestService {
 
     UserDTO updateBalance(UpdateBalanceUser updateRequest, String jwtToken);
 
+    UserDTO updateBalanceV2(UpdateBalanceUser updateRequest, String jwtToken);
+
     UserDTO getUserByUsername(String username);
 
     String getTokenForSSO(String username, String name);

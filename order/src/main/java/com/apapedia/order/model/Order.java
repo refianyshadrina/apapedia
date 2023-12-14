@@ -5,12 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.util.UUID;
 import java.util.Date;
 import java.util.List;
+import java.util.ArrayList;
 
 @Getter
 @Setter
@@ -30,20 +31,18 @@ public class Order {
     private Date updatedAt;
 
     @Column(name = "status")
-    private Integer status = 0;
+    private Integer status;
 
     @Column(name = "total_price")
     private Integer totalPrice;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "seller_id", referencedColumnName = "seller_id")
-    private SellerDummy sellerId;
+    @Column(name = "id_customer")
+    private UUID customerId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-    private UserDummy userId;
+    @Column(name = "id_seller")
+    private UUID sellerId;
 
     @JsonIgnore
     @OneToMany(mappedBy = "orders", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<OrderItem> listOrderItem;
+    private List<OrderItem> listOrderItem = new ArrayList<>();
 }

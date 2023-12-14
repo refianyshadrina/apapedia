@@ -5,6 +5,7 @@ import com.apapedia.catalog.model.Category;
 import com.apapedia.catalog.restservice.CategoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,8 +20,9 @@ public class CategoryRestController {
     @Autowired
     CategoryService categoryService;
 
-    @GetMapping(value = "/category")
-    public List<Category> retrieveAllCategory() {
-        return categoryService.retrieveAllCategory();
+    @GetMapping(value = "/categories")
+    public ResponseEntity<List<Category>> retrieveAllCategories() {
+        List<Category> categories = categoryService.retrieveAllCategory();
+        return ResponseEntity.ok(categories);
     }
 }

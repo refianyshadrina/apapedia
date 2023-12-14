@@ -1,4 +1,5 @@
 import 'package:apapedia_mobile/api/user_api.dart';
+import 'package:apapedia_mobile/api/order_api.dart';
 import 'package:apapedia_mobile/screens/pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => AuthenticationBloc(
-            api: Api(), 
+            api: Api(),
             secureStorage: storage,
           )..add(AuthenticationCheckEvent(context: context)),
         ),

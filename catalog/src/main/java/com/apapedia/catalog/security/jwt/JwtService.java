@@ -36,9 +36,8 @@ public class JwtService {
 
     public Claims extractAllClaims(String token) {
         return Jwts
-                .parserBuilder()
+                .parser()
                 .setSigningKey(getSignKey())
-                .build()
                 .parseClaimsJws(token)
                 .getBody();
     }
@@ -84,9 +83,8 @@ public class JwtService {
 
     public UUID getIdFromJwtToken(String token) {
         Claims claims =  Jwts
-                .parserBuilder()
+                .parser()
                 .setSigningKey(getSignKey())
-                .build()
                 .parseClaimsJws(token)
                 .getBody();
 

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import jakarta.servlet.http.Cookie;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -31,6 +31,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableMethodSecurity
@@ -63,33 +64,25 @@ public class WebSecurityConfig {
     }
 
     @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+            registry.addMapping("/api/**")
+            .allowedOriginPatterns("*")
+            . allowedMethods ("*")
+            . allowedHeaders("*");
+            }
+        };
+    }
+
+    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // http.csrf(csrf -> csrf.disable())
-        //         // .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
-        //         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        //         .authorizeHttpRequests(auth ->
-        //                 auth.requestMatchers("/", "/signup", "/login", "/api/register", "/api/login").permitAll()
-        //                         .requestMatchers(HttpMethod.POST, "/logout").permitAll()
-        //                         .requestMatchers("/api/test/**").permitAll()
-        //                         .requestMatchers(new AntPathRequestMatcher("/css/**")).permitAll()
-        //                         .requestMatchers(new AntPathRequestMatcher("/js/**")).permitAll()
-        //                         .requestMatchers("/seller/**").permitAll()
-        //                         .requestMatchers("/sellerprofile").permitAll()
-        //                         .requestMatchers("/updateprofile").permitAll()
-        //                         .requestMatchers("/withdraw").permitAll()
-        //                         .requestMatchers("/customer").permitAll()
-        //                         // .requestMatchers("/seller/**").hasAnyAuthority("seller")
-        //                         // .requestMatchers("/customer").hasAnyAuthority("customer")
-        //                         .requestMatchers("/api/customer/**").permitAll()
-        //                         .requestMatchers("/api/user/**").permitAll()
-        //                         .requestMatchers("/deleteseller").permitAll()
-        //                         .anyRequest().authenticated()
-        //         );
 
         http.csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -147,51 +140,3 @@ public class WebSecurityConfig {
         }
     }
 }
-
-
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.beans.factory.annotation.Qualifier;
-// import org.springframework.context.annotation.Bean;
-// import org.springframework.context.annotation.Configuration;
-// import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-// import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-// import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-// import org.springframework.security.core.userdetails.UserDetailsService;
-// import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-// import org.springframework.security.web.SecurityFilterChain;
-// import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
-// @Configuration
-// @EnableWebSecurity
-// public class WebSecurityConfig {
-//     @Bean
-//     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//         http.cors().and().csrf().disable()
-//                 .authorizeHttpRequests()
-//                 .requestMatchers("/").permitAll()
-//                 .requestMatchers("/css/**").permitAll()
-//                 .requestMatchers("/js/**").permitAll()
-//                 .requestMatchers("/signup").permitAll()
-//                 .requestMatchers("/api/register").permitAll()
-//                 .requestMatchers("/api/login").permitAll()
-//                 .anyRequest().authenticated()
-//                 .and()
-//                 .formLogin(login -> login
-//                         .loginPage("/login").permitAll())
-//                 .logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-//                         .logoutSuccessUrl("/login").permitAll());
-//         return http.build();
-//     }
-
-//     public BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
-//     // @Qualifier("sellerServiceImpl")
-//     @Autowired
-//     private UserDetailsService userDetailsService;
-
-//     @Autowired
-//     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception{
-//         auth.userDetailsService(userDetailsService).passwordEncoder(encoder);
-//     }
-
-// }
