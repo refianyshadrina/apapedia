@@ -22,13 +22,6 @@ public class CartRestServiceImpl implements CartRestService {
     @Autowired
     CartDb cartDb;
 
-    private final WebClient webClient;
-
-    public CartRestServiceImpl(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("http://localhost:8080")
-                            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                            .build();
-    }
     
     @Override
     public Cart createCart(UUID userId) {

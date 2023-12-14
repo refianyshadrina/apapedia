@@ -17,7 +17,7 @@ public class UserRestServiceImpl implements UserRestService {
     private final WebClient webClient;
 
     public UserRestServiceImpl(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("http://localhost:8080")
+        this.webClient = webClientBuilder.baseUrl("http://web-user:8080")
                             .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                             .build();
     }
