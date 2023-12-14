@@ -1,0 +1,129 @@
+# version: '3.8'
+# services:
+#   db:
+#     image: postgres:14-alpine
+#     ports:
+#       - '15001:5432'
+#     restart: 'no'
+#     environment:
+#       - POSTGRES_USER=postgres
+#       - POSTGRES_PASSWORD=secret99
+#     volumes:
+#       - db:/var/lib/postgresql/data
+# volumes:
+#   db:
+#     driver: local
+
+
+version: '3.3'
+services:
+  web-catalog:
+    image: apap-registry.cs.ui.ac.id/refiany.shadrina/catalog
+    restart: always
+    ports:
+      - "10074:8082"
+    volumes:
+      - ./file-storage:/file-storage
+      - ./log:/log
+    depends_on:
+      - db-catalog
+    networks:
+      - frontend-network
+      - backend-network
+    # platform: linux/amd64
+
+  db-catalog:
+    image: postgres:14-alpine
+    ports:
+      - '15074:5432'
+    restart: 'no'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=secret99
+    volumes:
+      - db:/var/lib/postgresql/data
+    networks:
+      - backend-network
+
+  web-order:
+    image: apap-registry.cs.ui.ac.id/refiany.shadrina/order
+    restart: always
+    ports:
+      - "10075:8083"
+    volumes:
+      - ./file-storage:/file-storage
+      - ./log:/log
+    depends_on:
+      - db-order
+    networks:
+      - frontend-network
+      - backend-network
+    # platform: linux/amd64
+
+  db-order:
+    image: postgres:14-alpine
+    ports:
+      - '15075:5432'
+    restart: 'no'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=secret99
+    volumes:
+      - db:/var/lib/postgresql/data
+    networks:
+      - backend-network
+
+  web-user:
+    image: apap-registry.cs.ui.ac.id/refiany.shadrina/user
+    restart: always
+    ports:
+      - "10076:8080"
+    volumes:
+      - ./file-storage:/file-storage
+      - ./log:/log
+    depends_on:
+      - db-user
+    networks:
+      - frontend-network
+      - backend-network
+    # platform: linux/amd64
+
+  db-user:
+    image: postgres:14-alpine
+    ports:
+      - '15076:5432'
+    restart: 'no'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=secret99
+    volumes:
+      - db:/var/lib/postgresql/data
+    networks:
+      - backend-network
+
+  web-fe:
+    image: apap-registry.cs.ui.ac.id/refiany.shadrina/frontend
+    restart: always
+    ports:
+      - "10077:8081"
+    volumes:
+      - ./file-storage:/file-storage
+      - ./log:/log
+    depends_on:
+      - web-catalog
+      - web-order
+      - web-user
+    networks:
+      - frontend-network
+      - backend-network
+    # platform: linux/amd64
+
+volumes:
+  db:
+    driver: local
+
+networks:
+  frontend-network:
+    driver: bridge
+  backend-network:
+    driver: bridge

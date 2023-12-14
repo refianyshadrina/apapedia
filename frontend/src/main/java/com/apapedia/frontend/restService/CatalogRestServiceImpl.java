@@ -27,7 +27,7 @@ public class CatalogRestServiceImpl implements CatalogRestService{
     private final WebClient webClient;
 
     public CatalogRestServiceImpl(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("http://localhost:8082")
+        this.webClient = webClientBuilder.baseUrl("http://web-catalog:8082")
                             .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                             .build();
     }
