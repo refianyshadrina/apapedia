@@ -6,83 +6,96 @@
 	</head>
 <body>
 	
-	<div th:replace="~{fragments/navbar :: header}"></div>
+<div th:replace="~{fragments/navbar :: header}"></div>
 
-
-	<div class="mt-80 mb-80">
-		<div class="container">
-			<div class="container-fluid" style="display: flex; align-items: center; justify-content: center;">
-				<div class="container" data-aos="fade-up">
-				  <div class="row d-flex justify-content-center">
-					
+	<div class="container">
+		<div class="container-fluid" style="padding-bottom: 5%; padding-top: 15%; display: flex; align-items: center; justify-content: center;">
+			<div class="container" data-aos="fade-up">
+				<div class="row d-flex justify-content-center">
+				
 					<div class="col-md-7">
 						<div class="container">
-              <div class="alert alert-danger" role="alert" th:text="${success}" th:if="${success}"></div>
+							<div class="alert alert-danger" role="alert" th:text="${success}" th:if="${success}"></div>
 							<div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
 						</div>
-					  <div class="new_card p-3 py-5">
-              <div class="text-center">
-                  <img src="assets/img/products/product-img-1.jpg" width="100" class="rounded-circle">
-              </div>
-              <div class="d-flex justify-content-center mb-4">
-                <h4 class="text-center" th:text="${seller.nama}"></h4>
-              </div>
-		
-						  <div class="row mt-3 d-flex justify-content-center">
-							<div class="col-md-10">
-								<p class="card-text" >Username</p>
-								<h6 class="h6" th:text="${seller.username}"></h6>
-                
-            
+						<div class="new_card p-4 py-4">
+							<div class="text-center mt-2">
+								<img src="assets/img/store.png" width="70" height="70" class="user-pic">
 							</div>
-						  </div>
-						  <div class="row mt-3 d-flex justify-content-center">
-							<div class="col-md-10">
-								<p class="card-text" >Email</p>
-								<h6 class="h6" th:text="${seller.email}"></h6>
-								<br>
-							</div>
-						  </div>
-
-						  <div class="row mt-3 d-flex justify-content-center">
-							<div class="col-md-10">
-								<p class="card-text" >Address</p>
-								<h6 class="h6" th:text="${seller.address}"></h6>
-							</div>
-						  </div>
-		
-						  <div class="mt-5 text-center">
-                <div class="hero-btns">
-										<a th:href="@{/updateprofile}" class="boxed-btn">Update Profile</a>
-										<a th:href="@{/deleteseller}" class="boxed-btn">Delete Account</a>
+						<div class="d-flex justify-content-center mb-2 mt-3">
+							<h4 class="text-center" th:text="${seller.nama}"></h4>
+						</div>
+						<div class="card px-2 py-3 my-3">
+							<div class="row align-items-center">
+								<div class="col align-items-center" style="margin-left: 20px;">
+									<div class="row no-gutters align-items-center">
+										<div class="withdraw-logo col-md-auto justify-content-center">
+											<svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="#343a40" class="bi bi-wallet" viewBox="0 0 16 16" style="margin-right: 15px; margin-top: 7px;">
+												<path d="M0 3a2 2 0 0 1 2-2h13.5a.5.5 0 0 1 0 1H15v2a1 1 0 0 1 1 1v8.5a1.5 1.5 0 0 1-1.5 1.5h-12A2.5 2.5 0 0 1 0 12.5zm1 1.732V12.5A1.5 1.5 0 0 0 2.5 14h12a.5.5 0 0 0 .5-.5V5H2a1.99 1.99 0 0 1-1-.268M1 3a1 1 0 0 0 1 1h12V2H2a1 1 0 0 0-1 1"/>
+											</svg>
+										</div>
+										<div class="col">
+											<h4 style="color: #fd7e14;" th:text="${seller.balance}"></h4>
+										</div>
+									</div>	
 								</div>
-						  </div>
-
-					  </div>
-            <div class="new_card p-3 py-5">
+								<div class="col text-right" style="margin-right: 8px; margin-top: -34px;">
+									<div class="hero-btns">
+										<a th:href="@{/withdraw}" class="boxed-btn">
+											<img src="assets/img/withdraw.png" width="25" height="25">
+										</a>
+									</div>
+								</div>		
+							</div>
+						</div>
+						<div class="row mt-3 d-flex justify-content-center">
+							<div class="col-md-5">
+								<label class="labels">Username</label>
+								<h6 th:text="${seller.username}"></h6>
+							</div>
+							<div class="col-md-5">
+								<label class="labels">Email</label>
+								<h6 th:text="${seller.email}"></h6>
+							</div>
+						</div>
+						<div class="row mt-4 d-flex justify-content-center">
+							<div class="col-md-5">
+								<label class="labels">Address</label>
+								<h6 th:text="${seller.address}"></h6>
+							</div>
+								<div class="col-md-5 mb-2">
+								<label class="labels"></label>
+							<p></p>
+							</div>
+						</div>
 		
-						  <div class="row mt-3 d-flex justify-content-center">
-                <div class="col-md-10">
-                  <p class="card-text" >APAPAY Balance</p>
-                  <h6 class="h6" th:text="${seller.balance}"></h6>
-                </div>
-						  </div>
-
-              <div class="mt-5 text-center">
-                <div class="hero-btns">
-										<a th:href="@{/withdraw}" class="boxed-btn">Withdraw</a>
-								</div>
-						  </div>
-
-					  </div>
+						<div class="mt-5 mb-4 text-center">
+							<div class="hero-btns">
+								<a th:href="@{/updateprofile}" class="boxed-btn">Update Profile</a>
+								<a th:href="@{/deleteseller}" class="boxed-btn">Delete Account</a>
+							</div>
+						</div>
 					</div>
-				  </div>
 				</div>
-			  </div>
-		
-	
+			</div>
 		</div>
 	</div>
+</div>
+
+	<!-- footer -->
+	<div class="copyright">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6 col-md-12">
+					<p>Made with ❤️ by APAP A-7 2023/2024<br>
+					</p>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	</div>
+	<!-- end footer -->
 
 
 

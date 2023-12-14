@@ -7,10 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 @Transactional
 public interface CategoryDb extends JpaRepository<Category, UUID> {
     List<Category> findAll();
+    Optional<Category> findByCategoryId(UUID id);
 }

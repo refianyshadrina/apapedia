@@ -14,7 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
+import static org.springframework.security.config.Customizer.withDefaults;
 import com.apapedia.order.security.jwt.AuthTokenFilter;
 
 
@@ -35,7 +35,9 @@ public class WebSecurityConfig {
 
         http.securityMatcher("/api/**")
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(withDefaults())
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
+                .requestMatchers("/api/**").permitAll()
                         .requestMatchers("/api/cart/create/**").permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/css/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/js/**")).permitAll()

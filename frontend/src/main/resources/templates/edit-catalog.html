@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<head>
+  <object th:include="~{fragments/common :: fragment}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: fragment}" th:remove="tag"></object>
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar :: header}"></div>
+
+<!-- check out section -->
+<div class="mt-80 mb-80">
+  <div class="container">
+    <div class="container-fluid" style="display: flex; align-items: center; justify-content: center;">
+      <div class="container" data-aos="fade-up">
+        <div class="row d-flex justify-content-center">
+
+          <div class="col-md-7">
+            <div class="container">
+              <div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
+            </div>
+            <div class="new_card p-3 py-5">
+              <div class="d-flex justify-content-center mb-4">
+                <h4 class="text-center">Add a Product</h4>
+              </div>
+              <form th:object="${catalogDTO}" method="POST">
+
+                <input required class="form-control" type="hidden" th:field="*{sellerId}"/>
+
+                <div class="row mt-3 d-flex justify-content-center">
+                  <div class="col-md-10">
+                    <label class="labels">Product Name</label>
+                    <input required class="form-control" type="text" placeholder="Name" th:field="*{productName}" />
+                  </div>
+
+                </div>
+                <div class="row mt-3 d-flex justify-content-center">
+                  <div class="col-md-10">
+                    <label class="labels">Product Price</label>
+                    <input required class="form-control" type="text" placeholder="Price" th:field="*{price}" />
+                  </div>
+
+                </div>
+                <div class="row mt-3 d-flex justify-content-center">
+                  <div class="col-md-10">
+                    <label class="labels">Product Description</label>
+                    <input required class="form-control" type="text" placeholder="Description" th:field="*{productDescription}" />
+                  </div>
+
+                </div>
+
+                <div class="row mt-3 d-flex justify-content-center">
+                  <div class="col-md-10">
+                    <label class="labels">Product Stock</label>
+                    <input required class="form-control" type="text" placeholder="Address" th:field="*{stock}" />
+                  </div>
+                </div>
+
+                <div class="row mt-3 d-flex justify-content-center">
+                  <div class="col-md-10">
+                    <label class="labels">Product Image</label>
+                    <input required class="form-control" type="text" placeholder="Image" th:field="*{image}"/>
+                  </div>
+                </div>
+
+                <div class="row mt-3 d-flex justify-content-center">
+                  <div class="col-md-10">
+                    <label class="labels">Category</label>  <br>
+                    <select th:field="*{category}" class="form-control" name="category">
+                      <option th:each="category : ${categories}"
+                              th:value="${category.categoryId}"
+                              th:text="${category.categoryName}">
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="mt-5 text-center">
+                  <button type="submit" value="Sign Up">Edit Product</button>
+                </div>
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+</div>
+
+
+
+<!-- copyright -->
+<div class="copyright">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 col-md-12">
+        <p>Copyrights &copy; 2019 - <a href="https://imransdesign.com/">Imran Hossain</a>,  All Rights Reserved.<br>
+          Distributed By - <a href="https://themewagon.com/">Themewagon</a>
+        </p>
+      </div>
+      <div class="col-lg-6 text-right col-md-12">
+        <div class="social-icons">
+          <ul>
+            <li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+            <li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
+            <li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
+            <li><a href="#" target="_blank"><i class="fab fa-linkedin"></i></a></li>
+            <li><a href="#" target="_blank"><i class="fab fa-dribbble"></i></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end copyright -->
+
+<!-- jquery -->
+<script src="assets/js/jquery-1.11.3.min.js"></script>
+<!-- bootstrap -->
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+<!-- count down -->
+<script src="assets/js/jquery.countdown.js"></script>
+<!-- isotope -->
+<script src="assets/js/jquery.isotope-3.0.6.min.js"></script>
+<!-- waypoints -->
+<script src="assets/js/waypoints.js"></script>
+<!-- owl carousel -->
+<script src="assets/js/owl.carousel.min.js"></script>
+<!-- magnific popup -->
+<script src="assets/js/jquery.magnific-popup.min.js"></script>
+<!-- mean menu -->
+<script src="assets/js/jquery.meanmenu.min.js"></script>
+<!-- sticker js -->
+<script src="assets/js/sticker.js"></script>
+<!-- main js -->
+<script src="assets/js/main.js"></script>
+
+</body>
+</html>

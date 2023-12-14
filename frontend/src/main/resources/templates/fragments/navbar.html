@@ -40,8 +40,8 @@
                 <div class="main-menu-wrap">
                     <!-- logo -->
                     <div class="site-logo">
-                        <a href="index.html">
-                            <img src="assets/img/logo.png" alt="">
+                        <a href="/">
+                            <h3 class="orange-text">APAPEDIA</h3>
                         </a>
                     </div>
                     <!-- logo -->
@@ -54,15 +54,25 @@
                             
                             <li><a th:href="@{/}">Order History</a>
                                 <ul class="sub-menu">
-                                    <li><a th:href="@{/}">View All</a></li>
+                                    <li><a th:href="@{/history}">View All</a></li>
                                     <li><a th:href="@{/}">15 Top Order This Month</a></li>
                                 </ul>
                             </li>
                             <li><a th:href="@{/sellerprofile}">Profile</a></li>
                             <li>
                                 <div class="header-icons">
-                                    <a class="shopping-cart" href="cart.html"><i class="fas fa-shopping-cart"></i></a>
-                                    <a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
+
+                                <div class="header-icons pull-right">
+                                    <div th:if="${user == null}">
+                                        <span><a th:href="@{/login-sso}" class="boxed-btn">Login</a>
+                                        <a th:href="@{/signup}" class="bordered-btn">Sign Up</a></span>
+                                    </div>
+
+                                    <div th:unless="${user == null}">
+                                        <a th:href="@{/logout-sso}" class="boxed-btn">Logout</a>
+                                    </div>
+                                </div>
+
                                 </div>
                             </li>
                         </ul>

@@ -12,9 +12,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import com.apapedia.user.model.Customer;
-import com.apapedia.user.model.Seller;
 import com.apapedia.user.repository.CustomerDb;
 import com.apapedia.user.repository.SellerDb;
 
@@ -33,9 +30,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println("masuk load");
-        Seller seller = sellerDb.findByUsername(username);
-        Customer customer = customerDb.findByUsername(username);
+        var seller = sellerDb.findByUsername(username);
+        var customer = customerDb.findByUsername(username);
 
         if (customer != null && seller == null) {
             Set<GrantedAuthority> grantedAuthorities = new HashSet<>();

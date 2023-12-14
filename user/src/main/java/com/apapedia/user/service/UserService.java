@@ -28,4 +28,6 @@ public interface UserService {
     void updateBalance(UUID id, long balance);
 
     boolean checkAccountExists(String username);
+
+    void updateBalanceV2(UUID id, long newBalance);
 }

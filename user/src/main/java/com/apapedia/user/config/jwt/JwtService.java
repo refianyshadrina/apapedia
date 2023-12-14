@@ -40,7 +40,7 @@ public class JwtService {
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
+        final var claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
@@ -117,7 +117,7 @@ public class JwtService {
     }
 
     public UUID getIdFromJwtToken(String token) {
-        Claims claims =  Jwts
+        var claims =  Jwts
                 .parserBuilder()
                 .setSigningKey(getSignKey())
                 .build()

@@ -596,12 +596,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           await Future.delayed(const Duration(milliseconds: 500));
 
                           final state = authenticationBloc.state;
-                          if (state is AuthenticationUnauthenticatedState) {
-                            // Show error dialog
-                            Navigator.of(context).push(LoginPage.route());
-                          } else {
+                          // if (state is AuthenticationUnauthenticatedState) {
+                          //   // Show error dialog
+                          //   Navigator.of(context).push(LoginPage.route());
+                          // } else {
                             Navigator.of(context).push(ProfilePage.route());
-                          }
+                          // }
                       }
                   }
                 },

@@ -42,12 +42,12 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public boolean existsByUsername(String username) {
-        return sellerDb.existsByUsername(username) | customerDb.existsByUsername(username);
+        return sellerDb.existsByUsername(username) || customerDb.existsByUsername(username);
     }
 
     @Override
     public boolean existsByEmail(String email) {
-        return sellerDb.existsByEmail(email) | customerDb.existsByEmail(email);
+        return sellerDb.existsByEmail(email) || customerDb.existsByEmail(email);
     }
 
     @Override
@@ -62,11 +62,11 @@ public class UserServiceImpl implements UserService{
     @Override 
     public UserModel deleteUser(UserModel user) {
         if (user instanceof Seller) {
-            Seller seller = (Seller) user;
+            var seller = (Seller) user;
             sellerService.deleteSeller(seller);
             return seller;
         } else {
-            Customer customer = (Customer) user;
+            var customer = (Customer) user;
             customerService.deleteCustomer(customer);
             return customer;
         }
@@ -74,32 +74,30 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserModel getUserById(UUID id) {
-        Seller seller = sellerService.getSellerById(id);
-        Customer customer = customerService.getCustomerById(id);
+        var seller = sellerService.getSellerById(id);
+        var customer = customerService.getCustomerById(id);
 
         if (seller == null && customer == null) {
             return null;
         } else if (seller != null && customer == null) {
             return seller;
-        } else if (customer != null && seller == null) {
+        } else {
             return customer;
-        } 
-        return null;
+        }
     }
 
     @Override
     public UserModel getUserByUsername(String username) {
-        Seller seller = sellerService.getSellerByUsername(username);
-        Customer customer = customerService.getCustomerByUsername(username);
+        var seller = sellerService.getSellerByUsername(username);
+        var customer = customerService.getCustomerByUsername(username);
 
         if (seller == null && customer == null) {
             return null;
         } else if (seller != null && customer == null) {
             return seller;
-        } else if (customer != null && seller == null) {
+        } else {
             return customer;
-        } 
-        return null;
+        }
 
     }
 
@@ -166,4 +164,27 @@ public class UserServiceImpl implements UserService{
         }
     }
 
+    @Override
+    public void updateBalanceV2(UUID id, long newBalance) {
+        UserModel user = getUserById(id);
+
+        if (user == null) {
+            throw new UserNotFoundException("Can't find user with that id");
+        }
+
+        if (user instanceof Customer) {
+            if (newBalance > user.getBalance()) {
+                throw new InsufficientBalanceException("Balance is not enough to withdraw");
+            }
+
+            user.setBalance(user.getBalance() - newBalance);
+
+            customerDb.save((Customer) user);
+
+        } else {
+            user.setBalance(user.getBalance() + newBalance);
+
+            sellerDb.save((Seller) user);
+        }
+    }
 }

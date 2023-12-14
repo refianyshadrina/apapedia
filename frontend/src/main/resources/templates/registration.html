@@ -8,6 +8,111 @@
 	
 	<div th:replace="~{fragments/navbar :: header}"></div>
 
+	<div class="new-container">
+		<div class="forms-container">
+			<div class="signin-signup">
+				<div class="container">
+					<div class="alert alert-danger" role="alert" th:text="${success}" th:if="${success}"></div>
+					<div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
+				</div>
+				<!-- <form th:action="@{/login}" method="POST" class="sign-in-form">
+					<h2 class="title">Sign in</h2>
+					<div class="input-field">
+						<i class="fas fa-user"></i>
+						<input type="text" placeholder="Username" />
+					</div>
+					<div class="input-field">
+						<i class="fas fa-lock"></i>
+						<input type="password" placeholder="Password" />
+					</div>
+					<div class="text-center">
+						<div class="hero-btns">
+							<button type="submit" value="Login">Login</button>
+						</div>
+					</div>
+				</form> -->
+				<form th:action="@{/signup}" th:object="${registerRequest}" method="post" class="sign-up-form" style="padding-top: 40px;">
+					<h2 class="title">Sign up</h2>
+					<div class="input-field">
+						<i class="fas fa-user"></i>
+						<input required type="text" placeholder="Name" th:field="*{nama}" />
+					</div>
+					<div class="input-field">
+						<i class="fas fa-user"></i>
+						<input required type="text" placeholder="Username" th:field="*{username}" />
+					</div>
+					<div class="input-field">
+						<i class="fas fa-envelope"></i>
+						<input required type="email" placeholder="youremail@example.com" th:field="*{email}" />
+					</div>
+					<div class="input-field">
+						<i class="fas fa-lock"></i>
+						<input required type="text" placeholder="Address" th:field="*{address}" />
+					</div>
+					<div class="input-field">
+						<i class="fas fa-lock"></i>
+						<select class="select-dropdown" name="category" >
+							<option th:value="1">Aksesoris Fashion</option>
+							<option th:value="2">Buku & Alat Tulis</option>
+							<option th:value="3">Elektronik</option>
+							<option th:value="4">Fashion Bayi & Anak</option>
+							<option th:value="5">Fashion Muslim</option>
+							<option th:value="6">Fotografi</option>
+							<option th:value="7">Hobi & Koleksi</option>
+							<option th:value="8">Jam Tangan</option>
+							<option th:value="9">Perawatan & Kecantikan</option>
+							<option th:value="10">Makanan & Minuman</option>
+							<option th:value="11">Otomotif</option>
+							<option th:value="12">Perlengkapan Rumah</option>
+							<option th:value="13">Souvenir & Party Supplies</option>
+						</select>
+					</div>
+	
+					  <!-- <div class="row mt-3 d-flex justify-content-center">
+						<div class="col-md-10">
+							<label class="labels">Category</label>  <br>
+							
+						</div>
+					  </div> -->
+					<div class="text-center">
+						<div class="hero-btns">
+							<button type="submit" value="Sign Up">Register</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<div class="panels-container">
+		<div class="panel left-panel">
+			<div class="content">
+			<h3>New here ?</h3>
+			<p>
+				Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis,
+				ex ratione. Aliquid!
+			</p>
+			<button class="btn transparent" id="sign-up-btn">
+				Sign up
+			</button>
+			</div>
+			<img src="img/log.svg" class="image" alt="" /> 
+		</div>
+		<div class="panel right-panel">
+			<div class="content">
+			<h3>One of us ?</h3>
+			<p>
+				Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum
+				laboriosam ad deleniti.
+			</p>
+			<button class="btn transparent" id="sign-in-btn">
+				Sign in
+			</button>
+			</div>
+			<img src="img/register.svg" class="image" alt="" />
+		</div>
+		</div>
+	</div>
+
 	<!-- check out section -->
 	<div class="mt-80 mb-80">
 		<div class="container">
@@ -83,7 +188,7 @@
 		
 	
 		</div>
-	</div>
+	</div> -->
 	<!-- end check out section -->
 
 	<!-- logo carousel -->
@@ -114,77 +219,23 @@
 	</div> -->
 	<!-- end logo carousel -->
 
-	<!-- footer -->
-	<div class="footer-area">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-3 col-md-6">
-					<div class="footer-box about-widget">
-						<h2 class="widget-title">About us</h2>
-						<p>Ut enim ad minim veniam perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae.</p>
+
+		<!-- footer -->
+		<div class="copyright">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-6 col-md-12">
+						<p>Made with ❤️ by APAP A-7 2023/2024<br>
+						</p>
 					</div>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<div class="footer-box get-in-touch">
-						<h2 class="widget-title">Get in Touch</h2>
-						<ul>
-							<li>34/8, East Hukupara, Gifirtok, Sadan.</li>
-							<li>support@fruitkha.com</li>
-							<li>+00 111 222 3333</li>
-						</ul>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<div class="footer-box pages">
-						<h2 class="widget-title">Pages</h2>
-						<ul>
-							<li><a href="index.html">Home</a></li>
-							<li><a href="about.html">About</a></li>
-							<li><a href="services.html">Shop</a></li>
-							<li><a href="news.html">News</a></li>
-							<li><a href="contact.html">Contact</a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<div class="footer-box subscribe">
-						<h2 class="widget-title">Subscribe</h2>
-						<p>Subscribe to our mailing list to get the latest updates.</p>
-						<form action="index.html">
-							<input type="email" placeholder="Email">
-							<button type="submit"><i class="fas fa-paper-plane"></i></button>
-						</form>
-					</div>
+
 				</div>
 			</div>
 		</div>
 	</div>
 	<!-- end footer -->
-	
-	<!-- copyright -->
-	<div class="copyright">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-6 col-md-12">
-					<p>Copyrights &copy; 2019 - <a href="https://imransdesign.com/">Imran Hossain</a>,  All Rights Reserved.<br>
-						Distributed By - <a href="https://themewagon.com/">Themewagon</a>
-					</p>
-				</div>
-				<div class="col-lg-6 text-right col-md-12">
-					<div class="social-icons">
-						<ul>
-							<li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
-							<li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
-							<li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
-							<li><a href="#" target="_blank"><i class="fab fa-linkedin"></i></a></li>
-							<li><a href="#" target="_blank"><i class="fab fa-dribbble"></i></a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end copyright -->
+
+
 	
 	<!-- jquery -->
 	<script src="assets/js/jquery-1.11.3.min.js"></script>
@@ -206,6 +257,8 @@
 	<script src="assets/js/sticker.js"></script>
 	<!-- main js -->
 	<script src="assets/js/main.js"></script>
+	<!-- sign js -->
+	<script src="assets/js/sign.js"></script>
 
 </body>
 </html>

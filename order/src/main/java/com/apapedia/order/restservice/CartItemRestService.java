@@ -1,5 +1,6 @@
 package com.apapedia.order.restservice;
 
+import com.apapedia.order.dto.CatalogDTO;
 import com.apapedia.order.model.CartItem;
 
 import java.util.List;
@@ -12,8 +13,10 @@ public interface CartItemRestService {
 
     CartItem getRestCartItemById(UUID id);
 
-    CartItem updateRestCartItemQuantity(CartItem cartItemFromDTO);
+    CartItem updateRestCartItemQuantity(CartItem cartItemFromDTO, int newQuantity);
 
     void deleteRestCartItem(CartItem cartItem);
+
+    CatalogDTO retrieveCatalogbyId(UUID productId);
 
 }

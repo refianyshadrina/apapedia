@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:apapedia_mobile/api/user_api.dart'; // Import your API class
+import 'package:apapedia_mobile/api/user_api.dart';
 import '../repository/user_repository.dart';
 import 'authentication_event.dart';
 import 'authentication_state.dart';

@@ -17,7 +17,6 @@ public class Category {
     @Id
     private UUID categoryId = UUID.randomUUID();
 
-    @NotNull
     @Column(name = "category_name", nullable = false)
     private String CategoryName;
 

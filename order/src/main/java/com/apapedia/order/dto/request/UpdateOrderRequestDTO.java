@@ -11,4 +11,5 @@ import lombok.NoArgsConstructor;
 @Data
 public class UpdateOrderRequestDTO {
     private UUID id;
+    private int status;
 }

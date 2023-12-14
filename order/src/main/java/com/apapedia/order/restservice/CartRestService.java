@@ -8,7 +8,9 @@ import java.util.UUID;
 
 public interface CartRestService {
     Cart createCart(UUID userId);
+
     Cart getRestCartById(UUID id);
+    
     List<Cart> retrieveRestAllCart();
 
     List<CartItem> retrieveRestAllCartItemByUserId(UUID userId);

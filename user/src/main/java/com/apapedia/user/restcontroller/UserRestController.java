@@ -67,7 +67,6 @@ public class UserRestController {
     @ResponseBody
     public ResponseEntity<?> retrieveUser(@PathVariable("id") UUID id){
         UserModel user = usersService.getUserById(id);
-        System.out.println(user == null);
         if (user != null) {
             if (user instanceof Seller) {
                 user = (Seller) user;
@@ -248,25 +247,23 @@ public class UserRestController {
         
     }
 
-    // @PutMapping("/update-balance/{id}")
-    // public ResponseEntity<?> updateBalance(){
-    //     UserModel user = usersService.getUserById(updateBalanceUser.getId());
-
-    //     if (user != null) {
-    //         // Calls api for total price from order service
-    //         Long newBalance = (long) 10;
-    //         usersService.updateBalance(user, newBalance);
-    //         return ResponseEntity.ok(user);
-    //     } else {
-    //         return ResponseEntity.badRequest().body("Cant find customer with that id");
-    //     }
-    // }
-
     @PutMapping("/self-update-balance")
     public ResponseEntity<?> selfUpdateBalance(@Valid @RequestBody UpdateBalanceUserDTO updateBalanceUser){
 
         try {
             usersService.updateBalance(updateBalanceUser.getId(), updateBalanceUser.getBalance());
+            return ResponseEntity.ok(usersService.getUserById(updateBalanceUser.getId()));
+        } catch (UserNotFoundException | InsufficientBalanceException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } 
+
+    }
+
+    @PutMapping("/self-update-balance-v2")
+    public ResponseEntity<?> selfUpdateBalanceV2(@Valid @RequestBody UpdateBalanceUserDTO updateBalanceUser){
+
+        try {
+            usersService.updateBalanceV2(updateBalanceUser.getId(), updateBalanceUser.getBalance());
             System.out.println("masuk sini?");
             return ResponseEntity.ok(usersService.getUserById(updateBalanceUser.getId()));
         } catch (UserNotFoundException | InsufficientBalanceException e) {
@@ -275,6 +272,5 @@ public class UserRestController {
         } 
 
     }
-
 }
 

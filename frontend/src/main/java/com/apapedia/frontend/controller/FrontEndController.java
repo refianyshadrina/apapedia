@@ -1,7 +1,10 @@
 package com.apapedia.frontend.controller;
 
+import com.apapedia.frontend.payloads.*;
+import com.apapedia.frontend.restService.OrderRestServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.codec.xml.Jaxb2XmlDecoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,20 +20,16 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.slf4j.LoggerFactory;
-import java.util.UUID;
+
+import java.util.*;
+
 import org.slf4j.Logger;
-import com.apapedia.frontend.payloads.JwtResponse;
-import com.apapedia.frontend.payloads.UserDTO;
-import com.apapedia.frontend.payloads.UpdateBalanceUser;
-import com.apapedia.frontend.payloads.UpdateUserRequest;
 import com.apapedia.frontend.restService.UserRestService;
 import com.apapedia.frontend.security.xml.Attributes;
 import com.apapedia.frontend.security.xml.ServiceResponse;
 import com.apapedia.frontend.service.FrontEndService;
 import com.apapedia.frontend.service.JwtService;
 import com.apapedia.frontend.setting.Setting;
-import java.util.List;
-import java.util.ArrayList;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -64,6 +63,9 @@ public class FrontEndController {
 
     @Autowired
     JwtService jwtService;
+
+    @Autowired
+    OrderRestServiceImpl orderRestService;
 
     @RequestMapping("/logout")
     public String logout(HttpServletResponse response) {
@@ -134,7 +136,8 @@ public class FrontEndController {
             return new ModelAndView("redirect:/");
         } catch (RuntimeException e) {
             // return new ModelAndView("redirect:/signup");
-            return new ModelAndView("redirect:/logout-sso-v2");
+            frontEndService.setCookie(response, null);
+            return new ModelAndView("redirect:" + Setting.SERVER_LOGOUT + Setting.CLIENT_LOGIN_FAILED);
         }
     }
 
@@ -147,12 +150,6 @@ public class FrontEndController {
     public ModelAndView logoutSSO(Principal principal, HttpServletResponse response) {
         frontEndService.setCookie(response, null);
         return new ModelAndView("redirect:" + Setting.SERVER_LOGOUT + Setting.CLIENT_LOGOUT);
-    }
-
-    @GetMapping("/logout-sso-v2")
-    public ModelAndView logoutSSOFailed(Principal principal, HttpServletResponse response) {
-        frontEndService.setCookie(response, null);
-        return new ModelAndView("redirect:" + Setting.SERVER_LOGOUT + Setting.CLIENT_LOGIN_FAILED);
     }
 
     // @GetMapping("/login")
@@ -315,6 +312,28 @@ public class FrontEndController {
                 return "redirect:/withdraw";
 
             } 
+        }
+    }
+
+    @GetMapping("/top5")
+    private String getTop5(Model model, @CookieValue(value = "jwtToken", defaultValue = "") String jwtToken, HttpServletRequest request) {
+        if (!frontEndService.validateCookieJwt(request, jwtToken)) {
+            logger.info("not logged in");
+            return "redirect:/login-sso";
+        } else {
+            UUID id = jwtService.getIdFromJwtToken(jwtToken);
+            var user = userRestService.getUser(id, jwtToken);
+
+            List<TotalDTO> listTop5 = orderRestService.getTop5(id.toString(), jwtToken);
+
+            Map<String, Integer> topMap = new HashMap<>();
+
+            for (TotalDTO totalDTO : listTop5) {
+                topMap.put(totalDTO.getItemName(), totalDTO.getTotal());
+            }
+
+            model.addAttribute("listTop5", listTop5);
+            return "top5";
         }
     }
 

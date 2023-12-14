@@ -1,5 +1,7 @@
 
 
+// import 'dart:ffi';
+
 String formatDateTime(String unformattedDateTime) {
   List<String> datetime = unformattedDateTime.split("T");
   String date = datetime[0];
@@ -8,6 +10,15 @@ String formatDateTime(String unformattedDateTime) {
       "${date.split("-")[2]}-${date.split("-")[1]}-${date.split("-")[0]}";
   String formattedTime = "${time.split(":")[0]}:${time.split(":")[1]}";
   return "$formattedDate $formattedTime";
+}
+
+String formatBalance(int balance) {
+  String newBalance = "";
+  String balanceString = balance.toString();
+  for(int i = 0; i < balanceString.length; i++) {
+    
+  }
+  return newBalance;
 }
 
 class Customer {
@@ -49,5 +60,87 @@ class Customer {
         "createdAt": createdAt,
         "updatedAt": updatedAt,
         "balance": balance,
+      };
+}
+
+class Order {
+  final String id;
+  final String createdAt;
+  final String updatedAt;
+  late final int status;
+  final int totalPrice;
+  final String customerId;
+  final String sellerId;
+  final List<OrderItem> orderItems;
+
+  Order({
+    required this.id,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.status,
+    required this.totalPrice,
+    required this.customerId,
+    required this.sellerId,
+    required this.orderItems,
+  });
+
+  factory Order.fromJson(Map<String, dynamic> json) => Order(
+        id: json["id"],
+        createdAt: json["createdAt"],
+        updatedAt: json["updatedAt"],
+        status: json["status"],
+        totalPrice: json["totalPrice"],
+        customerId: json['customerId'],
+        sellerId: json["sellerId"],
+        orderItems: List<OrderItem>.from(
+          json["orderItems"].map(
+            (item) => OrderItem.fromJson(item),
+          ),
+        ),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "createdAt": createdAt,
+        "updatedAt": updatedAt,
+        "status": status,
+        "totalPrice": totalPrice,
+        "customerId": customerId,
+        "sellerId": sellerId,
+        "orderItems": List<dynamic>.from(
+          orderItems.map((item) => item.toJson()),
+        ),
+      };
+}
+
+class OrderItem {
+  final String id;
+  final String productId;
+  final int quantity;
+  final String productName;
+  final int productPrice;
+
+  OrderItem({
+    required this.id,
+    required this.productId,
+    required this.quantity,
+    required this.productName,
+    required this.productPrice,
+  });
+
+  factory OrderItem.fromJson(Map<String, dynamic> json) => OrderItem(
+        id: json["id"],
+        productId: json["productId"],
+        quantity: json["quantity"],
+        productName: json["productName"],
+        productPrice: json["productPrice"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "productId": productId,
+        "quantity": quantity,
+        "productName": productName,
+        "productPrice": productPrice,
       };
 }
