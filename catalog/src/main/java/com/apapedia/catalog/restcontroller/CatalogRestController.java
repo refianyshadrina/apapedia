@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.NoSuchElementException;
 
-import com.apapedia.catalog.dto.CatalogMapper;
 import com.apapedia.catalog.dto.request.CreateCatalogRequestDTO;
 import com.apapedia.catalog.dto.request.UpdateCatalogRequestDTO;
 import com.apapedia.catalog.model.Catalog;
@@ -34,9 +33,6 @@ public class CatalogRestController {
 
     @Autowired
     CatalogService catalogService;
-
-    @Autowired
-    private CatalogMapper catalogMapper;
     
     @PostMapping(value = "/catalog")
     private Catalog createCatalog(@Valid @RequestBody CreateCatalogRequestDTO catalogRequestDTO, BindingResult bindingResult) {
@@ -80,7 +76,14 @@ public class CatalogRestController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field");
         }
 
-        var updatedCatalog = catalogMapper.UpdateCatalogRequestDTOToCatalog(updateCatalogRequestDTO);
+        // var updatedCatalog = catalogMapper.UpdateCatalogRequestDTOToCatalog(updateCatalogRequestDTO);
+        Catalog updatedCatalog = new Catalog();
+        updatedCatalog.setSellerId(updateCatalogRequestDTO.getSellerId());
+        updatedCatalog.setProductName(updateCatalogRequestDTO.getProductName());
+        updatedCatalog.setProductDescription(updateCatalogRequestDTO.getProductDescription());
+        updatedCatalog.setStock(updateCatalogRequestDTO.getStock());
+        updatedCatalog.setImage(updateCatalogRequestDTO.getImage());
+
         return catalogService.updateCatalog(updatedCatalog);
     }
 

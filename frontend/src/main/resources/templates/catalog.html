@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+	<head>
+		<object th:include="~{fragments/common :: fragment}" th:remove="tag"></object>
+		<object th:include="~{fragments/common :: fragment}" th:remove="tag"></object>
+	</head>
+<body>
+	
+	<div th:replace="~{fragments/navbar :: header}"></div>
+	<br>
+
+
+	<!-- product section -->
+	<div class="product-section mt-150 mb-150">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="section-title">	
+						<h3><span class="orange-text">Our</span> Products</h3>
+<!--							<div class="row mt-3 d-flex justify-content-center">-->
+<!--								<div class="col-6">-->
+<!--									<input required class="form-control" type="text" placeholder="Nama Produk"/>-->
+<!--								</div>-->
+<!--								<div class="col">-->
+<!--									<input required class="form-control" type="text" placeholder="Harga Minimal"  />-->
+<!--								</div>-->
+<!--								<div class="col">-->
+<!--									<input required class="form-control" type="email" placeholder="Harga Maksimal"  />-->
+<!--								</div>-->
+<!--								<div class="col">-->
+<!--									<select class="form-control" name="category" >-->
+<!--										<option th:value="1">Sort</option>-->
+<!--									</select>-->
+<!--								</div>-->
+
+<!--							</div>-->
+
+						<div class="container">
+							<div class="row justify-content-center">
+								<div class="col-md-8">
+									<form method="GET" class="my-3" th:action="@{/search}">
+										<div class="row mb-2">
+											<div class="col">
+												<input required class="form-control" type="text" name="query" placeholder="Search Products" />
+											</div>
+											<div class="col-auto">
+												<button type="submit" class="btn btn-primary">Search</button>
+											</div>
+										</div>
+									</form>
+
+									<form method="GET" class="row align-items-end my-3" th:action="@{/filter}">
+										<div class="col-auto">
+											<label class="mb-1">Filter by</label>
+										</div>
+										<div class="col">
+											<input required class="form-control" type="number" name="min" placeholder="Min Price" />
+										</div>
+										<div class="col">
+											<input required class="form-control" type="number" name="max" placeholder="Max Price" />
+										</div>
+										<div class="col-auto">
+											<button type="submit" class="btn btn-primary">Filter</button>
+										</div>
+									</form>
+
+									<form method="GET" class="row align-items-end my-3" th:action="@{/sort}">
+										<div class="col-auto">
+											<label class="mb-1">Sort by</label>
+										</div>
+										<div class="col">
+											<select class="form-control" name="sort">
+												<option value="az">A-Z</option>
+												<option value="za">Z-A</option>
+												<option value="cheapest">Cheapest</option>
+												<option value="expensive">Most Expensive</option>
+											</select>
+										</div>
+										<div class="col-auto">
+											<button type="submit" class="btn btn-primary">Sort</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+
+
+
+						<div class="mt-5 text-center">
+								<a th:href="@{/add-product}" class="boxed-btn" th:if="${isLoggedIn}">Add Product</a>
+							</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div th:each="catalog : ${listCatalog}" class="col-lg-4 col-md-6 mb-4 text-center">
+					<div class="single-product-item">
+						<div class="product-image p-3">
+							<a th:href="@{'/product/' + ${catalog.id}}">
+								<img th:src="${catalog.image}" alt="" th:alt="${catalog.productName}"
+									 class="card-img-top img-fluid" style="max-height: 200px; max-width: 100%;
+									 height: auto; width: auto;"/>
+							</a>
+						</div>
+						<div class="card-body">
+							<h5 class="card-title" th:text="${catalog.productName}">Product Name</h5>
+							<p class="card-text product-price" th:text="${'Rp ' + catalog.price}">Product Price</p>
+							<a th:href="@{'/edit-product/' + ${catalog.id}}" class="cart-btn" th:if="${isLoggedIn}">Edit Product</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+	<!-- end product section -->
+	
+	<!-- footer -->
+	<div class="copyright">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6 col-md-12">
+					<p>Made with ❤️ by APAP A-7 2023/2024<br>
+					</p>
+				</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end footer -->
+	
+	<!-- jquery -->
+	<script src="assets/js/jquery-1.11.3.min.js"></script>
+	<!-- bootstrap -->
+	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+	<!-- count down -->
+	<script src="assets/js/jquery.countdown.js"></script>
+	<!-- isotope -->
+	<script src="assets/js/jquery.isotope-3.0.6.min.js"></script>
+	<!-- waypoints -->
+	<script src="assets/js/waypoints.js"></script>
+	<!-- owl carousel -->
+	<script src="assets/js/owl.carousel.min.js"></script>
+	<!-- magnific popup -->
+	<script src="assets/js/jquery.magnific-popup.min.js"></script>
+	<!-- mean menu -->
+	<script src="assets/js/jquery.meanmenu.min.js"></script>
+	<!-- sticker js -->
+	<script src="assets/js/sticker.js"></script>
+	<!-- main js -->
+	<script src="assets/js/main.js"></script>
+
+</body>
+</html>

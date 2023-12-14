@@ -5,6 +5,8 @@ import com.apapedia.frontend.payloads.CategoryDTO;
 import com.apapedia.frontend.payloads.UpdateUserRequest;
 import com.apapedia.frontend.payloads.UserDTO;
 import com.apapedia.frontend.restService.CategoryRestService;
+import com.apapedia.frontend.restService.UserRestService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -41,6 +43,44 @@ public class CatalogController {
 
     @Autowired
     JwtService jwtService;
+
+        @Autowired
+    UserRestService userRestService;
+
+
+    @GetMapping("/catalog")
+    public String home(Model model, @CookieValue(value = "jwtToken", defaultValue = "") String jwtToken, HttpServletRequest request, RedirectAttributes redirectAttrs) {
+        UserDTO userDTO = null;
+        boolean isLoggedIn = false;
+
+        if (!frontEndService.validateCookieJwt(request, jwtToken)) {
+            System.out.println(userDTO);
+            List<CatalogDTO> listCatalog = catalogRestService.viewAllCatalog();
+            model.addAttribute("listCatalog", listCatalog);
+            logger.info("This is the list, " + listCatalog);
+            logger.info("not logged in");
+        } else {
+            UUID id = jwtService.getIdFromJwtToken(jwtToken);
+            isLoggedIn = true;
+            List<CatalogDTO> listCatalog = catalogRestService.viewAllCatalogBySellerId(id, jwtToken);
+            logger.info("This is the list, " + listCatalog);
+
+            model.addAttribute("listCatalog", listCatalog);
+            try {
+                userDTO = userRestService.getUser(id, jwtToken);
+            } catch (RuntimeException e) {
+                redirectAttrs.addFlashAttribute("error", "Your session has expired. Please log in again");
+                return "redirect:/logout";
+            }
+
+            logger.info("Seller logged in: " + jwtToken);
+        }
+
+        model.addAttribute("isLoggedIn", isLoggedIn);
+        model.addAttribute("user", userDTO);
+
+        return "home";
+    }
 
     @GetMapping("/view-all-catalog")
     private String viewAllCatalog(Model model, @CookieValue(value = "jwtToken", defaultValue = "") String jwtToken, RedirectAttributes redirectAttrs, HttpServletRequest request) {
